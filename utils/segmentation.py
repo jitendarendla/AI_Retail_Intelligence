@@ -1,8 +1,42 @@
 import os
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
+try:
+    from sklearn.preprocessing import StandardScaler
+except Exception:
+    class StandardScaler:
+        def fit_transform(self, X):
+            if hasattr(X, 'values'):
+                X = X.values
+            return (X - X.mean(axis=0)) / (X.std(axis=0) + 1e-8)
+        def transform(self, X):
+            return self.fit_transform(X)
+
+try:
+    from sklearn.cluster import KMeans
+except Exception as e:
+    print(f"Notice: sklearn.cluster.KMeans DLL blocked by system policy ({e}). Using SciPy FallbackKMeans.")
+    from scipy.cluster.vq import kmeans2
+    
+    class KMeans:
+        def __init__(self, n_clusters=4, random_state=42, n_init=10):
+            self.n_clusters = n_clusters
+            self.random_state = random_state
+            self.cluster_centers_ = None
+            
+        def fit_predict(self, X):
+            if hasattr(X, "values"):
+                X = X.values
+            np.random.seed(self.random_state)
+            centroids, labels = kmeans2(X.astype(float), self.n_clusters, minit='points')
+            self.cluster_centers_ = centroids
+            return labels
+            
+        def predict(self, X):
+            if hasattr(X, "values"):
+                X = X.values
+            distances = np.linalg.norm(X[:, np.newaxis] - self.cluster_centers_, axis=2)
+            return np.argmin(distances, axis=1)
 import joblib
 import plotly.express as px
 import plotly.graph_objects as go

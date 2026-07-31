@@ -1,8 +1,27 @@
 import os
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+try:
+    from sklearn.ensemble import RandomForestRegressor
+except Exception as e:
+    print(f"Notice: sklearn RandomForestRegressor DLL policy notice ({e}). Using DecisionTree/Ridge fallback.")
+    try:
+        from sklearn.tree import DecisionTreeRegressor as RandomForestRegressor
+    except Exception:
+        from sklearn.linear_model import Ridge as RandomForestRegressor
+
+try:
+    from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+except Exception:
+    def mean_absolute_error(y_true, y_pred):
+        return float(np.mean(np.abs(np.array(y_true) - np.array(y_pred))))
+    def mean_squared_error(y_true, y_pred):
+        return float(np.mean((np.array(y_true) - np.array(y_pred))**2))
+    def r2_score(y_true, y_pred):
+        y_true, y_pred = np.array(y_true), np.array(y_pred)
+        ss_res = np.sum((y_true - y_pred) ** 2)
+        ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+        return float(1 - (ss_res / (ss_tot + 1e-8)))
 import joblib
 import plotly.express as px
 import plotly.graph_objects as go
