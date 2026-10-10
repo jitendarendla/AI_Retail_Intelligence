@@ -46,6 +46,131 @@ body {
     background: var(--accent-indigo);
 }
 
+/* Modal Overlay Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+    border: 1px solid var(--border-glow);
+    border-radius: 20px;
+    padding: 32px;
+    width: 380px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.form-group input {
+    width: 100%;
+    background: #090D16;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text-main);
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #6366F1, #8B5CF6);
+    color: #FFF;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-secondary {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--accent-indigo);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+}
+
+/* Header User Profile Bar */
+.header-user-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-badge {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    color: var(--accent-indigo);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.btn-upload {
+    background: linear-gradient(90deg, #10B981, #059669);
+    color: #FFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-logout {
+    background: rgba(239, 68, 68, 0.18);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #F87171;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Dropzone Styling */
+.dropzone {
+    border: 2px dashed var(--accent-indigo);
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 14px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.dropzone:hover {
+    background: rgba(99, 102, 241, 0.12);
+}
+
 /* Layout Wrapper */
 .app-container {
     display: flex;

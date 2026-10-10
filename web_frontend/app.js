@@ -2,11 +2,168 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global Chart Instances Cache
     const charts = {};
 
-    // Initialize App
+    // Initialize Auth & App
+    initAuth();
     initNav();
-    loadDashboard();
-    loadCatalogProducts();
+    initUploadHandlers();
     initEventListeners();
+
+    // ==========================================
+    // 🔐 AUTHENTICATION & LOGIN HANDLER
+    // ==========================================
+    function initAuth() {
+        const token = localStorage.getItem('retail_ai_token');
+        const userJson = localStorage.getItem('retail_ai_user');
+
+        const loginModal = document.getElementById('loginModal');
+        if (!token || !userJson) {
+            loginModal.style.display = 'flex';
+        } else {
+            loginModal.style.display = 'none';
+            const user = JSON.parse(userJson);
+            document.getElementById('userBadgeName').textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'DMVCORETECH'})`;
+            loadDashboard();
+            loadCatalogProducts();
+        }
+
+        // Login Action
+        document.getElementById('btnLogin').addEventListener('click', performLogin);
+        document.getElementById('btnDemoLogin').addEventListener('click', () => {
+            document.getElementById('loginUser').value = 'admin';
+            document.getElementById('loginPass').value = 'admin123';
+            performLogin();
+        });
+
+        // Logout Action
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            localStorage.removeItem('retail_ai_token');
+            localStorage.removeItem('retail_ai_user');
+            document.getElementById('loginModal').style.display = 'flex';
+        });
+    }
+
+    async function performLogin() {
+        const username = document.getElementById('loginUser').value.trim();
+        const password = document.getElementById('loginPass').value.trim();
+        const errDiv = document.getElementById('loginError');
+
+        if (!username || !password) {
+            errDiv.textContent = 'Please enter both username and password.';
+            errDiv.style.display = 'block';
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password})
+            });
+
+            if (!res.ok) {
+                const errData = await res.json();
+                errDiv.textContent = errData.detail || 'Login failed.';
+                errDiv.style.display = 'block';
+                return;
+            }
+
+            const data = await res.json();
+            localStorage.setItem('retail_ai_token', data.token);
+            localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
+
+            errDiv.style.display = 'none';
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('userBadgeName').textContent = `${data.user.avatar} ${data.user.username} (${data.user.company})`;
+            
+            loadDashboard();
+            loadCatalogProducts();
+        } catch (e) {
+            errDiv.textContent = 'Server connection error during login.';
+            errDiv.style.display = 'block';
+        }
+    }
+
+    // ==========================================
+    // 📤 REAL-TIME DATASET UPLOAD HANDLER
+    // ==========================================
+    function initUploadHandlers() {
+        const modal = document.getElementById('uploadModal');
+        const btnOpen = document.getElementById('btnOpenUploadModal');
+        const btnClose = document.getElementById('btnCloseUploadModal');
+        const dropzone = document.getElementById('uploadDropzone');
+        const fileInput = document.getElementById('fileInput');
+        const statusDiv = document.getElementById('uploadStatus');
+
+        btnOpen.addEventListener('click', () => modal.style.display = 'flex');
+        btnClose.addEventListener('click', () => modal.style.display = 'none');
+
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.style.background = 'rgba(99, 102, 241, 0.2)';
+        });
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
+        });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
+            if (e.dataTransfer.files.length > 0) {
+                uploadDatasetFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                uploadDatasetFile(fileInput.files[0]);
+            }
+        });
+
+        async function uploadDatasetFile(file) {
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Uploading and processing real-time dataset pipeline...</span>';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Error: ${err.detail || 'Failed processing dataset.'}</span>`;
+                    return;
+                }
+
+                const data = await res.json();
+                statusDiv.innerHTML = `
+                    <span style="color:#34D399;">✅ Dataset Analyzed Successfully!</span><br>
+                    <strong>${data.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.total_revenue.toLocaleString()}</strong> | Customers: <strong>${data.total_customers.toLocaleString()}</strong>
+                `;
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    statusDiv.style.display = 'none';
+                    
+                    // Reload All Visualizations
+                    loadDashboard();
+                    loadAnalytics();
+                    loadRFM();
+                    loadMarketBasket();
+                    loadCatalogProducts();
+                    loadPrediction();
+                    alert(`🎉 Real-Time Analysis Complete!\nFile: ${file.name}\nCleaned Transactions: ${data.cleaned_rows.toLocaleString()}\nTotal Revenue: £${data.total_revenue.toLocaleString()}`);
+                }, 1500);
+
+            } catch (ex) {
+                statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Server upload error: ${ex.message}</span>`;
+            }
+        }
+    }
 
     // ==========================================
     // 🧭 NAVIGATION TAB SWITCHER
@@ -61,7 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('kpiCustomers').textContent = kpiData.kpis.total_customers.toLocaleString();
         document.getElementById('kpiProducts').textContent = kpiData.kpis.total_products.toLocaleString();
         document.getElementById('kpiAvgOrder').textContent = `£${kpiData.kpis.avg_order_value.toFixed(2)}`;
-        document.getElementById('activeRecordsBadge').textContent = `📊 ${kpiData.active_records.toLocaleString()} Line Items`;
+        
+        document.getElementById('heroCustomers').textContent = `👥 ${kpiData.kpis.total_customers.toLocaleString()} Customers`;
 
         // Populate Country Filter Options if needed
         const countrySelect = document.getElementById('countryFilter');
@@ -124,10 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <tr><td>Total Clean Line Items</td><td><strong>${data.summary.num_rows.toLocaleString()}</strong></td></tr>
             <tr><td>Total Columns</td><td><strong>${data.summary.num_columns}</strong></td></tr>
             <tr><td>Duplicate Rows Removed</td><td><strong>${data.summary.duplicate_rows.toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Invoices</td><td><strong>${data.summary.unique_counts.InvoiceNo.toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Products (SKUs)</td><td><strong>${data.summary.unique_counts.Description.toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Customers</td><td><strong>${data.summary.unique_counts.CustomerID.toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Countries</td><td><strong>${data.summary.unique_counts.Country}</strong></td></tr>
+            <tr><td>Unique Invoices</td><td><strong>${(data.summary.unique_counts.InvoiceNo || 0).toLocaleString()}</strong></td></tr>
+            <tr><td>Unique Products (SKUs)</td><td><strong>${(data.summary.unique_counts.Description || 0).toLocaleString()}</strong></td></tr>
+            <tr><td>Unique Customers</td><td><strong>${(data.summary.unique_counts.CustomerID || 0).toLocaleString()}</strong></td></tr>
+            <tr><td>Unique Countries</td><td><strong>${data.summary.unique_counts.Country || 0}</strong></td></tr>
         `;
     }
 
@@ -203,6 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mbFilteredRules').textContent = data.stats.filtered_rules.toLocaleString();
         document.getElementById('mbMaxLift').textContent = data.stats.max_lift.toFixed(2);
         document.getElementById('mbMaxConf').textContent = `${data.stats.max_confidence.toFixed(1)}%`;
+        
+        document.getElementById('heroRules').textContent = `🛒 ${data.stats.total_rules.toLocaleString()} Rules`;
 
         const tbody = document.querySelector('#rulesTable tbody');
         tbody.innerHTML = '';
