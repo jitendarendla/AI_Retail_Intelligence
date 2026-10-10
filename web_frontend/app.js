@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contact Form Handler
     window.submitContactForm = function() {
         const name = document.getElementById('contactName').value.trim();
-        showToast(`✅ Thank you ${name}! Your inquiry has been submitted to DMVCORETECH support.`);
+        showToast(`✅ Thank you ${name}! Your inquiry has been submitted to support.`);
         document.getElementById('contactForm').reset();
     };
 
@@ -108,14 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userJson) {
             const user = JSON.parse(userJson);
             const badge = document.getElementById('userBadgeName');
-            if (badge) badge.textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'DMVCORETECH'})`;
+            if (badge) badge.textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'Enterprise Suite'})`;
 
             // Update Profile Tab Details
             if (document.getElementById('profFullName')) {
                 document.getElementById('profFullName').textContent = user.full_name || user.username;
                 document.getElementById('profRole').textContent = user.role || 'Retail Store Manager';
-                document.getElementById('profCompany').textContent = user.company || 'DMVCORETECH';
-                document.getElementById('profEmail').textContent = user.email || 'user@dmvcoretech.com';
+                document.getElementById('profCompany').textContent = user.company || 'Enterprise Suite';
+                document.getElementById('profEmail').textContent = user.email || 'user@retail-ai.com';
                 document.getElementById('profAvatar').textContent = user.avatar || '🛍️';
             }
         }
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 🔐 2. AUTHENTICATION & REGISTRATION (PostgreSQL)
+    // 🔐 2. AUTHENTICATION & REGISTRATION
     // ========================================================
     function initAuth() {
         // Tab Switching in Auth Modal
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             localStorage.removeItem('retail_ai_token');
             localStorage.removeItem('retail_ai_user');
-            showToast('👋 Successfully logged out of DMVCORETECH AI Retail Suite.', 'info');
+            showToast('👋 Successfully logged out of Retail AI Suite.', 'info');
             showHomePage();
         });
     }
@@ -233,10 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
             errDiv.style.display = 'none';
             document.getElementById('loginModal').style.display = 'none';
             
-            showToast(`Welcome back, ${data.user.full_name || data.user.username}! Signed in via PostgreSQL.`);
+            showToast(`Welcome back, ${data.user.full_name || data.user.username}! Signed in successfully.`);
             showDashboard();
         } catch (e) {
-            errDiv.textContent = 'Connection error with PostgreSQL server.';
+            errDiv.textContent = 'Connection error with server.';
             errDiv.style.display = 'block';
         }
     }
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     password,
                     full_name: fullName,
                     role,
-                    company: 'DMVCORETECH'
+                    company: 'Enterprise Retail'
                 })
             });
 
@@ -283,12 +283,12 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
 
             errDiv.style.display = 'none';
-            succDiv.textContent = '✅ Account created in PostgreSQL! Launching Dashboard...';
+            succDiv.textContent = '✅ Account created! Launching Dashboard...';
             succDiv.style.display = 'block';
 
             setTimeout(() => {
                 document.getElementById('loginModal').style.display = 'none';
-                showToast(`🎉 Welcome ${data.user.full_name}! Account created & stored in PostgreSQL.`);
+                showToast(`🎉 Welcome ${data.user.full_name}! Account created successfully.`);
                 showDashboard();
             }, 800);
 
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 🗄️ 3. POSTGRESQL DATABASE & SYSTEM HEALTH
+    // 🗄️ 3. SYSTEM HEALTH & METRICS
     // ========================================================
     async function loadDbStatistics() {
         try {
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Header Pill
             const dbBadge = document.getElementById('dbStatusLabel');
             if (dbBadge) {
-                dbBadge.textContent = `🟢 PostgreSQL: ${data.database_port || 5432} (${data.database_name || 'retail_intelligence'})`;
+                dbBadge.textContent = '🟢 AI Engine Active';
             }
 
             // Profile Tab Stats
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('profTotalChats').textContent = data.total_logged_chat_queries || 0;
             }
         } catch (e) {
-            console.warn('Error loading PostgreSQL stats:', e);
+            console.warn('Error loading system stats:', e);
         }
     }
 
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 📜 5. POSTGRESQL DATASET HISTORY & SELECTION
+    // 📜 5. DATASET HISTORY & SELECTION
     // ========================================================
     async function loadDatasetHistory() {
         const res = await fetch('/api/datasets');
@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.btn-delete-ds').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const dsId = e.currentTarget.getAttribute('data-id');
-                if (confirm('Permanently delete this dataset from PostgreSQL?')) {
+                if (confirm('Permanently delete this dataset?')) {
                     await deleteDataset(dsId);
                 }
             });
@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch(`/api/datasets/${dsId}`, {method: 'DELETE'});
         const data = await res.json();
         if (data.success) {
-            showToast('🗑️ Dataset removed permanently from PostgreSQL.', 'info');
+            showToast('🗑️ Dataset removed permanently.', 'info');
             loadDatasetHistory();
             loadDbStatistics();
         }
@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function uploadDatasetFile(file) {
             statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Processing dataset & saving to PostgreSQL...</span>';
+            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Processing dataset & analyzing retail metrics...</span>';
 
             const formData = new FormData();
             formData.append('file', file);
@@ -508,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await res.json();
                 statusDiv.innerHTML = `
-                    <span style="color:#34D399;">✅ Dataset Analyzed & Saved to PostgreSQL!</span><br>
+                    <span style="color:#34D399;">✅ Dataset Analyzed & Saved to Archive!</span><br>
                     <strong>${data.metadata.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.metadata.total_revenue.toLocaleString()}</strong>
                 `;
 
@@ -623,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr><td>Cleaned Line Items</td><td>${sumData.summary.num_rows.toLocaleString()}</td></tr>
                 <tr><td>Catalog SKUs Count</td><td>${sumData.summary.unique_counts.Description ? sumData.summary.unique_counts.Description.toLocaleString() : 'N/A'}</td></tr>
                 <tr><td>Unique Customer Accounts</td><td>${sumData.summary.unique_counts.CustomerID ? sumData.summary.unique_counts.CustomerID.toLocaleString() : 'N/A'}</td></tr>
-                <tr><td>Storage Engine</td><td><span class="pill pill-emerald">PostgreSQL 18 (Port 5432)</span></td></tr>
+                <tr><td>Data Engine</td><td><span class="pill pill-emerald">Enterprise Analytics Core</span></td></tr>
             `;
         }
     }
@@ -752,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Assistant loading indicator
         const botDiv = document.createElement('div');
         botDiv.className = 'chat-msg chat-assistant';
-        botDiv.innerHTML = '<span style="color:#818CF8;">⏳ Querying PostgreSQL RAG index & analyzing retail dataset...</span>';
+        botDiv.innerHTML = '<span style="color:#818CF8;">⏳ Querying AI dataset index & analyzing metrics...</span>';
         history.appendChild(botDiv);
         history.scrollTop = history.scrollHeight;
 

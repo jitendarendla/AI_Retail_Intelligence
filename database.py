@@ -72,7 +72,7 @@ def init_db():
         salt TEXT NOT NULL,
         full_name VARCHAR(150) NOT NULL,
         role VARCHAR(100) NOT NULL DEFAULT 'Retail Store Manager',
-        company VARCHAR(100) NOT NULL DEFAULT 'DMVCORETECH',
+        company VARCHAR(100) NOT NULL DEFAULT 'Enterprise Suite',
         avatar VARCHAR(50) DEFAULT '🛍️',
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
@@ -137,9 +137,9 @@ def init_db():
 
     # Seed Default Users in PostgreSQL
     seed_users = [
-        ("admin", "admin@dmvcoretech.com", "admin123", "System Administrator", "Platform Administrator", "DMVCORETECH", "👑"),
-        ("retailer", "retailer@dmvcoretech.com", "retailer123", "Elena Rostova", "Senior Retail Merchandiser", "DMVCORETECH", "🛍️"),
-        ("intern", "intern@dmvcoretech.com", "intern123", "AIML Intern", "AIML Data Scientist Intern", "DMVCORETECH", "🎓")
+        ("admin", "admin@retail-ai.com", "admin123", "System Administrator", "Platform Administrator", "Enterprise Suite", "👑"),
+        ("retailer", "retailer@retail-ai.com", "retailer123", "Elena Rostova", "Senior Retail Merchandiser", "Enterprise Suite", "🛍️"),
+        ("intern", "intern@retail-ai.com", "intern123", "AIML Intern", "AIML Data Scientist Intern", "Enterprise Suite", "🎓")
     ]
 
     for u_name, u_email, u_pass, u_full, u_role, u_comp, u_avatar in seed_users:
@@ -188,7 +188,7 @@ def init_db():
 # 🔐 AUTHENTICATION & USER MANAGEMENT (PostgreSQL)
 # ==========================================
 
-def create_user(username: str, email: str, password: str, full_name: str, role: str = "Retail Store Manager", company: str = "DMVCORETECH", avatar: str = "🛍️") -> Dict[str, Any]:
+def create_user(username: str, email: str, password: str, full_name: str, role: str = "Retail Store Manager", company: str = "Enterprise Suite", avatar: str = "🛍️") -> Dict[str, Any]:
     """Register a new user into PostgreSQL database."""
     conn = get_db_connection()
     conn.autocommit = True

@@ -254,7 +254,7 @@ def api_register(payload: dict = Body(...)):
     password = payload.get("password", "").strip()
     full_name = payload.get("full_name", username).strip()
     role = payload.get("role", "Retail Store Manager").strip()
-    company = payload.get("company", "DMVCORETECH").strip()
+    company = payload.get("company", "Enterprise Retail").strip()
 
     if not username or not email or not password:
         raise HTTPException(status_code=400, detail="Username, email, and password are required.")
@@ -264,7 +264,7 @@ def api_register(payload: dict = Body(...)):
         auth_res = database.authenticate_user(username, password)
         return {
             "success": True,
-            "message": "User registered successfully in SQLite database.",
+            "message": "User registered successfully.",
             "token": auth_res["token"],
             "user": auth_res["user"]
         }
@@ -466,7 +466,7 @@ def api_health():
     return {
         "status": "healthy",
         "service": "AI Retail Intelligence Enterprise Suite",
-        "company": "DMVCORETECH",
+        "company": "Enterprise Suite",
         "version": "4.0.0",
         "database": db_stats,
         "active_dataset_id": DATA_CACHE.get("active_id", "default")

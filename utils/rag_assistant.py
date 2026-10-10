@@ -219,7 +219,7 @@ class RAGAssistant:
 
         # 1. Check Greetings
         if any(q_lower == g or q_lower.startswith(g + ' ') for g in ['hi', 'hello', 'hey', 'help', 'who are you', 'what can you do']):
-            return ("👋 **Hello! Welcome to DMVCORETECH AI Retail Intelligence Assistant.**\n\n"
+            return ("👋 **Hello! Welcome to the AI Retail Intelligence Assistant.**\n\n"
                     "I am specialized strictly in analyzing your uploaded retail datasets, customer RFM segments, market basket recommendations, and sales forecasts.\n\n"
                     "💡 **Ask me questions like:**\n"
                     "• *What is the total revenue and order count in the uploaded dataset?*\n"
@@ -231,7 +231,7 @@ class RAGAssistant:
         # 2. Strict Domain Scope Guardrail Check
         if not self.is_domain_question(user_question):
             return ("⚠️ **Scope Guardrail Activated**\n\n"
-                    "I am the **DMVCORETECH AI Retail Intelligence Assistant**. I am strictly configured to answer questions regarding your **uploaded retail datasets and store analytics**.\n\n"
+                    "I am the **AI Retail Intelligence Assistant**. I am strictly configured to answer questions regarding your **uploaded retail datasets and store analytics**.\n\n"
                     "❌ I cannot answer out-of-domain questions (such as general knowledge, politics, external trivia, or code generation).\n\n"
                     "💡 *Please ask a question related to your active retail dataset (e.g. 'Total revenue', 'Top products', or 'Frequently bought together items').*")
 
