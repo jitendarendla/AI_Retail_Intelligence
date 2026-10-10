@@ -1,6 +1,9 @@
 import os
 import sys
 import io
+import json
+import uuid
+import datetime
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -24,8 +27,8 @@ from utils.rag_assistant import get_rag_assistant
 
 app = FastAPI(
     title="AI Retail Intelligence Platform API",
-    description="Enterprise REST API and Web Dashboard for Retail Analytics, Authentication & Real-Time Dataset Uploads",
-    version="2.5.0"
+    description="Enterprise Multi-Dataset Analysis Platform with History Archive, Authentication & Real-Time Uploads",
+    version="3.0.0"
 )
 
 # Enable CORS for all origins
@@ -37,14 +40,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global Cached Data Objects
-DATA_CACHE = {}
+ARCHIVE_DIR = os.path.join(os.path.dirname(__file__), "uploads_archive")
+os.makedirs(ARCHIVE_DIR, exist_ok=True)
+
+DATA_CACHE = {
+    "active_id": "default",
+    "datasets_registry": {}
+}
 
 def clean_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
     """Real-time data cleaning pipeline for custom uploaded datasets."""
     df_clean = raw_df.copy()
     
-    # Map common column name variations
     col_map = {
         'Invoice': 'InvoiceNo', 'Invoice Number': 'InvoiceNo',
         'Stock Code': 'StockCode', 'Product Code': 'StockCode',
@@ -66,29 +73,20 @@ def clean_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
             else:
                 raise HTTPException(status_code=400, detail=f"Missing required column '{c}' in uploaded dataset.")
                 
-    # Drop duplicates
     df_clean = df_clean.drop_duplicates()
-    
-    # Drop missing CustomerID
     df_clean = df_clean.dropna(subset=['CustomerID'])
-    
-    # Convert CustomerID to integer string
     df_clean['CustomerID'] = df_clean['CustomerID'].astype(float).astype(int).astype(str)
     
-    # Remove return transactions
     df_clean['InvoiceNo'] = df_clean['InvoiceNo'].astype(str)
     df_clean = df_clean[~df_clean['InvoiceNo'].str.startswith('C')]
     
-    # Filter positive quantity and unit price
     df_clean['Quantity'] = pd.to_numeric(df_clean['Quantity'], errors='coerce')
     df_clean['UnitPrice'] = pd.to_numeric(df_clean['UnitPrice'], errors='coerce')
     df_clean = df_clean[(df_clean['Quantity'] > 0) & (df_clean['UnitPrice'] > 0)]
     
-    # Datetime conversion
     df_clean['InvoiceDate'] = pd.to_datetime(df_clean['InvoiceDate'], errors='coerce')
     df_clean = df_clean.dropna(subset=['InvoiceDate'])
     
-    # Feature Engineering
     df_clean['TotalPrice'] = (df_clean['Quantity'] * df_clean['UnitPrice']).round(2)
     df_clean['Year'] = df_clean['InvoiceDate'].dt.year
     df_clean['Month'] = df_clean['InvoiceDate'].dt.month
@@ -99,55 +97,51 @@ def clean_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
     return df_clean.reset_index(drop=True)
 
 
-def get_cached_df():
-    if "df" not in DATA_CACHE:
-        print("Loading default cleaned dataset into memory...")
-        DATA_CACHE["df"] = get_cleaned_data()
-    return DATA_CACHE["df"]
+def init_default_dataset():
+    """Load default dataset into registry."""
+    if "default" not in DATA_CACHE["datasets_registry"]:
+        print("Initializing default UCI Online Retail dataset...")
+        df = get_cleaned_data()
+        rfm = load_rfm_data(df)
+        rules = load_association_rules(df)
+        daily = prepare_daily_sales(df)
+        
+        meta = {
+            "dataset_id": "default",
+            "filename": "Online Retail.xlsx (Default)",
+            "upload_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "raw_rows": 541909,
+            "cleaned_rows": len(df),
+            "total_revenue": round(float(df['TotalPrice'].sum()), 2),
+            "total_customers": int(df['CustomerID'].nunique()),
+            "total_products": int(df['Description'].nunique()),
+            "mined_rules": len(rules),
+            "is_default": True
+        }
+        
+        DATA_CACHE["datasets_registry"]["default"] = {
+            "metadata": meta,
+            "df": df,
+            "rfm": rfm,
+            "rules": rules,
+            "daily": daily
+        }
 
-def get_cached_rfm():
-    if "rfm" not in DATA_CACHE:
-        df = get_cached_df()
-        print("Loading RFM customer segmentation...")
-        try:
-            DATA_CACHE["rfm"] = train_customer_segmentation(df)
-        except Exception:
-            DATA_CACHE["rfm"] = load_rfm_data(df)
-    return DATA_CACHE["rfm"]
-
-def get_cached_rules():
-    if "rules" not in DATA_CACHE:
-        df = get_cached_df()
-        print("Loading association rules...")
-        try:
-            DATA_CACHE["rules"] = generate_market_basket_rules(df)
-        except Exception:
-            DATA_CACHE["rules"] = load_association_rules(df)
-    return DATA_CACHE["rules"]
-
-def get_cached_daily():
-    if "daily" not in DATA_CACHE:
-        df = get_cached_df()
-        print("Preparing daily sales data...")
-        DATA_CACHE["daily"] = prepare_daily_sales(df)
-    return DATA_CACHE["daily"]
-
-def get_cached_rag():
-    if "rag" not in DATA_CACHE:
-        print("Initializing RAG Assistant...")
-        DATA_CACHE["rag"] = get_rag_assistant()
-    return DATA_CACHE["rag"]
+def get_active_data():
+    init_default_dataset()
+    active_id = DATA_CACHE.get("active_id", "default")
+    if active_id not in DATA_CACHE["datasets_registry"]:
+        active_id = "default"
+        DATA_CACHE["active_id"] = "default"
+    return DATA_CACHE["datasets_registry"][active_id]
 
 
 @app.on_event("startup")
 def startup_event():
-    print("🚀 Initializing AI Retail Intelligence Backend Server...")
+    print("🚀 Initializing AI Retail Intelligence Multi-Dataset Backend Server...")
     try:
-        get_cached_df()
-        get_cached_rfm()
-        get_cached_rules()
-        get_cached_daily()
-        print("✅ Data & Models pre-loaded successfully!")
+        init_default_dataset()
+        print("✅ Multi-Dataset Registry pre-loaded successfully!")
     except Exception as e:
         print(f"⚠️ Startup warning: {e}")
 
@@ -161,7 +155,6 @@ def api_login(payload: dict = Body(...)):
     username = payload.get("username", "").strip()
     password = payload.get("password", "").strip()
     
-    # Valid credentials: admin/admin123 or retailer/retailer123
     if (username.lower() == "admin" and password == "admin123") or (username.lower() == "retailer" and password == "retailer123"):
         return {
             "success": True,
@@ -177,55 +170,122 @@ def api_login(payload: dict = Body(...)):
 
 
 # ==========================================
-# 📤 REAL-TIME DATASET UPLOAD & ANALYSIS
+# 📜 MULTI-DATASET HISTORY & ARCHIVE ENDPOINTS
 # ==========================================
+
+@app.get("/api/datasets")
+def api_list_datasets():
+    init_default_dataset()
+    registry = DATA_CACHE["datasets_registry"]
+    active_id = DATA_CACHE.get("active_id", "default")
+    
+    result = []
+    for d_id, item in registry.items():
+        meta = item["metadata"].copy()
+        meta["is_active"] = (d_id == active_id)
+        result.append(meta)
+        
+    return {
+        "active_id": active_id,
+        "datasets": result
+    }
+
+
+@app.post("/api/datasets/select/{dataset_id}")
+def api_select_dataset(dataset_id: str):
+    init_default_dataset()
+    if dataset_id not in DATA_CACHE["datasets_registry"]:
+        raise HTTPException(status_code=404, detail="Dataset ID not found in history archive.")
+        
+    DATA_CACHE["active_id"] = dataset_id
+    active_meta = DATA_CACHE["datasets_registry"][dataset_id]["metadata"]
+    print(f"🔄 Switched active analysis dataset to: {active_meta['filename']} (ID: {dataset_id})")
+    
+    return {
+        "success": True,
+        "active_id": dataset_id,
+        "metadata": active_meta
+    }
+
+
+@app.delete("/api/datasets/{dataset_id}")
+def api_delete_dataset(dataset_id: str):
+    init_default_dataset()
+    if dataset_id == "default":
+        raise HTTPException(status_code=400, detail="Cannot delete default system dataset.")
+        
+    if dataset_id in DATA_CACHE["datasets_registry"]:
+        del DATA_CACHE["datasets_registry"][dataset_id]
+        if DATA_CACHE.get("active_id") == dataset_id:
+            DATA_CACHE["active_id"] = "default"
+            
+    return {"success": True, "message": "Dataset removed from history archive."}
+
 
 @app.post("/api/upload")
 async def api_upload_dataset(file: UploadFile = File(...)):
-    filename = file.filename.lower()
+    filename = file.filename
     contents = await file.read()
     
     try:
-        if filename.endswith(".csv"):
+        if filename.lower().endswith(".csv"):
             raw_df = pd.read_csv(io.BytesIO(contents))
-        elif filename.endswith(".xlsx") or filename.endswith(".xls"):
+        elif filename.lower().endswith(".xlsx") or filename.lower().endswith(".xls"):
             raw_df = pd.read_excel(io.BytesIO(contents))
         else:
             raise HTTPException(status_code=400, detail="Unsupported file format. Please upload a .csv or .xlsx file.")
             
-        print(f"📥 Real-time processing custom uploaded dataset: {file.filename} ({len(raw_df):,} raw rows)...")
+        print(f"📥 Real-time processing custom uploaded dataset: {filename} ({len(raw_df):,} raw rows)...")
         
-        # Run Cleaning Pipeline
+        # Data Cleaning Pipeline
         cleaned_df = clean_dataframe(raw_df)
         
-        # Run Real-time RFM Customer Segmentation
+        # Real-time Customer RFM Segmentation
         rfm_df = train_customer_segmentation(cleaned_df)
         
-        # Run Real-time FP-Growth Market Basket Analysis
+        # Real-time Market Basket Rule Mining
         try:
             rules_df = generate_market_basket_rules(cleaned_df)
         except Exception as ex:
-            print(f"Warning mining rules on custom data: {ex}")
-            rules_df = get_cached_rules()
+            print(f"Warning mining rules on custom dataset: {ex}")
+            rules_df = load_association_rules(cleaned_df)
             
-        # Run Real-time Daily Sales Aggregation
+        # Real-time Daily Sales Aggregation
         daily_df = prepare_daily_sales(cleaned_df)
         
-        # Update Global Memory Cache
-        DATA_CACHE["df"] = cleaned_df
-        DATA_CACHE["rfm"] = rfm_df
-        DATA_CACHE["rules"] = rules_df
-        DATA_CACHE["daily"] = daily_df
+        # Generate Dataset ID and Metadata
+        dataset_id = str(uuid.uuid4())[:8]
+        upload_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        return {
-            "success": True,
-            "filename": file.filename,
+        metadata = {
+            "dataset_id": dataset_id,
+            "filename": filename,
+            "upload_time": upload_time,
             "raw_rows": len(raw_df),
             "cleaned_rows": len(cleaned_df),
             "total_revenue": round(float(cleaned_df['TotalPrice'].sum()), 2),
             "total_customers": int(cleaned_df['CustomerID'].nunique()),
             "total_products": int(cleaned_df['Description'].nunique()),
-            "mined_rules": len(rules_df)
+            "mined_rules": len(rules_df),
+            "is_default": False
+        }
+        
+        # Save to Multi-Dataset Registry
+        DATA_CACHE["datasets_registry"][dataset_id] = {
+            "metadata": metadata,
+            "df": cleaned_df,
+            "rfm": rfm_df,
+            "rules": rules_df,
+            "daily": daily_df
+        }
+        
+        # Set Newly Uploaded Dataset as Active
+        DATA_CACHE["active_id"] = dataset_id
+        
+        return {
+            "success": True,
+            "dataset_id": dataset_id,
+            "metadata": metadata
         }
     except HTTPException:
         raise
@@ -239,7 +299,8 @@ async def api_upload_dataset(file: UploadFile = File(...)):
 
 @app.get("/api/summary")
 def api_summary():
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
     summary = get_dataset_summary(df)
     cols = get_column_explanations()
     
@@ -251,6 +312,7 @@ def api_summary():
     }
     
     return {
+        "active_dataset": active_data["metadata"],
         "summary": clean_summary,
         "columns": [{"column": k, "description": v} for k, v in cols.items()]
     }
@@ -258,7 +320,9 @@ def api_summary():
 
 @app.get("/api/kpis")
 def api_kpis(country: Optional[str] = Query(None)):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
+    
     countries_list = [country] if country and country != "All" else ["All"]
     df_filtered = filter_data(df, countries=countries_list)
     kpis = calculate_kpis(df_filtered)
@@ -266,6 +330,7 @@ def api_kpis(country: Optional[str] = Query(None)):
     all_countries = ["All"] + sorted(df['Country'].unique().tolist())
     
     return {
+        "active_dataset": active_data["metadata"],
         "kpis": kpis,
         "active_records": len(df_filtered),
         "countries": all_countries
@@ -274,7 +339,9 @@ def api_kpis(country: Optional[str] = Query(None)):
 
 @app.get("/api/charts/monthly-revenue")
 def api_monthly_revenue(country: Optional[str] = Query(None)):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
+    
     countries_list = [country] if country and country != "All" else ["All"]
     df_filtered = filter_data(df, countries=countries_list)
     
@@ -289,7 +356,9 @@ def api_monthly_revenue(country: Optional[str] = Query(None)):
 
 @app.get("/api/charts/daily-sales")
 def api_daily_sales(country: Optional[str] = Query(None)):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
+    
     countries_list = [country] if country and country != "All" else ["All"]
     df_filtered = filter_data(df, countries=countries_list)
     
@@ -304,7 +373,9 @@ def api_daily_sales(country: Optional[str] = Query(None)):
 
 @app.get("/api/charts/top-products")
 def api_top_products(country: Optional[str] = Query(None), top_n: int = 10):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
+    
     countries_list = [country] if country and country != "All" else ["All"]
     df_filtered = filter_data(df, countries=countries_list)
     
@@ -318,7 +389,9 @@ def api_top_products(country: Optional[str] = Query(None), top_n: int = 10):
 
 @app.get("/api/charts/top-customers")
 def api_top_customers(country: Optional[str] = Query(None), top_n: int = 10):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
+    
     countries_list = [country] if country and country != "All" else ["All"]
     df_filtered = filter_data(df, countries=countries_list)
     
@@ -333,7 +406,9 @@ def api_top_customers(country: Optional[str] = Query(None), top_n: int = 10):
 
 @app.get("/api/charts/country-revenue")
 def api_country_revenue(top_n: int = 10):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
+    
     country_df = df.groupby('Country')['TotalPrice'].sum().reset_index()
     country_df = country_df.sort_values('TotalPrice', ascending=False).head(top_n)
     country_df.columns = ['Country', 'Revenue']
@@ -344,7 +419,8 @@ def api_country_revenue(top_n: int = 10):
 
 @app.get("/api/charts/weekday-hour")
 def api_weekday_hour():
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
     
     weekday_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']
     df_temp = df.copy()
@@ -365,7 +441,8 @@ def api_weekday_hour():
 
 @app.get("/api/segmentation")
 def api_segmentation():
-    rfm_df = get_cached_rfm()
+    active_data = get_active_data()
+    rfm_df = active_data["rfm"]
     
     segments_summary = rfm_df.groupby('Segment').agg(
         count=('CustomerID', 'count'),
@@ -390,10 +467,12 @@ def api_segmentation():
 
 @app.get("/api/segmentation/customer/{customer_id}")
 def api_customer_lookup(customer_id: str):
-    rfm_df = get_cached_rfm()
+    active_data = get_active_data()
+    rfm_df = active_data["rfm"]
+    
     cust_res = rfm_df[rfm_df['CustomerID'].astype(str) == customer_id.strip()]
     if cust_res.empty:
-        raise HTTPException(status_code=404, detail="Customer ID not found")
+        raise HTTPException(status_code=404, detail="Customer ID not found in active dataset.")
     
     row = cust_res.iloc[0].to_dict()
     row['Recency'] = float(row['Recency'])
@@ -404,13 +483,19 @@ def api_customer_lookup(customer_id: str):
 
 @app.get("/api/market-basket")
 def api_market_basket(min_lift: float = 1.5, top_n: int = 50):
-    rules_df = get_cached_rules()
-    filtered = rules_df[rules_df['lift'] >= min_lift].sort_values('lift', ascending=False).head(top_n)
+    active_data = get_active_data()
+    rules_df = active_data["rules"]
     
-    records = filtered[['antecedents', 'consequents', 'support', 'confidence', 'lift']].copy()
-    records['support'] = (records['support'] * 100).round(2)
-    records['confidence'] = (records['confidence'] * 100).round(2)
-    records['lift'] = records['lift'].round(2)
+    filtered = rules_df[rules_df['lift'] >= min_lift].sort_values('lift', ascending=False).head(top_n) if not rules_df.empty else pd.DataFrame()
+    
+    if not filtered.empty:
+        records = filtered[['antecedents', 'consequents', 'support', 'confidence', 'lift']].copy()
+        records['support'] = (records['support'] * 100).round(2)
+        records['confidence'] = (records['confidence'] * 100).round(2)
+        records['lift'] = records['lift'].round(2)
+        rec_list = records.to_dict(orient="records")
+    else:
+        rec_list = []
     
     stats = {
         "total_rules": len(rules_df),
@@ -421,14 +506,15 @@ def api_market_basket(min_lift: float = 1.5, top_n: int = 50):
     
     return {
         "stats": stats,
-        "rules": records.to_dict(orient="records")
+        "rules": rec_list
     }
 
 
 @app.get("/api/recommend")
 def api_recommend(product: str, top_n: int = 5):
-    rules_df = get_cached_rules()
-    df = get_cached_df()
+    active_data = get_active_data()
+    rules_df = active_data["rules"]
+    df = active_data["df"]
     
     recs = recommend_products(product, rules_df, top_n=top_n)
     
@@ -446,8 +532,9 @@ def api_recommend(product: str, top_n: int = 5):
 
 @app.get("/api/forecast")
 def api_forecast(days: int = 14):
-    df = get_cached_df()
-    daily_df = get_cached_daily()
+    active_data = get_active_data()
+    df = active_data["df"]
+    daily_df = active_data["daily"]
     
     try:
         eval_res = train_sales_forecaster(df)
@@ -488,7 +575,7 @@ def api_chat(payload: dict = Body(...)):
         return {"response": "Please enter a valid business question."}
     
     try:
-        assistant = get_cached_rag()
+        assistant = get_rag_assistant()
         response = assistant.query(query_text)
         return {"response": response}
     except Exception as e:
@@ -497,7 +584,8 @@ def api_chat(payload: dict = Body(...)):
 
 @app.get("/api/search")
 def api_search(q: str):
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
     q_str = q.strip().lower()
     
     matching_prods = [p for p in df['Description'].unique() if q_str in str(p).lower()]
@@ -521,7 +609,8 @@ def api_search(q: str):
 
 @app.get("/api/products")
 def api_products():
-    df = get_cached_df()
+    active_data = get_active_data()
+    df = active_data["df"]
     prods = sorted(df['Description'].unique().tolist())
     return {"products": prods}
 

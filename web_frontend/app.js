@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initUploadHandlers();
     initEventListeners();
 
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.borderColor = type === 'success' ? '#34D399' : '#EF4444';
+        toast.innerHTML = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
     // ==========================================
     // 🔐 AUTHENTICATION & LOGIN HANDLER
     // ==========================================
@@ -24,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('userBadgeName').textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'DMVCORETECH'})`;
             loadDashboard();
             loadCatalogProducts();
+            loadDatasetHistory();
         }
 
         // Login Action
@@ -75,11 +90,69 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('loginModal').style.display = 'none';
             document.getElementById('userBadgeName').textContent = `${data.user.avatar} ${data.user.username} (${data.user.company})`;
             
+            showToast(`Welcome back, ${data.user.username}! Signed in to ${data.user.company} Retail Suite.`);
             loadDashboard();
             loadCatalogProducts();
+            loadDatasetHistory();
         } catch (e) {
             errDiv.textContent = 'Server connection error during login.';
             errDiv.style.display = 'block';
+        }
+    }
+
+    // ==========================================
+    // 📜 MULTI-DATASET HISTORY ARCHIVE & SELECTION
+    // ==========================================
+    async function loadDatasetHistory() {
+        const res = await fetch('/api/datasets');
+        const data = await res.json();
+        const tbody = document.querySelector('#historyTable tbody');
+        tbody.innerHTML = '';
+
+        data.datasets.forEach(d => {
+            if (d.is_active) {
+                document.getElementById('activeDatasetLabel').textContent = `Active: ${d.filename}`;
+            }
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${d.is_active ? '<span class="pill pill-emerald">🟢 Active</span>' : '<span class="pill pill-indigo">Archived</span>'}</td>
+                <td><strong>${d.filename}</strong></td>
+                <td>${d.upload_time}</td>
+                <td>${d.cleaned_rows.toLocaleString()}</td>
+                <td><strong>£${d.total_revenue.toLocaleString()}</strong></td>
+                <td>${d.total_customers.toLocaleString()}</td>
+                <td>${d.total_products.toLocaleString()}</td>
+                <td>
+                    ${d.is_active ? 
+                        '<span style="color:#34D399; font-weight:700;">Currently Analyzing</span>' : 
+                        `<button class="btn-secondary btn-select-ds" data-id="${d.dataset_id}" style="padding:6px 12px;">⚡ Select & Analyze</button>`}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Add Listeners to Select Buttons
+        document.querySelectorAll('.btn-select-ds').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const dsId = e.target.getAttribute('data-id');
+                await switchActiveDataset(dsId);
+            });
+        });
+    }
+
+    async function switchActiveDataset(dsId) {
+        const res = await fetch(`/api/datasets/select/${dsId}`, {method: 'POST'});
+        const data = await res.json();
+        if (data.success) {
+            showToast(`🔄 Active dataset switched to: <strong>${data.metadata.filename}</strong>`);
+            loadDatasetHistory();
+            loadDashboard();
+            loadAnalytics();
+            loadRFM();
+            loadMarketBasket();
+            loadCatalogProducts();
+            loadPrediction();
         }
     }
 
@@ -122,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function uploadDatasetFile(file) {
             statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Uploading and processing real-time dataset pipeline...</span>';
+            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Uploading and running real-time customer segmentation & market basket pipeline...</span>';
 
             const formData = new FormData();
             formData.append('file', file);
@@ -141,23 +214,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await res.json();
                 statusDiv.innerHTML = `
-                    <span style="color:#34D399;">✅ Dataset Analyzed Successfully!</span><br>
-                    <strong>${data.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.total_revenue.toLocaleString()}</strong> | Customers: <strong>${data.total_customers.toLocaleString()}</strong>
+                    <span style="color:#34D399;">✅ Dataset Analyzed & Archived Successfully!</span><br>
+                    <strong>${data.metadata.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.metadata.total_revenue.toLocaleString()}</strong> | Customers: <strong>${data.metadata.total_customers.toLocaleString()}</strong>
                 `;
 
                 setTimeout(() => {
                     modal.style.display = 'none';
                     statusDiv.style.display = 'none';
                     
-                    // Reload All Visualizations
+                    showToast(`🎉 Real-Time Analysis Complete for <strong>${file.name}</strong>!<br>Cleaned Rows: ${data.metadata.cleaned_rows.toLocaleString()} | Revenue: £${data.metadata.total_revenue.toLocaleString()}`);
+
+                    // Reload All Visualizations and History Archive
+                    loadDatasetHistory();
                     loadDashboard();
                     loadAnalytics();
                     loadRFM();
                     loadMarketBasket();
                     loadCatalogProducts();
                     loadPrediction();
-                    alert(`🎉 Real-Time Analysis Complete!\nFile: ${file.name}\nCleaned Transactions: ${data.cleaned_rows.toLocaleString()}\nTotal Revenue: £${data.total_revenue.toLocaleString()}`);
-                }, 1500);
+                }, 1200);
 
             } catch (ex) {
                 statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Server upload error: ${ex.message}</span>`;
@@ -186,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Trigger specific tab loaders
                 if (targetTab === 'dashboard') loadDashboard();
+                else if (targetTab === 'history') loadDatasetHistory();
                 else if (targetTab === 'analytics') loadAnalytics();
                 else if (targetTab === 'rfm') loadRFM();
                 else if (targetTab === 'basket') loadMarketBasket();
@@ -220,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('kpiAvgOrder').textContent = `£${kpiData.kpis.avg_order_value.toFixed(2)}`;
         
         document.getElementById('heroCustomers').textContent = `👥 ${kpiData.kpis.total_customers.toLocaleString()} Customers`;
+        document.getElementById('activeDatasetLabel').textContent = `Active: ${kpiData.active_dataset.filename}`;
 
         // Populate Country Filter Options if needed
         const countrySelect = document.getElementById('countryFilter');
@@ -279,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await res.json();
         const tbody = document.querySelector('#summaryAuditTable tbody');
         tbody.innerHTML = `
+            <tr><td>Active Dataset Filename</td><td><strong>${data.active_dataset.filename}</strong></td></tr>
             <tr><td>Total Clean Line Items</td><td><strong>${data.summary.num_rows.toLocaleString()}</strong></td></tr>
             <tr><td>Total Columns</td><td><strong>${data.summary.num_columns}</strong></td></tr>
             <tr><td>Duplicate Rows Removed</td><td><strong>${data.summary.duplicate_rows.toLocaleString()}</strong></td></tr>

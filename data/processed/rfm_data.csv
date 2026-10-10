@@ -3,18 +3,18 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12347,2,7,4310.0,0,VIP Customers
 12348,75,4,1797.24,3,Regular Customers
 12349,19,1,1757.55,2,Loyal Customers
-12350,310,1,334.40000000000003,1,At Risk Customers
+12350,310,1,334.4,1,At Risk Customers
 12352,36,8,2506.04,3,Regular Customers
 12353,204,1,89.0,1,At Risk Customers
 12354,232,1,1079.4,1,At Risk Customers
-12355,214,1,459.40000000000003,1,At Risk Customers
+12355,214,1,459.4,1,At Risk Customers
 12356,23,3,2811.43,3,Regular Customers
 12357,33,1,6207.67,3,Regular Customers
 12358,2,2,1168.06,2,Loyal Customers
 12359,58,4,6310.03,3,Regular Customers
 12360,52,3,2662.06,3,Regular Customers
 12361,287,1,189.9,1,At Risk Customers
-12362,3,10,5226.2300000000005,0,VIP Customers
+12362,3,10,5226.23,0,VIP Customers
 12363,110,2,552.0,1,At Risk Customers
 12364,8,4,1313.1,2,Loyal Customers
 12365,291,2,641.38,1,At Risk Customers
@@ -23,9 +23,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12371,45,2,1887.96,3,Regular Customers
 12372,72,3,1298.04,3,Regular Customers
 12373,311,1,364.6,1,At Risk Customers
-12374,25,1,742.9300000000001,2,Loyal Customers
+12374,25,1,742.93,2,Loyal Customers
 12375,11,2,457.5,2,Loyal Customers
-12377,315,2,1628.1200000000001,3,Regular Customers
+12377,315,2,1628.12,3,Regular Customers
 12378,130,1,4008.62,3,Regular Customers
 12379,82,2,852.24,3,Regular Customers
 12380,22,4,2724.81,3,Regular Customers
@@ -33,33 +33,33 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12383,185,5,1850.56,3,Regular Customers
 12384,29,2,585.27,2,Loyal Customers
 12386,338,2,401.9,1,At Risk Customers
-12388,16,6,2780.6600000000003,0,VIP Customers
+12388,16,6,2780.66,0,VIP Customers
 12390,80,1,549.84,1,At Risk Customers
 12391,22,1,439.66,2,Loyal Customers
-12393,72,4,1582.6000000000001,3,Regular Customers
+12393,72,4,1582.6,3,Regular Customers
 12394,64,2,1272.48,3,Regular Customers
 12395,19,12,3018.63,0,VIP Customers
 12397,36,2,2409.9,3,Regular Customers
 12398,46,1,1635.6599999999999,3,Regular Customers
 12399,119,4,1108.65,3,Regular Customers
 12401,303,1,84.3,1,At Risk Customers
-12402,323,1,225.60000000000002,1,At Risk Customers
+12402,323,1,225.6,1,At Risk Customers
 12403,50,1,427.7,1,At Risk Customers
-12405,149,1,1710.39,3,Regular Customers
-12406,22,2,3415.3,3,Regular Customers
+12405,149,1,1710.3899999999999,3,Regular Customers
+12406,22,2,3415.2999999999997,3,Regular Customers
 12407,50,5,1708.12,3,Regular Customers
 12408,33,5,2888.55,3,Regular Customers
 12409,79,3,11072.67,3,Regular Customers
 12410,309,2,693.33,1,At Risk Customers
-12412,75,3,1226.88,3,Regular Customers
+12412,75,3,1226.8799999999999,3,Regular Customers
 12413,67,3,758.1,3,Regular Customers
-12414,217,3,562.4100000000001,1,At Risk Customers
+12414,217,3,562.41,1,At Risk Customers
 12415,24,21,124914.53,0,VIP Customers
 12417,3,9,3649.1,0,VIP Customers
 12418,113,1,668.58,1,At Risk Customers
 12420,64,1,600.39,1,At Risk Customers
 12421,16,4,807.04,2,Loyal Customers
-12422,96,3,803.5600000000001,3,Regular Customers
+12422,96,3,803.56,3,Regular Customers
 12423,1,8,1859.31,0,VIP Customers
 12424,163,2,1760.96,3,Regular Customers
 12425,78,1,777.2,1,At Risk Customers
@@ -72,7 +72,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12432,43,5,5059.32,3,Regular Customers
 12433,1,7,13375.87,0,VIP Customers
 12434,85,2,806.14,3,Regular Customers
-12435,80,2,7829.89,3,Regular Customers
+12435,80,2,7829.889999999999,3,Regular Customers
 12436,100,1,509.01,1,At Risk Customers
 12437,2,18,4951.41,0,VIP Customers
 12438,14,2,2906.85,3,Regular Customers
@@ -80,13 +80,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12442,3,1,172.06,2,Loyal Customers
 12444,21,5,5005.46,0,VIP Customers
 12445,22,1,133.4,2,Loyal Customers
-12446,58,1,1002.3100000000001,1,At Risk Customers
+12446,58,1,1002.31,1,At Risk Customers
 12447,243,1,476.49,1,At Risk Customers
 12448,44,1,449.45,1,At Risk Customers
 12449,22,4,4067.29,3,Regular Customers
 12450,156,2,197.88,1,At Risk Customers
 12451,11,5,9035.52,0,VIP Customers
-12452,17,2,430.57000000000005,2,Loyal Customers
+12452,17,2,430.57,2,Loyal Customers
 12453,134,1,707.09,1,At Risk Customers
 12454,56,1,3528.34,3,Regular Customers
 12455,73,6,2466.86,3,Regular Customers
@@ -97,9 +97,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12462,19,2,1189.59,2,Loyal Customers
 12463,53,4,1344.78,3,Regular Customers
 12464,10,8,1212.05,0,VIP Customers
-12465,17,2,742.19,2,Loyal Customers
+12465,17,2,742.1899999999999,2,Loyal Customers
 12468,188,2,729.54,1,At Risk Customers
-12471,2,30,19788.65,0,VIP Customers
+12471,2,30,19788.649999999998,0,VIP Customers
 12472,32,7,6572.11,0,VIP Customers
 12473,29,5,3928.05,3,Regular Customers
 12474,17,18,7324.09,0,VIP Customers
@@ -115,21 +115,21 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12488,10,3,1298.66,2,Loyal Customers
 12489,336,1,334.93,1,At Risk Customers
 12490,5,10,5417.93,0,VIP Customers
-12491,39,1,460.40000000000003,2,Loyal Customers
-12492,63,2,263.21000000000004,1,At Risk Customers
+12491,39,1,460.4,2,Loyal Customers
+12492,63,2,263.21,1,At Risk Customers
 12493,166,2,433.74,1,At Risk Customers
 12494,16,7,1246.1,3,Regular Customers
 12497,82,1,1043.1,1,At Risk Customers
-12498,21,3,403.70000000000005,2,Loyal Customers
+12498,21,3,403.7,2,Loyal Customers
 12500,23,11,4257.82,0,VIP Customers
 12501,337,1,2169.39,1,At Risk Customers
 12502,96,5,3723.87,3,Regular Customers
-12504,18,2,482.04999999999995,2,Loyal Customers
+12504,18,2,482.05,2,Loyal Customers
 12506,233,1,73.5,1,At Risk Customers
 12507,134,3,1304.81,3,Regular Customers
 12508,26,2,397.88,2,Loyal Customers
 12509,284,1,176.5,1,At Risk Customers
-12510,143,2,982.5699999999999,3,Regular Customers
+12510,143,2,982.57,3,Regular Customers
 12512,66,2,132.18,1,At Risk Customers
 12513,113,1,612.29,1,At Risk Customers
 12514,267,1,1017.6800000000001,1,At Risk Customers
@@ -137,18 +137,18 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12516,78,2,1312.06,3,Regular Customers
 12517,28,5,2481.6,3,Regular Customers
 12518,1,5,2056.89,0,VIP Customers
-12519,64,1,330.84000000000003,1,At Risk Customers
-12520,79,5,2634.26,3,Regular Customers
+12519,64,1,330.84,1,At Risk Customers
+12520,79,5,2634.2599999999998,3,Regular Customers
 12521,143,1,599.68,1,At Risk Customers
 12522,39,2,192.72,2,Loyal Customers
 12523,19,11,1789.77,0,VIP Customers
 12524,9,8,4485.72,0,VIP Customers
 12526,1,3,1316.66,2,Loyal Customers
-12527,82,3,348.71000000000004,1,At Risk Customers
+12527,82,3,348.71,1,At Risk Customers
 12528,9,6,1933.48,0,VIP Customers
 12530,60,4,1662.28,3,Regular Customers
 12531,15,1,125.22,2,Loyal Customers
-12532,30,1,349.83000000000004,2,Loyal Customers
+12532,30,1,349.83,2,Loyal Customers
 12534,131,1,1089.18,1,At Risk Customers
 12535,92,2,716.35,3,Regular Customers
 12536,43,3,12601.830000000002,3,Regular Customers
@@ -169,18 +169,18 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12557,16,5,11990.960000000001,0,VIP Customers
 12558,8,1,269.96,2,Loyal Customers
 12559,311,2,561.71,1,At Risk Customers
-12560,5,3,2134.01,2,Loyal Customers
+12560,5,3,2134.0099999999998,2,Loyal Customers
 12561,303,1,238.85,1,At Risk Customers
 12562,8,7,3781.7400000000002,0,VIP Customers
-12564,261,1,456.90000000000003,1,At Risk Customers
-12565,289,1,145.92000000000002,1,At Risk Customers
+12564,261,1,456.9,1,At Risk Customers
+12565,289,1,145.92,1,At Risk Customers
 12566,86,1,351.65,1,At Risk Customers
 12567,23,10,9401.28,0,VIP Customers
-12569,2,32,4124.6900000000005,0,VIP Customers
+12569,2,32,4124.69,0,VIP Customers
 12571,40,2,519.61,2,Loyal Customers
-12572,9,2,1020.4200000000001,2,Loyal Customers
-12573,227,1,160.54000000000002,1,At Risk Customers
-12574,316,1,218.45000000000002,1,At Risk Customers
+12572,9,2,1020.42,2,Loyal Customers
+12573,227,1,160.54,1,At Risk Customers
+12574,316,1,218.45,1,At Risk Customers
 12576,36,5,1315.83,3,Regular Customers
 12577,35,3,626.6,3,Regular Customers
 12578,21,2,2794.51,3,Regular Customers
@@ -191,24 +191,24 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12583,3,15,7281.38,0,VIP Customers
 12584,4,9,2338.15,0,VIP Customers
 12585,234,2,2040.1,3,Regular Customers
-12586,17,1,196.94000000000003,2,Loyal Customers
+12586,17,1,196.94,2,Loyal Customers
 12587,8,1,144.0,2,Loyal Customers
-12588,39,1,214.89999999999998,1,At Risk Customers
+12588,39,1,214.9,1,At Risk Customers
 12589,29,2,646.68,2,Loyal Customers
 12590,211,2,9864.26,3,Regular Customers
 12591,317,1,452.84999999999997,1,At Risk Customers
 12592,92,2,437.6,1,At Risk Customers
 12593,109,3,418.1,1,At Risk Customers
-12594,38,10,3338.2200000000003,0,VIP Customers
+12594,38,10,3338.22,0,VIP Customers
 12596,51,2,618.27,3,Regular Customers
 12597,19,4,3811.22,3,Regular Customers
 12598,10,8,3023.08,0,VIP Customers
 12599,29,7,1032.58,3,Regular Customers
 12600,29,10,2599.04,0,VIP Customers
-12601,190,5,577.0600000000001,3,Regular Customers
+12601,190,5,577.06,3,Regular Customers
 12602,59,1,153.12,1,At Risk Customers
-12603,22,1,739.1999999999999,2,Loyal Customers
-12604,79,2,254.18,1,At Risk Customers
+12603,22,1,739.2,2,Loyal Customers
+12604,79,2,254.17999999999998,1,At Risk Customers
 12607,60,1,1579.51,3,Regular Customers
 12609,78,3,1126.85,3,Regular Customers
 12610,23,5,2099.54,3,Regular Customers
@@ -227,7 +227,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12623,276,1,305.1,1,At Risk Customers
 12624,106,2,641.13,1,At Risk Customers
 12625,212,2,2683.82,3,Regular Customers
-12626,23,9,6620.4800000000005,0,VIP Customers
+12626,23,9,6620.48,0,VIP Customers
 12627,11,7,4478.53,0,VIP Customers
 12628,4,3,786.46,2,Loyal Customers
 12630,10,2,1270.88,2,Loyal Customers
@@ -256,8 +256,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12657,11,4,1643.18,3,Regular Customers
 12658,19,1,686.05,2,Loyal Customers
 12659,30,1,91.68,1,At Risk Customers
-12660,11,1,245.10000000000002,2,Loyal Customers
-12662,1,11,3849.78,0,VIP Customers
+12660,11,1,245.1,2,Loyal Customers
+12662,1,11,3849.7799999999997,0,VIP Customers
 12664,8,9,4881.88,0,VIP Customers
 12665,325,1,63.0,1,At Risk Customers
 12667,58,1,620.13,1,At Risk Customers
@@ -267,7 +267,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12672,330,1,225.9,1,At Risk Customers
 12673,5,2,610.52,2,Loyal Customers
 12674,39,4,1970.6,3,Regular Customers
-12676,25,6,1331.39,3,Regular Customers
+12676,25,6,1331.3899999999999,3,Regular Customers
 12678,42,12,17628.46,0,VIP Customers
 12679,59,4,1113.02,3,Regular Customers
 12680,1,4,862.81,2,Loyal Customers
@@ -278,7 +278,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12685,28,6,2863.08,3,Regular Customers
 12686,372,1,89.14,1,At Risk Customers
 12688,114,1,4873.81,3,Regular Customers
-12689,26,2,1247.6100000000001,3,Regular Customers
+12689,26,2,1247.61,3,Regular Customers
 12690,206,1,389.01,1,At Risk Customers
 12691,28,6,1035.8,3,Regular Customers
 12693,127,4,855.91,3,Regular Customers
@@ -303,18 +303,18 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12717,151,2,1030.98,3,Regular Customers
 12718,71,1,238.25,1,At Risk Customers
 12719,5,2,644.95,2,Loyal Customers
-12720,3,25,5781.7300000000005,0,VIP Customers
+12720,3,25,5781.73,0,VIP Customers
 12721,32,6,2656.13,3,Regular Customers
 12722,85,4,997.63,3,Regular Customers
 12723,4,5,725.07,2,Loyal Customers
 12724,5,4,1031.41,2,Loyal Customers
 12725,371,1,427.8,1,At Risk Customers
 12726,28,7,2609.1,3,Regular Customers
-12727,11,7,3980.7000000000003,0,VIP Customers
+12727,11,7,3980.7,0,VIP Customers
 12728,71,4,836.33,3,Regular Customers
 12729,114,1,453.01,1,At Risk Customers
 12731,24,12,18895.91,0,VIP Customers
-12732,180,1,236.26000000000002,1,At Risk Customers
+12732,180,1,236.26,1,At Risk Customers
 12733,234,1,383.95,1,At Risk Customers
 12734,353,1,110.39999999999999,1,At Risk Customers
 12735,315,2,779.5699999999999,1,At Risk Customers
@@ -330,7 +330,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12750,129,1,275.88,1,At Risk Customers
 12752,81,1,4366.78,3,Regular Customers
 12753,23,6,21429.39,0,VIP Customers
-12754,236,3,3010.74,3,Regular Customers
+12754,236,3,3010.7400000000002,3,Regular Customers
 12755,281,2,3811.9500000000003,3,Regular Customers
 12756,87,1,112.08,1,At Risk Customers
 12757,16,13,7834.650000000001,0,VIP Customers
@@ -351,11 +351,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12783,2,6,2225.91,0,VIP Customers
 12784,9,2,532.82,2,Loyal Customers
 12785,364,1,311.95,1,At Risk Customers
-12787,10,3,463.66,2,Loyal Customers
+12787,10,3,463.65999999999997,2,Loyal Customers
 12789,65,1,91.85,1,At Risk Customers
-12790,192,1,324.92,1,At Risk Customers
-12791,374,1,192.60000000000002,1,At Risk Customers
-12792,257,1,400.54,1,At Risk Customers
+12790,192,1,324.91999999999996,1,At Risk Customers
+12791,374,1,192.6,1,At Risk Customers
+12792,257,1,400.53999999999996,1,At Risk Customers
 12793,335,2,545.48,1,At Risk Customers
 12794,53,2,860.41,3,Regular Customers
 12795,19,1,430.48,2,Loyal Customers
@@ -365,11 +365,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12808,37,3,483.65000000000003,2,Loyal Customers
 12809,178,1,489.31,1,At Risk Customers
 12811,261,3,514.85,1,At Risk Customers
-12812,45,1,229.64000000000001,1,At Risk Customers
+12812,45,1,229.64,1,At Risk Customers
 12814,102,1,125.92,1,At Risk Customers
 12815,148,2,1063.46,3,Regular Customers
 12816,96,2,572.2,1,At Risk Customers
-12817,281,1,166.04000000000002,1,At Risk Customers
+12817,281,1,166.04,1,At Risk Customers
 12818,262,1,1542.08,1,At Risk Customers
 12820,3,4,942.34,2,Loyal Customers
 12821,214,1,92.72,1,At Risk Customers
@@ -378,7 +378,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12824,60,1,397.12,1,At Risk Customers
 12826,3,7,1474.72,0,VIP Customers
 12827,6,3,430.15,2,Loyal Customers
-12828,3,6,1018.71,0,VIP Customers
+12828,3,6,1018.7099999999999,0,VIP Customers
 12829,337,2,293.0,1,At Risk Customers
 12830,38,6,6814.64,3,Regular Customers
 12831,262,1,215.05,1,At Risk Customers
@@ -393,15 +393,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12841,5,25,3991.58,0,VIP Customers
 12842,70,2,1118.99,3,Regular Customers
 12843,66,8,1702.26,3,Regular Customers
-12844,29,2,325.96000000000004,2,Loyal Customers
+12844,29,2,325.96,2,Loyal Customers
 12845,267,4,354.09000000000003,1,At Risk Customers
 12847,22,1,843.64,2,Loyal Customers
 12849,31,2,1010.29,3,Regular Customers
 12851,97,1,131.81,1,At Risk Customers
 12852,295,1,311.55,1,At Risk Customers
-12853,135,6,1957.1000000000001,3,Regular Customers
+12853,135,6,1957.1,3,Regular Customers
 12854,79,3,1316.25,3,Regular Customers
-12855,373,1,38.1,1,At Risk Customers
+12855,373,1,38.099999999999994,1,At Risk Customers
 12856,8,6,2170.78,0,VIP Customers
 12857,211,2,1106.4,3,Regular Customers
 12863,52,1,521.2,1,At Risk Customers
@@ -409,11 +409,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12865,26,2,1568.23,3,Regular Customers
 12866,283,1,559.12,1,At Risk Customers
 12867,26,7,4009.34,0,VIP Customers
-12868,186,6,1607.0600000000002,3,Regular Customers
+12868,186,6,1607.06,3,Regular Customers
 12871,84,2,380.64,1,At Risk Customers
 12872,327,2,599.97,1,At Risk Customers
 12873,282,1,374.0,1,At Risk Customers
-12875,143,2,343.2300000000001,1,At Risk Customers
+12875,143,2,343.23,1,At Risk Customers
 12876,58,2,2218.02,3,Regular Customers
 12877,4,12,1535.77,0,VIP Customers
 12878,236,2,854.99,1,At Risk Customers
@@ -474,7 +474,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12956,306,1,108.07,1,At Risk Customers
 12957,10,8,4017.54,0,VIP Customers
 12962,7,2,266.39,2,Loyal Customers
-12963,8,8,1856.63,0,VIP Customers
+12963,8,8,1856.6299999999999,0,VIP Customers
 12965,89,1,769.8100000000001,1,At Risk Customers
 12966,10,1,160.18,2,Loyal Customers
 12967,358,2,1660.9,3,Regular Customers
@@ -484,7 +484,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12974,198,1,144.8,1,At Risk Customers
 12976,212,1,738.6,1,At Risk Customers
 12977,156,1,39.239999999999995,1,At Risk Customers
-12980,158,9,7374.900000000001,3,Regular Customers
+12980,158,9,7374.9,3,Regular Customers
 12981,30,2,372.21999999999997,2,Loyal Customers
 12982,243,1,390.54,1,At Risk Customers
 12984,19,1,97.5,2,Loyal Customers
@@ -497,19 +497,19 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 12993,23,4,414.76,2,Loyal Customers
 12994,4,3,974.42,2,Loyal Customers
 12995,85,1,211.32,1,At Risk Customers
-12997,22,4,1226.89,3,Regular Customers
+12997,22,4,1226.8899999999999,3,Regular Customers
 12999,196,3,455.88,1,At Risk Customers
 13000,107,3,534.85,3,Regular Customers
-13001,4,13,9785.970000000001,0,VIP Customers
+13001,4,13,9785.97,0,VIP Customers
 13002,318,1,120.95,1,At Risk Customers
 13003,106,3,149.05,1,At Risk Customers
 13004,12,18,5655.91,0,VIP Customers
 13005,174,2,513.7,1,At Risk Customers
 13006,56,1,81.57,1,At Risk Customers
 13008,323,1,229.47,1,At Risk Customers
-13011,372,1,50.550000000000004,1,At Risk Customers
-13012,9,8,1646.8400000000001,0,VIP Customers
-13013,1,13,4810.9400000000005,0,VIP Customers
+13011,372,1,50.55,1,At Risk Customers
+13012,9,8,1646.84,0,VIP Customers
+13013,1,13,4810.94,0,VIP Customers
 13014,11,10,3466.28,0,VIP Customers
 13015,53,5,3339.64,3,Regular Customers
 13016,73,3,789.89,3,Regular Customers
@@ -521,12 +521,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13027,114,6,6912.0,3,Regular Customers
 13028,23,2,661.3199999999999,2,Loyal Customers
 13029,31,3,1247.5,3,Regular Customers
-13030,11,2,752.44,2,Loyal Customers
-13032,52,2,1010.1800000000001,3,Regular Customers
+13030,11,2,752.4399999999999,2,Loyal Customers
+13032,52,2,1010.18,3,Regular Customers
 13033,357,1,190.55,1,At Risk Customers
 13034,55,2,642.77,3,Regular Customers
 13035,74,2,921.88,3,Regular Customers
-13037,138,3,881.07,3,Regular Customers
+13037,138,3,881.0699999999999,3,Regular Customers
 13038,80,3,908.46,3,Regular Customers
 13040,9,2,676.99,2,Loyal Customers
 13043,273,1,516.42,1,At Risk Customers
@@ -537,15 +537,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13048,14,4,1819.41,3,Regular Customers
 13049,64,2,656.6800000000001,3,Regular Customers
 13050,15,17,5836.86,0,VIP Customers
-13052,212,1,348.15000000000003,1,At Risk Customers
+13052,212,1,348.15,1,At Risk Customers
 13055,78,3,1214.41,3,Regular Customers
 13058,25,3,271.40000000000003,2,Loyal Customers
 13059,250,1,183.4,1,At Risk Customers
-13060,254,1,307.53000000000003,1,At Risk Customers
-13061,72,1,248.61,1,At Risk Customers
+13060,254,1,307.53,1,At Risk Customers
+13061,72,1,248.60999999999999,1,At Risk Customers
 13062,191,1,346.98,1,At Risk Customers
 13064,13,4,1105.59,2,Loyal Customers
-13065,373,1,205.86,1,At Risk Customers
+13065,373,1,205.85999999999999,1,At Risk Customers
 13066,24,2,470.8,2,Loyal Customers
 13067,82,1,115.46000000000001,1,At Risk Customers
 13068,10,2,344.0,2,Loyal Customers
@@ -555,7 +555,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13075,130,1,919.61,1,At Risk Customers
 13077,1,4,728.02,2,Loyal Customers
 13078,3,26,12627.94,0,VIP Customers
-13079,4,5,220.10000000000002,2,Loyal Customers
+13079,4,5,220.1,2,Loyal Customers
 13080,179,1,58.08,1,At Risk Customers
 13081,12,11,28337.38,0,VIP Customers
 13082,126,9,3613.63,3,Regular Customers
@@ -566,8 +566,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13091,28,1,345.82,2,Loyal Customers
 13092,71,5,477.83,3,Regular Customers
 13093,276,8,7832.47,3,Regular Customers
-13094,21,12,1927.3200000000002,0,VIP Customers
-13095,71,1,74.39999999999999,1,At Risk Customers
+13094,21,12,1927.32,0,VIP Customers
+13095,71,1,74.4,1,At Risk Customers
 13097,33,10,6003.22,0,VIP Customers
 13098,1,28,28882.44,0,VIP Customers
 13099,99,1,207.36,1,At Risk Customers
@@ -580,7 +580,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13108,373,1,350.06,1,At Risk Customers
 13109,60,2,786.54,3,Regular Customers
 13110,31,7,1488.67,3,Regular Customers
-13113,1,24,12245.960000000001,0,VIP Customers
+13113,1,24,12245.96,0,VIP Customers
 13115,12,4,2294.78,3,Regular Customers
 13116,138,1,501.14,1,At Risk Customers
 13117,22,8,984.91,3,Regular Customers
@@ -608,9 +608,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13145,40,4,618.52,3,Regular Customers
 13146,26,1,228.91,2,Loyal Customers
 13147,10,4,712.8,2,Loyal Customers
-13148,29,12,3683.26,0,VIP Customers
+13148,29,12,3683.2599999999998,0,VIP Customers
 13149,14,4,1676.06,3,Regular Customers
-13151,296,1,1257.8700000000001,1,At Risk Customers
+13151,296,1,1257.87,1,At Risk Customers
 13153,6,1,486.22,2,Loyal Customers
 13155,33,4,971.76,3,Regular Customers
 13157,49,4,1741.22,3,Regular Customers
@@ -632,7 +632,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13177,65,1,282.45,1,At Risk Customers
 13178,26,11,5725.47,0,VIP Customers
 13182,45,1,121.18,1,At Risk Customers
-13183,8,9,3957.78,0,VIP Customers
+13183,8,9,3957.7799999999997,0,VIP Customers
 13184,15,10,1668.95,0,VIP Customers
 13185,268,1,71.4,1,At Risk Customers
 13186,40,3,1575.89,3,Regular Customers
@@ -643,7 +643,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13193,61,1,112.08,1,At Risk Customers
 13194,136,1,60.7,1,At Risk Customers
 13196,11,4,1797.78,3,Regular Customers
-13198,10,6,3401.2400000000002,0,VIP Customers
+13198,10,6,3401.24,0,VIP Customers
 13199,4,38,9817.12,0,VIP Customers
 13200,19,4,870.09,3,Regular Customers
 13203,10,4,869.46,2,Loyal Customers
@@ -699,19 +699,19 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13271,37,1,211.49,1,At Risk Customers
 13272,31,2,276.56,2,Loyal Customers
 13273,113,1,138.98,1,At Risk Customers
-13276,64,2,590.9300000000001,3,Regular Customers
+13276,64,2,590.93,3,Regular Customers
 13277,16,4,258.4,2,Loyal Customers
 13278,41,1,542.73,2,Loyal Customers
 13279,78,1,137.75,1,At Risk Customers
 13280,122,3,798.46,3,Regular Customers
-13282,18,3,1132.14,2,Loyal Customers
+13282,18,3,1132.1399999999999,2,Loyal Customers
 13283,60,2,93.66,1,At Risk Customers
 13284,331,1,201.19,1,At Risk Customers
 13285,23,4,2709.12,3,Regular Customers
 13291,156,1,361.11,1,At Risk Customers
 13292,39,2,578.94,2,Loyal Customers
 13294,190,2,873.74,1,At Risk Customers
-13295,360,1,201.20000000000002,1,At Risk Customers
+13295,360,1,201.2,1,At Risk Customers
 13296,137,1,87.4,1,At Risk Customers
 13297,8,4,2089.85,0,VIP Customers
 13298,1,1,360.0,2,Loyal Customers
@@ -725,13 +725,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13308,23,3,1385.51,3,Regular Customers
 13309,7,5,1456.79,0,VIP Customers
 13310,28,3,1132.03,3,Regular Customers
-13311,4,2,598.57,2,Loyal Customers
-13313,22,5,1555.3200000000002,3,Regular Customers
-13314,2,3,775.94,2,Loyal Customers
+13311,4,2,598.5699999999999,2,Loyal Customers
+13313,22,5,1555.32,3,Regular Customers
+13314,2,3,775.9399999999999,2,Loyal Customers
 13316,37,4,5732.93,3,Regular Customers
 13317,66,6,2273.68,3,Regular Customers
 13318,1,3,640.76,2,Loyal Customers
-13319,5,26,10845.550000000001,0,VIP Customers
+13319,5,26,10845.55,0,VIP Customers
 13320,78,4,1532.2,3,Regular Customers
 13321,72,2,567.36,1,At Risk Customers
 13322,17,1,199.48000000000002,2,Loyal Customers
@@ -742,7 +742,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13328,316,1,1308.48,1,At Risk Customers
 13329,32,2,789.0,2,Loyal Customers
 13330,93,3,1140.93,3,Regular Customers
-13332,14,1,350.90000000000003,2,Loyal Customers
+13332,14,1,350.9,2,Loyal Customers
 13334,82,3,3502.32,3,Regular Customers
 13336,77,1,795.12,1,At Risk Customers
 13338,158,1,487.02,1,At Risk Customers
@@ -753,7 +753,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13344,68,3,2511.69,3,Regular Customers
 13345,288,1,389.5,1,At Risk Customers
 13347,70,1,341.36,1,At Risk Customers
-13348,64,1,233.76000000000002,1,At Risk Customers
+13348,64,1,233.76,1,At Risk Customers
 13349,11,1,247.32,2,Loyal Customers
 13350,16,2,979.12,2,Loyal Customers
 13351,66,1,373.94,1,At Risk Customers
@@ -762,15 +762,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13355,122,1,674.7,1,At Risk Customers
 13356,80,1,768.24,1,At Risk Customers
 13357,257,1,609.4,1,At Risk Customers
-13358,269,1,439.03000000000003,1,At Risk Customers
+13358,269,1,439.03,1,At Risk Customers
 13359,64,1,439.56,1,At Risk Customers
-13362,9,4,3090.7400000000002,0,VIP Customers
+13362,9,4,3090.74,0,VIP Customers
 13363,18,2,992.5,2,Loyal Customers
 13364,71,1,134.96,1,At Risk Customers
 13365,34,2,2225.37,3,Regular Customers
 13366,50,1,56.16,1,At Risk Customers
 13368,257,2,623.4,1,At Risk Customers
-13369,366,1,308.28000000000003,1,At Risk Customers
+13369,366,1,308.28,1,At Risk Customers
 13370,372,1,754.87,1,At Risk Customers
 13372,90,1,378.64,1,At Risk Customers
 13373,61,3,3312.25,3,Regular Customers
@@ -793,7 +793,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13402,127,2,621.23,1,At Risk Customers
 13403,18,1,75.0,2,Loyal Customers
 13404,1,2,252.49,2,Loyal Customers
-13405,74,3,572.451,3,Regular Customers
+13405,74,3,572.45,3,Regular Customers
 13408,2,62,28117.04,0,VIP Customers
 13410,24,5,1003.06,3,Regular Customers
 13411,107,1,213.55,1,At Risk Customers
@@ -818,11 +818,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13437,14,7,3408.06,0,VIP Customers
 13439,255,1,283.71,1,At Risk Customers
 13441,92,1,296.64,1,At Risk Customers
-13447,23,3,1129.14,3,Regular Customers
+13447,23,3,1129.1399999999999,3,Regular Customers
 13448,17,6,3534.69,0,VIP Customers
 13449,24,1,291.88,2,Loyal Customers
 13450,27,6,2043.72,3,Regular Customers
-13451,26,5,2898.2599999999998,3,Regular Customers
+13451,26,5,2898.26,3,Regular Customers
 13452,259,2,590.0,1,At Risk Customers
 13453,166,2,356.98,1,At Risk Customers
 13455,25,2,1058.34,2,Loyal Customers
@@ -832,7 +832,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13461,39,3,1445.0,3,Regular Customers
 13462,253,1,151.5,1,At Risk Customers
 13464,58,1,674.68,1,At Risk Customers
-13466,184,1,307.90000000000003,1,At Risk Customers
+13466,184,1,307.9,1,At Risk Customers
 13467,11,2,1071.91,2,Loyal Customers
 13468,2,37,5704.97,0,VIP Customers
 13470,99,2,165.0,1,At Risk Customers
@@ -844,7 +844,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13477,38,6,1454.58,3,Regular Customers
 13479,201,2,300.95,1,At Risk Customers
 13481,46,5,1804.56,3,Regular Customers
-13482,232,1,184.64000000000001,1,At Risk Customers
+13482,232,1,184.64,1,At Risk Customers
 13483,66,1,140.34,1,At Risk Customers
 13484,241,1,313.8,1,At Risk Customers
 13485,233,1,454.24,1,At Risk Customers
@@ -855,11 +855,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13491,52,10,1215.82,3,Regular Customers
 13492,136,3,1269.84,3,Regular Customers
 13493,275,2,618.63,1,At Risk Customers
-13494,312,1,316.26000000000005,1,At Risk Customers
-13495,8,5,2044.8700000000001,0,VIP Customers
+13494,312,1,316.26,1,At Risk Customers
+13495,8,5,2044.87,0,VIP Customers
 13496,11,2,653.33,2,Loyal Customers
 13497,283,2,348.05,1,At Risk Customers
-13499,18,5,1159.1100000000001,3,Regular Customers
+13499,18,5,1159.11,3,Regular Customers
 13500,23,3,1166.77,3,Regular Customers
 13501,288,1,1340.32,1,At Risk Customers
 13502,17,3,292.0,2,Loyal Customers
@@ -873,7 +873,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13510,1,4,1791.56,0,VIP Customers
 13512,261,1,251.21,1,At Risk Customers
 13513,127,1,205.1,1,At Risk Customers
-13514,74,1,152.20000000000002,1,At Risk Customers
+13514,74,1,152.2,1,At Risk Customers
 13515,73,4,891.12,3,Regular Customers
 13516,21,3,1389.41,3,Regular Customers
 13517,60,3,2128.42,3,Regular Customers
@@ -881,9 +881,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13519,78,1,122.75,1,At Risk Customers
 13520,59,6,3624.35,3,Regular Customers
 13521,1,3,1071.73,2,Loyal Customers
-13522,30,1,125.80000000000001,2,Loyal Customers
+13522,30,1,125.8,2,Loyal Customers
 13523,33,5,3964.88,3,Regular Customers
-13524,41,5,680.1800000000001,3,Regular Customers
+13524,41,5,680.18,3,Regular Customers
 13525,15,2,628.78,2,Loyal Customers
 13527,34,7,2242.36,3,Regular Customers
 13529,79,2,307.76,1,At Risk Customers
@@ -901,7 +901,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13551,319,1,91.80000000000001,1,At Risk Customers
 13552,66,12,3740.07,0,VIP Customers
 13555,74,4,4098.88,3,Regular Customers
-13557,28,2,584.0600000000001,2,Loyal Customers
+13557,28,2,584.06,2,Loyal Customers
 13558,6,4,594.52,2,Loyal Customers
 13560,7,1,171.42000000000002,2,Loyal Customers
 13561,216,1,141.85999999999999,1,At Risk Customers
@@ -928,7 +928,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13589,15,2,379.65,2,Loyal Customers
 13590,11,6,1981.92,0,VIP Customers
 13591,65,3,1117.13,3,Regular Customers
-13592,36,4,247.95999999999998,2,Loyal Customers
+13592,36,4,247.96,2,Loyal Customers
 13593,108,5,2011.88,3,Regular Customers
 13594,53,1,396.97,1,At Risk Customers
 13596,6,2,664.11,2,Loyal Customers
@@ -954,7 +954,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13630,5,7,2031.78,0,VIP Customers
 13631,100,11,3070.42,3,Regular Customers
 13632,25,5,2118.93,3,Regular Customers
-13634,33,5,1547.3600000000001,3,Regular Customers
+13634,33,5,1547.36,3,Regular Customers
 13635,68,1,1071.03,1,At Risk Customers
 13636,37,5,949.12,3,Regular Customers
 13637,52,3,804.3,3,Regular Customers
@@ -966,7 +966,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13645,120,1,252.1,1,At Risk Customers
 13647,10,4,1648.1200000000001,3,Regular Customers
 13649,257,2,346.6,1,At Risk Customers
-13650,17,6,1836.3400000000001,3,Regular Customers
+13650,17,6,1836.34,3,Regular Customers
 13651,35,2,94.2,2,Loyal Customers
 13652,46,3,1095.08,3,Regular Customers
 13654,43,6,2707.33,3,Regular Customers
@@ -982,9 +982,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13668,3,21,6309.83,0,VIP Customers
 13669,51,2,218.55,1,At Risk Customers
 13670,75,1,349.7,1,At Risk Customers
-13672,301,2,186.39000000000001,1,At Risk Customers
+13672,301,2,186.39,1,At Risk Customers
 13673,19,2,387.44,2,Loyal Customers
-13675,151,2,486.82000000000005,1,At Risk Customers
+13675,151,2,486.82,1,At Risk Customers
 13678,152,1,232.6,1,At Risk Customers
 13680,1,4,3719.12,0,VIP Customers
 13681,18,4,827.83,2,Loyal Customers
@@ -998,7 +998,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13694,4,50,65039.62,0,VIP Customers
 13695,31,15,2504.13,0,VIP Customers
 13697,39,1,151.3,1,At Risk Customers
-13699,155,1,308.58000000000004,1,At Risk Customers
+13699,155,1,308.58,1,At Risk Customers
 13700,26,10,2248.63,0,VIP Customers
 13703,318,1,99.5,1,At Risk Customers
 13704,5,9,2308.06,0,VIP Customers
@@ -1006,7 +1006,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13706,303,1,330.79,1,At Risk Customers
 13707,267,2,806.41,1,At Risk Customers
 13708,271,1,285.33,1,At Risk Customers
-13709,4,13,6307.650000000001,0,VIP Customers
+13709,4,13,6307.65,0,VIP Customers
 13710,32,1,180.48,2,Loyal Customers
 13711,219,2,252.06,1,At Risk Customers
 13712,247,1,228.84,1,At Risk Customers
@@ -1018,7 +1018,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13720,117,4,799.9,3,Regular Customers
 13721,36,1,524.14,2,Loyal Customers
 13722,132,3,2375.41,3,Regular Customers
-13723,217,1,199.85000000000002,1,At Risk Customers
+13723,217,1,199.85,1,At Risk Customers
 13725,50,8,1980.56,3,Regular Customers
 13726,39,2,1079.66,3,Regular Customers
 13727,29,2,333.48,2,Loyal Customers
@@ -1031,7 +1031,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13737,200,1,339.6,1,At Risk Customers
 13739,18,1,216.9,2,Loyal Customers
 13740,241,1,350.75,1,At Risk Customers
-13741,72,3,668.4300000000001,3,Regular Customers
+13741,72,3,668.43,3,Regular Customers
 13742,17,12,3107.87,0,VIP Customers
 13743,3,7,1341.6,0,VIP Customers
 13744,95,2,1080.52,3,Regular Customers
@@ -1046,14 +1046,14 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13755,4,9,2108.06,0,VIP Customers
 13756,2,14,5189.52,0,VIP Customers
 13758,12,7,3190.55,0,VIP Customers
-13759,33,2,659.4100000000001,2,Loyal Customers
+13759,33,2,659.41,2,Loyal Customers
 13760,54,2,286.79,1,At Risk Customers
 13761,50,2,1070.65,3,Regular Customers
 13762,219,1,306.72,1,At Risk Customers
 13763,63,1,1714.96,3,Regular Customers
 13764,71,3,1519.42,3,Regular Customers
 13767,2,37,17220.36,0,VIP Customers
-13769,2,10,2796.51,0,VIP Customers
+13769,2,10,2796.5099999999998,0,VIP Customers
 13771,64,4,2634.45,3,Regular Customers
 13772,34,3,1122.63,3,Regular Customers
 13774,82,1,345.0,1,At Risk Customers
@@ -1065,12 +1065,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13784,10,11,2462.79,0,VIP Customers
 13786,367,1,230.4,1,At Risk Customers
 13787,76,2,309.04,1,At Risk Customers
-13790,4,1,348.79999999999995,2,Loyal Customers
+13790,4,1,348.8,2,Loyal Customers
 13791,128,2,1516.0,3,Regular Customers
 13792,66,2,195.55,1,At Risk Customers
 13798,1,57,37153.85,0,VIP Customers
 13799,117,2,688.86,1,At Risk Customers
-13800,310,1,558.32,1,At Risk Customers
+13800,310,1,558.3199999999999,1,At Risk Customers
 13801,67,1,324.8,1,At Risk Customers
 13802,139,3,4599.42,3,Regular Customers
 13803,255,1,277.07,1,At Risk Customers
@@ -1083,10 +1083,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13810,29,3,1499.01,3,Regular Customers
 13811,184,3,814.5,3,Regular Customers
 13812,42,3,539.0,3,Regular Customers
-13813,40,4,1366.8600000000001,3,Regular Customers
+13813,40,4,1366.86,3,Regular Customers
 13814,92,2,1579.12,3,Regular Customers
 13815,22,4,4027.36,3,Regular Customers
-13816,24,2,571.6700000000001,2,Loyal Customers
+13816,24,2,571.67,2,Loyal Customers
 13817,29,2,382.98,2,Loyal Customers
 13819,302,3,1140.35,3,Regular Customers
 13821,145,2,385.64,1,At Risk Customers
@@ -1100,13 +1100,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13832,19,1,52.2,2,Loyal Customers
 13833,159,1,383.85,1,At Risk Customers
 13835,25,4,834.57,3,Regular Customers
-13837,212,2,266.59000000000003,1,At Risk Customers
+13837,212,2,266.59,1,At Risk Customers
 13838,6,4,674.82,2,Loyal Customers
 13841,253,1,85.0,1,At Risk Customers
 13842,59,9,3385.62,3,Regular Customers
 13844,11,1,361.62,2,Loyal Customers
 13845,65,1,312.98,1,At Risk Customers
-13846,25,3,865.0600000000001,3,Regular Customers
+13846,25,3,865.06,3,Regular Customers
 13848,92,3,1255.0,3,Regular Customers
 13849,52,2,1537.95,3,Regular Customers
 13850,129,1,1595.48,3,Regular Customers
@@ -1141,7 +1141,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13886,71,1,243.56,1,At Risk Customers
 13887,204,1,349.55,1,At Risk Customers
 13888,120,2,595.67,1,At Risk Customers
-13889,93,1,416.90000000000003,1,At Risk Customers
+13889,93,1,416.9,1,At Risk Customers
 13890,1,10,1883.81,0,VIP Customers
 13892,27,4,632.97,3,Regular Customers
 13893,298,1,821.1,1,At Risk Customers
@@ -1151,19 +1151,19 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13898,326,1,155.93,1,At Risk Customers
 13899,16,2,388.52,2,Loyal Customers
 13900,183,3,740.95,3,Regular Customers
-13901,72,5,2867.2000000000003,3,Regular Customers
+13901,72,5,2867.2,3,Regular Customers
 13904,37,2,332.64,2,Loyal Customers
 13908,80,4,2369.55,3,Regular Customers
 13911,57,9,2580.91,3,Regular Customers
 13914,12,2,626.45,2,Loyal Customers
 13917,50,2,272.04,1,At Risk Customers
-13918,50,2,1212.8400000000001,3,Regular Customers
+13918,50,2,1212.84,3,Regular Customers
 13919,59,2,384.81,1,At Risk Customers
 13922,352,1,172.25,1,At Risk Customers
 13923,54,1,351.13,1,At Risk Customers
-13924,2,6,1838.8500000000001,0,VIP Customers
+13924,2,6,1838.85,0,VIP Customers
 13925,93,4,678.25,3,Regular Customers
-13926,23,1,223.85000000000002,2,Loyal Customers
+13926,23,1,223.85,2,Loyal Customers
 13927,75,1,348.99,1,At Risk Customers
 13928,11,4,464.57,2,Loyal Customers
 13929,169,2,842.65,1,At Risk Customers
@@ -1179,12 +1179,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13940,17,4,839.14,2,Loyal Customers
 13941,22,5,5112.96,0,VIP Customers
 13946,79,3,561.57,3,Regular Customers
-13947,65,1,90.60000000000001,1,At Risk Customers
+13947,65,1,90.6,1,At Risk Customers
 13948,361,1,102.0,1,At Risk Customers
-13949,3,6,2427.32,0,VIP Customers
-13950,11,4,745.0600000000001,2,Loyal Customers
+13949,3,6,2427.3199999999997,0,VIP Customers
+13950,11,4,745.06,2,Loyal Customers
 13951,176,3,674.45,3,Regular Customers
-13952,218,2,3251.071,3,Regular Customers
+13952,218,2,3251.07,3,Regular Customers
 13953,7,7,3515.68,0,VIP Customers
 13954,2,2,439.92,2,Loyal Customers
 13955,154,2,322.96,1,At Risk Customers
@@ -1195,11 +1195,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13963,308,4,664.54,3,Regular Customers
 13967,146,1,80.7,1,At Risk Customers
 13969,7,18,9024.17,0,VIP Customers
-13971,19,8,2758.26,0,VIP Customers
+13971,19,8,2758.2599999999998,0,VIP Customers
 13972,71,2,190.25,1,At Risk Customers
 13973,287,1,264.7,1,At Risk Customers
-13974,49,1,413.59000000000003,1,At Risk Customers
-13975,31,6,2461.2400000000002,3,Regular Customers
+13974,49,1,413.59,1,At Risk Customers
+13975,31,6,2461.24,3,Regular Customers
 13976,207,1,357.98,1,At Risk Customers
 13978,15,2,196.79,2,Loyal Customers
 13979,73,1,869.87,1,At Risk Customers
@@ -1219,7 +1219,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 13995,15,5,1393.69,3,Regular Customers
 13999,10,12,3901.81,0,VIP Customers
 14000,211,1,635.66,1,At Risk Customers
-14001,46,3,2043.0800000000002,3,Regular Customers
+14001,46,3,2043.08,3,Regular Customers
 14002,134,2,529.73,1,At Risk Customers
 14004,43,7,4582.64,3,Regular Customers
 14005,10,5,2874.72,0,VIP Customers
@@ -1230,11 +1230,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14014,77,1,505.18,1,At Risk Customers
 14015,53,1,917.34,1,At Risk Customers
 14016,162,4,4341.21,3,Regular Customers
-14019,47,3,1421.6100000000001,3,Regular Customers
+14019,47,3,1421.61,3,Regular Customers
 14020,17,2,642.8,2,Loyal Customers
 14021,155,3,631.9,3,Regular Customers
 14022,225,1,440.0,1,At Risk Customers
-14023,7,2,584.07,2,Loyal Customers
+14023,7,2,584.0699999999999,2,Loyal Customers
 14024,122,2,327.7,1,At Risk Customers
 14027,61,1,104.82,1,At Risk Customers
 14029,63,2,467.66,1,At Risk Customers
@@ -1244,7 +1244,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14034,22,3,648.89,2,Loyal Customers
 14035,29,5,1428.02,3,Regular Customers
 14036,285,1,626.65,1,At Risk Customers
-14037,176,2,147.20000000000002,1,At Risk Customers
+14037,176,2,147.2,1,At Risk Customers
 14038,78,3,1560.38,3,Regular Customers
 14039,33,1,152.2,1,At Risk Customers
 14040,41,12,3560.32,0,VIP Customers
@@ -1252,15 +1252,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14044,27,4,646.42,3,Regular Customers
 14045,109,4,1659.75,3,Regular Customers
 14046,284,1,154.99,1,At Risk Customers
-14047,9,5,1308.6100000000001,3,Regular Customers
+14047,9,5,1308.61,3,Regular Customers
 14048,305,1,409.93,1,At Risk Customers
 14049,17,4,5578.72,3,Regular Customers
 14050,32,2,746.36,2,Loyal Customers
-14051,1,23,15610.390000000001,0,VIP Customers
-14052,20,1,225.35999999999999,2,Loyal Customers
+14051,1,23,15610.39,0,VIP Customers
+14052,20,1,225.36,2,Loyal Customers
 14053,124,2,260.25,1,At Risk Customers
 14054,65,1,92.46000000000001,1,At Risk Customers
-14055,106,1,725.6400000000001,1,At Risk Customers
+14055,106,1,725.64,1,At Risk Customers
 14056,1,23,8152.71,0,VIP Customers
 14057,24,17,6211.66,0,VIP Customers
 14059,267,1,183.6,1,At Risk Customers
@@ -1275,7 +1275,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14075,5,3,942.26,2,Loyal Customers
 14076,129,1,118.67,1,At Risk Customers
 14077,41,5,499.42,3,Regular Customers
-14078,102,6,1049.37,3,Regular Customers
+14078,102,6,1049.3700000000001,3,Regular Customers
 14079,125,1,375.1,1,At Risk Customers
 14080,33,1,45.599999999999994,1,At Risk Customers
 14081,302,2,921.62,1,At Risk Customers
@@ -1285,8 +1285,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14087,3,1,191.47,2,Loyal Customers
 14088,10,13,50491.81,0,VIP Customers
 14089,57,1,158.75,1,At Risk Customers
-14090,325,1,76.32000000000001,1,At Risk Customers
-14092,8,14,4076.9100000000003,0,VIP Customers
+14090,325,1,76.32,1,At Risk Customers
+14092,8,14,4076.91,0,VIP Customers
 14093,12,1,433.86,2,Loyal Customers
 14096,4,17,65164.79,0,VIP Customers
 14098,37,1,147.35,1,At Risk Customers
@@ -1309,12 +1309,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14121,4,4,2780.15,0,VIP Customers
 14124,84,1,419.58,1,At Risk Customers
 14125,11,3,2720.63,3,Regular Customers
-14126,8,3,706.1300000000001,2,Loyal Customers
+14126,8,3,706.13,2,Loyal Customers
 14127,123,3,709.71,3,Regular Customers
 14128,61,2,637.5,3,Regular Customers
-14129,2,5,1123.8600000000001,0,VIP Customers
-14130,319,1,480.91,1,At Risk Customers
-14132,2,11,3586.03,0,VIP Customers
+14129,2,5,1123.86,0,VIP Customers
+14130,319,1,480.90999999999997,1,At Risk Customers
+14132,2,11,3586.0299999999997,0,VIP Customers
 14133,130,3,605.64,3,Regular Customers
 14135,2,15,4690.31,0,VIP Customers
 14138,2,2,965.88,2,Loyal Customers
@@ -1333,10 +1333,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14154,239,2,1345.62,3,Regular Customers
 14155,266,1,118.75,1,At Risk Customers
 14156,10,55,117210.08,0,VIP Customers
-14157,20,2,424.89000000000004,2,Loyal Customers
+14157,20,2,424.89,2,Loyal Customers
 14158,40,1,507.65999999999997,2,Loyal Customers
 14159,20,11,4630.35,0,VIP Customers
-14161,216,3,1097.6200000000001,3,Regular Customers
+14161,216,3,1097.62,3,Regular Customers
 14162,174,2,289.36,1,At Risk Customers
 14163,87,4,2445.91,3,Regular Customers
 14164,71,2,1631.77,3,Regular Customers
@@ -1346,11 +1346,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14173,11,4,450.84,2,Loyal Customers
 14174,33,1,134.46,1,At Risk Customers
 14175,60,3,3222.3,3,Regular Customers
-14176,297,4,576.9000000000001,1,At Risk Customers
+14176,297,4,576.9,1,At Risk Customers
 14177,86,4,549.46,3,Regular Customers
 14178,9,7,1600.26,0,VIP Customers
 14179,41,2,701.57,2,Loyal Customers
-14180,11,25,4748.52,0,VIP Customers
+14180,11,25,4748.5199999999995,0,VIP Customers
 14184,67,1,452.89,1,At Risk Customers
 14185,331,1,197.65,1,At Risk Customers
 14188,31,6,2054.36,3,Regular Customers
@@ -1362,22 +1362,22 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14196,107,1,335.52,1,At Risk Customers
 14198,18,4,701.4,2,Loyal Customers
 14199,218,1,185.39999999999998,1,At Risk Customers
-14201,60,7,747.44,3,Regular Customers
+14201,60,7,747.4399999999999,3,Regular Customers
 14204,2,1,150.61,2,Loyal Customers
 14205,17,2,466.7,2,Loyal Customers
 14206,239,1,328.15999999999997,1,At Risk Customers
 14208,95,1,151.74,1,At Risk Customers
 14209,11,6,2073.43,0,VIP Customers
-14210,106,6,1905.8400000000001,3,Regular Customers
+14210,106,6,1905.84,3,Regular Customers
 14211,53,9,2241.1,3,Regular Customers
 14212,90,1,1070.48,1,At Risk Customers
 14214,31,5,1004.38,3,Regular Customers
 14215,12,6,1789.72,0,VIP Customers
 14216,3,4,1839.3,0,VIP Customers
 14217,2,17,2004.98,0,VIP Customers
-14218,43,1,169.48000000000002,1,At Risk Customers
+14218,43,1,169.48,1,At Risk Customers
 14219,4,1,89.94,2,Loyal Customers
-14220,247,2,632.4000000000001,1,At Risk Customers
+14220,247,2,632.4,1,At Risk Customers
 14221,42,9,3432.8,0,VIP Customers
 14222,177,1,683.17,1,At Risk Customers
 14223,92,3,991.13,3,Regular Customers
@@ -1403,9 +1403,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14247,278,1,136.77,1,At Risk Customers
 14248,318,1,302.58,1,At Risk Customers
 14250,7,3,1904.05,2,Loyal Customers
-14251,2,5,2879.7000000000003,0,VIP Customers
-14256,260,2,969.0600000000001,1,At Risk Customers
-14257,64,5,3099.7200000000003,3,Regular Customers
+14251,2,5,2879.7,0,VIP Customers
+14256,260,2,969.06,1,At Risk Customers
+14257,64,5,3099.72,3,Regular Customers
 14258,9,9,12669.98,0,VIP Customers
 14259,142,1,120.0,1,At Risk Customers
 14261,51,2,1163.45,3,Regular Customers
@@ -1413,8 +1413,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14264,155,2,333.97,1,At Risk Customers
 14265,109,2,530.18,1,At Risk Customers
 14267,163,3,1516.24,3,Regular Customers
-14270,332,1,492.65000000000003,1,At Risk Customers
-14271,226,1,112.32000000000001,1,At Risk Customers
+14270,332,1,492.65,1,At Risk Customers
+14271,226,1,112.32,1,At Risk Customers
 14272,74,2,437.96,1,At Risk Customers
 14273,51,4,559.97,3,Regular Customers
 14276,99,3,1119.74,3,Regular Customers
@@ -1431,7 +1431,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14291,2,11,3883.25,0,VIP Customers
 14292,8,9,4871.93,0,VIP Customers
 14293,3,4,1046.56,2,Loyal Customers
-14295,40,1,166.20000000000002,1,At Risk Customers
+14295,40,1,166.2,1,At Risk Customers
 14297,18,4,1305.33,3,Regular Customers
 14298,8,44,51527.3,0,VIP Customers
 14299,8,9,3965.62,0,VIP Customers
@@ -1440,30 +1440,30 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14304,223,1,383.45,1,At Risk Customers
 14305,71,3,1858.96,3,Regular Customers
 14306,51,2,2093.32,3,Regular Customers
-14307,89,6,2995.7200000000003,3,Regular Customers
+14307,89,6,2995.72,3,Regular Customers
 14309,8,9,2352.53,0,VIP Customers
 14311,243,1,310.26,1,At Risk Customers
-14312,47,6,1611.5900000000001,3,Regular Customers
+14312,47,6,1611.59,3,Regular Customers
 14314,107,1,120.0,1,At Risk Customers
 14315,45,6,2481.13,3,Regular Customers
 14317,65,1,508.58,1,At Risk Customers
-14320,207,2,477.79,1,At Risk Customers
+14320,207,2,477.78999999999996,1,At Risk Customers
 14321,11,5,1530.75,3,Regular Customers
-14323,115,2,605.0600000000001,1,At Risk Customers
+14323,115,2,605.06,1,At Risk Customers
 14326,242,1,183.85,1,At Risk Customers
-14327,163,1,311.65000000000003,1,At Risk Customers
+14327,163,1,311.65,1,At Risk Customers
 14329,17,7,4975.24,0,VIP Customers
-14331,124,2,462.66,1,At Risk Customers
+14331,124,2,462.65999999999997,1,At Risk Customers
 14332,23,3,840.21,2,Loyal Customers
 14333,68,1,415.2,1,At Risk Customers
 14334,17,8,2552.21,0,VIP Customers
 14335,16,2,454.86,2,Loyal Customers
 14336,17,4,1614.91,3,Regular Customers
 14338,161,2,588.22,1,At Risk Customers
-14339,243,1,309.52000000000004,1,At Risk Customers
+14339,243,1,309.52,1,At Risk Customers
 14340,219,1,134.7,1,At Risk Customers
 14341,45,8,2166.98,3,Regular Customers
-14342,21,4,668.5600000000001,2,Loyal Customers
+14342,21,4,668.56,2,Loyal Customers
 14344,127,8,889.9300000000001,3,Regular Customers
 14345,39,1,108.98,1,At Risk Customers
 14346,121,2,1021.58,3,Regular Customers
@@ -1477,7 +1477,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14355,366,1,174.4,1,At Risk Customers
 14356,80,2,701.23,3,Regular Customers
 14357,43,1,225.12,1,At Risk Customers
-14359,19,3,912.1800000000001,2,Loyal Customers
+14359,19,3,912.18,2,Loyal Customers
 14360,32,4,2118.03,3,Regular Customers
 14362,22,1,151.5,2,Loyal Customers
 14364,109,8,3717.35,3,Regular Customers
@@ -1508,7 +1508,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14406,119,1,156.75,1,At Risk Customers
 14407,107,6,2157.73,3,Regular Customers
 14408,11,7,2599.03,0,VIP Customers
-14409,71,6,2059.4500000000003,3,Regular Customers
+14409,71,6,2059.45,3,Regular Customers
 14410,92,9,1100.27,3,Regular Customers
 14411,311,1,1063.0,1,At Risk Customers
 14412,43,2,770.03,3,Regular Customers
@@ -1532,9 +1532,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14436,99,1,89.06,1,At Risk Customers
 14437,366,1,63.0,1,At Risk Customers
 14438,306,1,131.9,1,At Risk Customers
-14439,320,1,2661.24,3,Regular Customers
+14439,320,1,2661.2400000000002,3,Regular Customers
 14440,8,5,2357.68,0,VIP Customers
-14441,1,4,1712.89,0,VIP Customers
+14441,1,4,1712.8899999999999,0,VIP Customers
 14442,205,2,1589.82,3,Regular Customers
 14443,54,4,1420.2,3,Regular Customers
 14446,1,4,1010.35,2,Loyal Customers
@@ -1573,15 +1573,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14488,68,1,1064.28,1,At Risk Customers
 14489,207,1,463.38,1,At Risk Customers
 14491,175,2,340.93,1,At Risk Customers
-14493,7,5,2383.2400000000002,0,VIP Customers
+14493,7,5,2383.24,0,VIP Customers
 14494,26,1,139.56,2,Loyal Customers
 14495,51,2,123.80000000000001,1,At Risk Customers
 14496,312,2,538.8100000000001,1,At Risk Customers
 14497,309,1,475.37,1,At Risk Customers
 14498,43,5,1957.32,3,Regular Customers
-14499,26,3,808.44,3,Regular Customers
+14499,26,3,808.4399999999999,3,Regular Customers
 14500,88,3,356.85,1,At Risk Customers
-14501,184,2,251.21,1,At Risk Customers
+14501,184,2,251.20999999999998,1,At Risk Customers
 14502,20,11,2429.83,0,VIP Customers
 14503,3,6,3543.26,0,VIP Customers
 14504,47,4,673.26,3,Regular Customers
@@ -1626,24 +1626,24 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14551,18,2,186.23,2,Loyal Customers
 14552,152,1,164.22,1,At Risk Customers
 14553,19,5,859.27,3,Regular Customers
-14554,10,4,2279.4900000000002,3,Regular Customers
+14554,10,4,2279.49,3,Regular Customers
 14555,57,2,312.54,1,At Risk Customers
 14557,85,1,788.38,1,At Risk Customers
 14560,7,22,2237.77,0,VIP Customers
 14561,76,3,1080.76,3,Regular Customers
-14562,4,18,5006.77,0,VIP Customers
+14562,4,18,5006.7699999999995,0,VIP Customers
 14565,96,4,3099.12,3,Regular Customers
 14566,111,1,1432.0,1,At Risk Customers
-14567,57,2,1530.3600000000001,3,Regular Customers
+14567,57,2,1530.36,3,Regular Customers
 14569,1,1,227.39,2,Loyal Customers
 14570,281,2,218.06,1,At Risk Customers
 14572,3,7,2804.54,0,VIP Customers
 14573,180,9,1639.82,3,Regular Customers
-14576,372,1,35.400000000000006,1,At Risk Customers
+14576,372,1,35.4,1,At Risk Customers
 14577,13,4,859.71,2,Loyal Customers
 14578,3,1,168.63,2,Loyal Customers
 14581,17,1,138.6,2,Loyal Customers
-14582,41,1,114.11,1,At Risk Customers
+14582,41,1,114.10999999999999,1,At Risk Customers
 14583,6,5,986.96,2,Loyal Customers
 14584,169,4,1033.06,3,Regular Customers
 14585,50,1,157.05,1,At Risk Customers
@@ -1654,10 +1654,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14592,35,3,557.94,2,Loyal Customers
 14593,22,3,617.15,2,Loyal Customers
 14594,7,2,363.33,2,Loyal Customers
-14595,20,6,1740.6000000000001,3,Regular Customers
+14595,20,6,1740.6,3,Regular Customers
 14597,11,2,866.24,2,Loyal Customers
 14598,44,1,221.97,1,At Risk Customers
-14600,306,1,393.33000000000004,1,At Risk Customers
+14600,306,1,393.33,1,At Risk Customers
 14601,11,1,213.96,2,Loyal Customers
 14603,275,1,660.0,1,At Risk Customers
 14606,1,93,12076.15,0,VIP Customers
@@ -1668,8 +1668,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14618,9,3,553.44,2,Loyal Customers
 14619,246,1,394.44,1,At Risk Customers
 14620,206,2,412.78000000000003,1,At Risk Customers
-14621,1,5,1788.3600000000001,0,VIP Customers
-14622,185,1,320.58000000000004,1,At Risk Customers
+14621,1,5,1788.36,0,VIP Customers
+14622,185,1,320.58,1,At Risk Customers
 14623,32,5,886.7,3,Regular Customers
 14624,57,2,225.85,1,At Risk Customers
 14625,196,2,899.63,1,At Risk Customers
@@ -1678,18 +1678,18 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14629,4,2,955.26,2,Loyal Customers
 14631,51,3,1006.98,3,Regular Customers
 14632,263,1,114.56,1,At Risk Customers
-14633,266,1,344.90000000000003,1,At Risk Customers
+14633,266,1,344.9,1,At Risk Customers
 14636,36,2,609.85,2,Loyal Customers
 14638,51,1,443.6,1,At Risk Customers
-14639,52,6,2984.4900000000002,3,Regular Customers
+14639,52,6,2984.49,3,Regular Customers
 14640,24,6,2107.38,3,Regular Customers
 14641,22,1,110.46000000000001,2,Loyal Customers
-14642,59,1,96.12,1,At Risk Customers
-14643,170,2,693.8100000000001,1,At Risk Customers
+14642,59,1,96.11999999999999,1,At Risk Customers
+14643,170,2,693.81,1,At Risk Customers
 14644,68,2,830.76,3,Regular Customers
 14645,157,2,597.09,1,At Risk Customers
 14646,2,73,280206.02,0,VIP Customers
-14647,201,1,236.04000000000002,1,At Risk Customers
+14647,201,1,236.04,1,At Risk Customers
 14649,5,4,1402.59,2,Loyal Customers
 14651,67,2,653.75,3,Regular Customers
 14652,77,1,114.18,1,At Risk Customers
@@ -1708,17 +1708,17 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14667,11,25,9175.04,0,VIP Customers
 14669,242,3,1259.24,3,Regular Customers
 14670,280,2,392.86,1,At Risk Customers
-14672,235,2,765.5500000000001,1,At Risk Customers
+14672,235,2,765.55,1,At Risk Customers
 14673,3,5,1736.4,0,VIP Customers
 14675,16,1,596.36,2,Loyal Customers
-14676,31,6,2548.2400000000002,3,Regular Customers
+14676,31,6,2548.24,3,Regular Customers
 14680,25,16,28754.11,0,VIP Customers
 14681,71,3,498.95,3,Regular Customers
 14682,188,2,52.0,1,At Risk Customers
 14684,26,5,1201.51,3,Regular Customers
 14687,107,1,628.38,1,At Risk Customers
 14688,8,21,5579.1,0,VIP Customers
-14689,209,1,112.80000000000001,1,At Risk Customers
+14689,209,1,112.8,1,At Risk Customers
 14690,44,2,355.05,2,Loyal Customers
 14691,31,5,2114.33,3,Regular Customers
 14692,137,4,591.55,3,Regular Customers
@@ -1726,7 +1726,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14696,4,7,2078.95,0,VIP Customers
 14697,218,2,188.61,1,At Risk Customers
 14698,2,5,1217.27,0,VIP Customers
-14699,214,1,109.13000000000001,1,At Risk Customers
+14699,214,1,109.13,1,At Risk Customers
 14700,32,3,2195.1,3,Regular Customers
 14701,11,9,2526.09,0,VIP Customers
 14702,1,17,3251.79,0,VIP Customers
@@ -1737,7 +1737,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14709,15,13,4921.04,0,VIP Customers
 14710,14,4,599.48,2,Loyal Customers
 14711,10,11,2839.62,0,VIP Customers
-14712,29,3,917.07,3,Regular Customers
+14712,29,3,917.0699999999999,3,Regular Customers
 14713,9,11,2662.2,0,VIP Customers
 14714,24,1,160.19,2,Loyal Customers
 14715,25,4,867.38,3,Regular Customers
@@ -1751,19 +1751,19 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14729,374,1,313.49,1,At Risk Customers
 14730,1,8,1897.57,0,VIP Customers
 14731,47,3,380.02,2,Loyal Customers
-14732,8,8,2702.4900000000002,0,VIP Customers
+14732,8,8,2702.49,0,VIP Customers
 14733,16,12,9585.91,0,VIP Customers
-14735,4,32,6065.6900000000005,0,VIP Customers
+14735,4,32,6065.69,0,VIP Customers
 14737,4,3,1164.55,2,Loyal Customers
 14738,43,7,1314.45,3,Regular Customers
 14739,4,7,3902.28,0,VIP Customers
 14740,197,3,1448.21,3,Regular Customers
-14741,12,6,1400.3400000000001,0,VIP Customers
+14741,12,6,1400.34,0,VIP Customers
 14744,16,7,1099.98,3,Regular Customers
 14745,113,5,1220.26,3,Regular Customers
 14747,249,1,328.2,1,At Risk Customers
 14748,29,5,1415.75,3,Regular Customers
-14752,44,1,389.64000000000004,1,At Risk Customers
+14752,44,1,389.64,1,At Risk Customers
 14753,87,1,563.15,1,At Risk Customers
 14754,45,2,638.05,2,Loyal Customers
 14755,10,11,5010.28,0,VIP Customers
@@ -1777,16 +1777,16 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14764,47,1,278.3,1,At Risk Customers
 14765,29,3,254.11,2,Loyal Customers
 14766,8,6,2473.37,0,VIP Customers
-14768,17,2,192.60000000000002,2,Loyal Customers
+14768,17,2,192.6,2,Loyal Customers
 14769,3,8,10416.98,0,VIP Customers
-14770,232,2,876.4200000000001,1,At Risk Customers
+14770,232,2,876.42,1,At Risk Customers
 14772,112,1,139.26,1,At Risk Customers
 14775,58,3,1011.9,3,Regular Customers
 14776,51,11,2538.2999999999997,0,VIP Customers
 14778,127,2,730.86,1,At Risk Customers
 14779,281,3,386.15,1,At Risk Customers
 14780,55,2,447.68,1,At Risk Customers
-14782,320,1,200.10000000000002,1,At Risk Customers
+14782,320,1,200.1,1,At Risk Customers
 14784,26,2,289.99,2,Loyal Customers
 14785,10,2,77.4,2,Loyal Customers
 14788,7,2,679.44,2,Loyal Customers
@@ -1804,7 +1804,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14803,162,3,845.5500000000001,3,Regular Customers
 14804,9,1,353.27,2,Loyal Customers
 14805,15,4,546.4,2,Loyal Customers
-14806,75,1,193.39000000000001,1,At Risk Customers
+14806,75,1,193.39,1,At Risk Customers
 14808,40,8,2718.6,3,Regular Customers
 14810,41,11,2085.33,0,VIP Customers
 14813,370,2,152.88,1,At Risk Customers
@@ -1814,7 +1814,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14818,74,3,657.8,3,Regular Customers
 14819,64,2,272.07,1,At Risk Customers
 14820,21,4,507.29,2,Loyal Customers
-14821,367,1,48.800000000000004,1,At Risk Customers
+14821,367,1,48.8,1,At Risk Customers
 14823,180,3,321.43,1,At Risk Customers
 14824,10,4,1127.71,2,Loyal Customers
 14825,4,12,2221.01,0,VIP Customers
@@ -1828,7 +1828,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14841,53,6,3295.76,3,Regular Customers
 14842,44,4,2824.69,3,Regular Customers
 14844,64,4,3189.81,3,Regular Customers
-14847,149,1,309.40000000000003,1,At Risk Customers
+14847,149,1,309.4,1,At Risk Customers
 14849,22,25,7930.54,0,VIP Customers
 14850,312,1,325.75,1,At Risk Customers
 14851,23,2,511.35,2,Loyal Customers
@@ -1837,10 +1837,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14854,78,7,2740.03,3,Regular Customers
 14855,119,2,645.65,1,At Risk Customers
 14856,36,3,1290.53,3,Regular Customers
-14857,60,2,1173.1200000000001,3,Regular Customers
+14857,60,2,1173.12,3,Regular Customers
 14859,13,4,1353.74,3,Regular Customers
 14860,19,1,170.32,2,Loyal Customers
-14861,52,1,125.79,1,At Risk Customers
+14861,52,1,125.78999999999999,1,At Risk Customers
 14862,26,2,841.2,2,Loyal Customers
 14863,29,1,266.76,2,Loyal Customers
 14865,7,2,52.2,2,Loyal Customers
@@ -1864,10 +1864,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14889,336,1,135.9,1,At Risk Customers
 14890,254,1,125.65,1,At Risk Customers
 14891,148,2,554.38,1,At Risk Customers
-14893,10,2,1237.8500000000001,2,Loyal Customers
+14893,10,2,1237.85,2,Loyal Customers
 14894,85,1,655.75,1,At Risk Customers
-14895,8,20,11138.710000000001,0,VIP Customers
-14896,205,2,468.77000000000004,1,At Risk Customers
+14895,8,20,11138.71,0,VIP Customers
+14896,205,2,468.77,1,At Risk Customers
 14897,8,4,1366.38,2,Loyal Customers
 14898,23,6,1269.31,3,Regular Customers
 14901,11,9,1421.29,0,VIP Customers
@@ -1930,8 +1930,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 14985,198,2,292.01,1,At Risk Customers
 14987,16,2,326.4,2,Loyal Customers
 14988,212,1,334.54,1,At Risk Customers
-14995,39,2,231.98000000000002,2,Loyal Customers
-14997,46,3,546.1999999999999,3,Regular Customers
+14995,39,2,231.98,2,Loyal Customers
+14997,46,3,546.2,3,Regular Customers
 14998,170,2,414.87,1,At Risk Customers
 15000,48,1,490.52,1,At Risk Customers
 15002,116,4,1641.76,3,Regular Customers
@@ -1953,14 +1953,14 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15024,10,10,1636.43,0,VIP Customers
 15025,33,1,361.96,2,Loyal Customers
 15026,80,3,469.0,3,Regular Customers
-15027,31,4,1066.15,3,Regular Customers
+15027,31,4,1066.1499999999999,3,Regular Customers
 15028,8,4,627.13,2,Loyal Customers
 15030,72,2,518.28,1,At Risk Customers
 15031,4,4,653.19,2,Loyal Customers
 15032,256,3,4959.1,3,Regular Customers
 15033,5,10,2557.18,0,VIP Customers
 15034,16,8,4274.16,0,VIP Customers
-15035,90,1,252.73000000000002,1,At Risk Customers
+15035,90,1,252.73,1,At Risk Customers
 15036,72,3,429.56,3,Regular Customers
 15038,59,6,685.74,3,Regular Customers
 15039,10,47,19766.59,0,VIP Customers
@@ -2007,8 +2007,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15091,68,1,480.71,1,At Risk Customers
 15092,215,2,457.81,1,At Risk Customers
 15093,18,6,4597.02,0,VIP Customers
-15095,104,4,1370.6000000000001,3,Regular Customers
-15096,43,1,219.39000000000001,1,At Risk Customers
+15095,104,4,1370.6,3,Regular Customers
+15096,43,1,219.39,1,At Risk Customers
 15097,4,1,248.08,2,Loyal Customers
 15098,182,3,39916.5,3,Regular Customers
 15099,84,1,410.48,1,At Risk Customers
@@ -2036,7 +2036,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15123,7,2,2199.31,2,Loyal Customers
 15124,23,2,184.19,2,Loyal Customers
 15125,25,15,11528.48,0,VIP Customers
-15127,66,1,406.53000000000003,1,At Risk Customers
+15127,66,1,406.53,1,At Risk Customers
 15128,60,4,1471.0,3,Regular Customers
 15129,50,11,3447.4,0,VIP Customers
 15130,170,1,330.11,1,At Risk Customers
@@ -2045,16 +2045,16 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15134,15,8,1387.99,0,VIP Customers
 15135,239,1,139.05,1,At Risk Customers
 15136,3,4,1286.7,2,Loyal Customers
-15139,240,2,178.96,1,At Risk Customers
+15139,240,2,178.95999999999998,1,At Risk Customers
 15140,52,7,2354.25,3,Regular Customers
 15142,46,1,498.74,1,At Risk Customers
 15143,226,1,259.45,1,At Risk Customers
-15144,8,17,6580.4400000000005,0,VIP Customers
+15144,8,17,6580.44,0,VIP Customers
 15145,4,4,1194.73,2,Loyal Customers
 15146,165,2,1327.16,3,Regular Customers
 15147,240,1,623.5,1,At Risk Customers
 15148,11,1,301.29,2,Loyal Customers
-15149,134,1,520.8000000000001,1,At Risk Customers
+15149,134,1,520.8,1,At Risk Customers
 15150,17,10,5291.33,0,VIP Customers
 15152,10,13,4745.69,0,VIP Customers
 15153,31,1,329.25,2,Loyal Customers
@@ -2062,9 +2062,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15156,1,3,961.49,2,Loyal Customers
 15157,4,3,1936.07,2,Loyal Customers
 15158,45,1,401.40000000000003,1,At Risk Customers
-15159,2,30,18641.010000000002,0,VIP Customers
+15159,2,30,18641.01,0,VIP Customers
 15160,357,1,158.16,1,At Risk Customers
-15163,18,2,304.47,2,Loyal Customers
+15163,18,2,304.46999999999997,2,Loyal Customers
 15164,69,3,824.58,3,Regular Customers
 15165,373,1,487.75,1,At Risk Customers
 15167,321,1,158.8,1,At Risk Customers
@@ -2074,13 +2074,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15174,323,1,135.75,1,At Risk Customers
 15175,72,1,224.14,1,At Risk Customers
 15178,260,1,40.5,1,At Risk Customers
-15179,18,5,2206.9500000000003,3,Regular Customers
+15179,18,5,2206.95,3,Regular Customers
 15180,367,1,87.5,1,At Risk Customers
 15181,66,3,689.48,3,Regular Customers
 15182,154,2,622.85,1,At Risk Customers
 15184,29,2,402.2,2,Loyal Customers
 15185,70,1,310.62,1,At Risk Customers
-15186,14,2,411.41,2,Loyal Customers
+15186,14,2,411.40999999999997,2,Loyal Customers
 15187,2,16,4777.18,0,VIP Customers
 15189,1,41,16225.39,0,VIP Customers
 15192,120,3,1044.32,3,Regular Customers
@@ -2097,11 +2097,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15206,10,4,420.3,2,Loyal Customers
 15208,1,5,870.12,2,Loyal Customers
 15210,225,1,331.18,1,At Risk Customers
-15211,60,2,894.4100000000001,3,Regular Customers
+15211,60,2,894.41,3,Regular Customers
 15212,241,1,101.8,1,At Risk Customers
-15213,319,2,328.35,1,At Risk Customers
+15213,319,2,328.34999999999997,1,At Risk Customers
 15214,2,8,1661.44,0,VIP Customers
-15215,47,3,734.94,3,Regular Customers
+15215,47,3,734.9399999999999,3,Regular Customers
 15216,88,1,96.6,1,At Risk Customers
 15218,11,11,5756.89,0,VIP Customers
 15219,176,1,305.75,1,At Risk Customers
@@ -2110,7 +2110,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15222,319,1,585.0,1,At Risk Customers
 15223,226,2,755.75,1,At Risk Customers
 15224,358,2,322.08,1,At Risk Customers
-15225,234,1,409.40000000000003,1,At Risk Customers
+15225,234,1,409.4,1,At Risk Customers
 15226,311,1,154.41,1,At Risk Customers
 15227,37,5,1219.4,3,Regular Customers
 15228,66,4,3386.71,3,Regular Customers
@@ -2125,14 +2125,14 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15240,45,5,1706.57,3,Regular Customers
 15241,67,8,1756.44,3,Regular Customers
 15243,74,1,316.68,1,At Risk Customers
-15244,65,2,631.57,3,Regular Customers
+15244,65,2,631.5699999999999,3,Regular Customers
 15245,134,3,2515.84,3,Regular Customers
 15246,238,2,514.15,1,At Risk Customers
 15247,122,1,356.0,1,At Risk Customers
 15249,32,13,6688.46,0,VIP Customers
 15251,9,11,10484.99,0,VIP Customers
 15252,36,2,740.78,2,Loyal Customers
-15253,16,5,918.2,3,Regular Customers
+15253,16,5,918.1999999999999,3,Regular Customers
 15254,127,1,300.36,1,At Risk Customers
 15255,67,1,890.85,1,At Risk Customers
 15256,149,1,98.45,1,At Risk Customers
@@ -2140,7 +2140,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15258,169,2,623.16,1,At Risk Customers
 15260,100,7,1810.77,3,Regular Customers
 15261,135,1,254.82,1,At Risk Customers
-15262,324,1,178.95000000000002,1,At Risk Customers
+15262,324,1,178.95,1,At Risk Customers
 15263,107,1,156.51,1,At Risk Customers
 15264,64,1,393.74,1,At Risk Customers
 15265,151,2,1506.1200000000001,3,Regular Customers
@@ -2150,10 +2150,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15270,16,7,2379.49,0,VIP Customers
 15271,7,15,2493.34,0,VIP Customers
 15272,57,2,721.94,3,Regular Customers
-15274,4,2,716.57,2,Loyal Customers
+15274,4,2,716.5699999999999,2,Loyal Customers
 15275,38,1,615.14,2,Loyal Customers
 15276,66,1,128.63,1,At Risk Customers
-15277,47,1,255.89999999999998,1,At Risk Customers
+15277,47,1,255.9,1,At Risk Customers
 15279,355,1,290.51,1,At Risk Customers
 15280,172,1,113.12,1,At Risk Customers
 15281,59,9,2332.15,3,Regular Customers
@@ -2172,13 +2172,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15301,51,12,5049.95,0,VIP Customers
 15303,290,1,574.02,1,At Risk Customers
 15304,61,8,694.4,3,Regular Customers
-15306,64,3,1174.3500000000001,3,Regular Customers
+15306,64,3,1174.35,3,Regular Customers
 15307,96,1,205.3,1,At Risk Customers
-15308,274,1,310.47,1,At Risk Customers
+15308,274,1,310.46999999999997,1,At Risk Customers
 15311,1,91,60632.75,0,VIP Customers
 15312,75,4,924.85,3,Regular Customers
 15313,110,1,52.0,1,At Risk Customers
-15314,199,1,327.97,1,At Risk Customers
+15314,199,1,327.96999999999997,1,At Risk Customers
 15315,64,2,570.5,1,At Risk Customers
 15316,327,1,165.0,1,At Risk Customers
 15318,4,1,312.62,2,Loyal Customers
@@ -2197,15 +2197,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15335,54,1,170.22,1,At Risk Customers
 15339,66,2,574.07,1,At Risk Customers
 15341,81,1,2020.52,3,Regular Customers
-15342,130,1,406.09000000000003,1,At Risk Customers
+15342,130,1,406.09,1,At Risk Customers
 15343,87,1,364.5,1,At Risk Customers
 15344,1,3,563.94,2,Loyal Customers
 15345,46,1,393.54,1,At Risk Customers
-15346,333,1,252.42000000000002,1,At Risk Customers
-15347,366,1,201.60000000000002,1,At Risk Customers
+15346,333,1,252.42,1,At Risk Customers
+15347,366,1,201.6,1,At Risk Customers
 15348,72,1,158.04,1,At Risk Customers
 15349,158,2,463.91,1,At Risk Customers
-15350,373,1,115.65,1,At Risk Customers
+15350,373,1,115.64999999999999,1,At Risk Customers
 15351,12,7,1934.66,0,VIP Customers
 15353,255,2,770.12,1,At Risk Customers
 15355,29,2,277.05,2,Loyal Customers
@@ -2217,8 +2217,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15364,96,2,913.19,3,Regular Customers
 15365,26,7,2314.32,3,Regular Customers
 15366,75,2,602.51,1,At Risk Customers
-15367,57,4,1877.5900000000001,3,Regular Customers
-15368,21,1,446.94000000000005,2,Loyal Customers
+15367,57,4,1877.59,3,Regular Customers
+15368,21,1,446.94,2,Loyal Customers
 15370,41,7,2386.05,3,Regular Customers
 15372,137,1,2007.4,3,Regular Customers
 15373,8,12,2415.91,0,VIP Customers
@@ -2244,13 +2244,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15400,92,5,716.2,3,Regular Customers
 15402,149,2,626.77,1,At Risk Customers
 15405,189,1,349.1,1,At Risk Customers
-15406,31,2,510.71000000000004,2,Loyal Customers
+15406,31,2,510.71,2,Loyal Customers
 15407,34,4,1046.74,3,Regular Customers
 15408,264,1,267.18,1,At Risk Customers
 15410,84,8,3450.84,3,Regular Customers
 15411,26,4,1348.93,3,Regular Customers
 15412,171,1,190.53,1,At Risk Customers
-15414,10,3,774.9000000000001,2,Loyal Customers
+15414,10,3,774.9,2,Loyal Customers
 15415,313,1,559.61,1,At Risk Customers
 15416,65,4,3984.32,3,Regular Customers
 15417,85,1,508.8,1,At Risk Customers
@@ -2263,7 +2263,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15427,33,3,1430.54,3,Regular Customers
 15428,15,1,93.78,2,Loyal Customers
 15429,27,2,397.35,2,Loyal Customers
-15432,23,1,171.19000000000003,2,Loyal Customers
+15432,23,1,171.19,2,Loyal Customers
 15433,214,2,533.3,1,At Risk Customers
 15434,8,5,1041.48,2,Loyal Customers
 15435,22,1,149.29,2,Loyal Customers
@@ -2275,7 +2275,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15443,2,7,3213.59,0,VIP Customers
 15444,9,2,1411.21,2,Loyal Customers
 15445,264,1,113.5,1,At Risk Customers
-15447,331,1,155.17000000000002,1,At Risk Customers
+15447,331,1,155.17,1,At Risk Customers
 15448,313,1,494.64,1,At Risk Customers
 15449,26,3,974.52,3,Regular Customers
 15450,30,1,429.84,2,Loyal Customers
@@ -2304,7 +2304,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15483,161,4,225.26,1,At Risk Customers
 15484,1,4,3590.41,0,VIP Customers
 15485,30,3,2564.5,3,Regular Customers
-15488,93,1,91.32000000000001,1,At Risk Customers
+15488,93,1,91.32,1,At Risk Customers
 15489,23,3,1134.28,3,Regular Customers
 15491,95,6,3100.09,3,Regular Customers
 15492,28,2,659.46,2,Loyal Customers
@@ -2331,7 +2331,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15520,2,1,343.5,2,Loyal Customers
 15521,40,8,3000.2,3,Regular Customers
 15522,33,2,397.99,2,Loyal Customers
-15523,84,1,412.01000000000005,1,At Risk Customers
+15523,84,1,412.01,1,At Risk Customers
 15524,25,1,440.0,2,Loyal Customers
 15525,2,3,734.37,2,Loyal Customers
 15526,33,2,148.44,2,Loyal Customers
@@ -2346,10 +2346,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15537,163,1,110.92,1,At Risk Customers
 15539,7,1,538.46,2,Loyal Customers
 15540,11,1,213.3,2,Loyal Customers
-15541,114,1,85.13000000000001,1,At Risk Customers
+15541,114,1,85.13,1,At Risk Customers
 15543,288,1,127.86,1,At Risk Customers
 15544,9,9,3546.71,0,VIP Customers
-15545,54,2,288.96999999999997,1,At Risk Customers
+15545,54,2,288.97,1,At Risk Customers
 15547,7,14,4910.6,0,VIP Customers
 15549,77,3,1681.46,3,Regular Customers
 15550,4,4,575.63,2,Loyal Customers
@@ -2359,11 +2359,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15554,278,1,217.2,1,At Risk Customers
 15555,12,16,4794.86,0,VIP Customers
 15556,24,1,279.77,2,Loyal Customers
-15557,29,1,468.91,2,Loyal Customers
-15561,12,4,800.5899999999999,2,Loyal Customers
+15557,29,1,468.90999999999997,2,Loyal Customers
+15561,12,4,800.59,2,Loyal Customers
 15562,352,1,134.55,1,At Risk Customers
 15563,22,4,1400.44,3,Regular Customers
-15565,50,2,173.16000000000003,1,At Risk Customers
+15565,50,2,173.16,1,At Risk Customers
 15567,19,1,186.01,2,Loyal Customers
 15568,3,3,758.29,2,Loyal Customers
 15569,104,5,1375.71,3,Regular Customers
@@ -2377,7 +2377,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15578,162,1,127.1,1,At Risk Customers
 15579,69,2,327.6,1,At Risk Customers
 15581,121,13,3675.77,3,Regular Customers
-15582,25,3,682.9100000000001,2,Loyal Customers
+15582,25,3,682.91,2,Loyal Customers
 15584,24,4,720.86,3,Regular Customers
 15585,177,1,455.3,1,At Risk Customers
 15587,50,4,913.68,3,Regular Customers
@@ -2390,19 +2390,19 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15598,53,1,240.68,1,At Risk Customers
 15599,27,2,761.74,2,Loyal Customers
 15601,11,14,6776.56,0,VIP Customers
-15602,8,9,1297.8700000000001,0,VIP Customers
+15602,8,9,1297.87,0,VIP Customers
 15603,79,1,48.480000000000004,1,At Risk Customers
-15604,52,1,216.39000000000001,1,At Risk Customers
+15604,52,1,216.39,1,At Risk Customers
 15605,36,5,1198.23,3,Regular Customers
 15606,61,9,2920.16,3,Regular Customers
-15607,337,1,104.76,1,At Risk Customers
+15607,337,1,104.75999999999999,1,At Risk Customers
 15608,28,4,1093.68,3,Regular Customers
 15609,184,1,298.48,1,At Risk Customers
 15610,52,1,112.46000000000001,1,At Risk Customers
 15611,10,13,1591.45,0,VIP Customers
 15612,36,2,195.15,2,Loyal Customers
 15615,10,23,10399.74,0,VIP Customers
-15618,33,4,776.851,3,Regular Customers
+15618,33,4,776.85,3,Regular Customers
 15619,11,1,336.4,2,Loyal Customers
 15620,57,3,1553.18,3,Regular Customers
 15621,4,4,1293.03,2,Loyal Customers
@@ -2411,7 +2411,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15624,117,4,588.13,3,Regular Customers
 15625,104,4,1534.26,3,Regular Customers
 15626,75,2,675.8,3,Regular Customers
-15628,5,9,2870.2400000000002,0,VIP Customers
+15628,5,9,2870.24,0,VIP Customers
 15630,45,2,1186.35,3,Regular Customers
 15632,16,8,3285.31,0,VIP Customers
 15634,17,1,243.55,2,Loyal Customers
@@ -2423,32 +2423,32 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15643,192,3,664.0,1,At Risk Customers
 15644,166,4,803.54,3,Regular Customers
 15645,19,1,612.01,2,Loyal Customers
-15646,158,3,447.64000000000004,1,At Risk Customers
+15646,158,3,447.64,1,At Risk Customers
 15648,204,2,639.5,1,At Risk Customers
 15649,336,2,816.0,1,At Risk Customers
-15651,37,3,646.3,3,Regular Customers
+15651,37,3,646.3000000000001,3,Regular Customers
 15652,91,1,337.74,1,At Risk Customers
 15653,93,2,877.44,3,Regular Customers
 15654,9,2,922.53,2,Loyal Customers
-15655,243,1,560.6700000000001,1,At Risk Customers
+15655,243,1,560.67,1,At Risk Customers
 15656,45,4,748.5,3,Regular Customers
 15657,23,1,30.0,1,At Risk Customers
-15658,190,5,1024.1000000000001,3,Regular Customers
+15658,190,5,1024.1,3,Regular Customers
 15659,44,1,306.45,1,At Risk Customers
 15660,25,9,1600.86,0,VIP Customers
 15661,317,2,309.8,1,At Risk Customers
 15663,106,1,138.14,1,At Risk Customers
 15664,51,1,386.43,1,At Risk Customers
 15665,168,2,2222.21,3,Regular Customers
-15667,40,1,301.32000000000005,1,At Risk Customers
-15668,218,1,76.32000000000001,1,At Risk Customers
+15667,40,1,301.32,1,At Risk Customers
+15668,218,1,76.32,1,At Risk Customers
 15669,40,4,684.34,3,Regular Customers
 15670,297,1,173.05,1,At Risk Customers
 15671,19,7,2657.13,0,VIP Customers
 15673,88,4,2726.23,3,Regular Customers
 15674,73,5,2446.6,3,Regular Customers
 15675,81,3,323.69,1,At Risk Customers
-15676,19,3,3435.76,3,Regular Customers
+15676,19,3,3435.7599999999998,3,Regular Customers
 15677,49,1,657.23,1,At Risk Customers
 15678,53,1,352.7,1,At Risk Customers
 15679,24,4,781.28,3,Regular Customers
@@ -2473,14 +2473,14 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15707,35,4,916.98,3,Regular Customers
 15708,41,7,3235.25,3,Regular Customers
 15709,284,1,133.25,1,At Risk Customers
-15712,9,5,1072.3600000000001,2,Loyal Customers
+15712,9,5,1072.36,2,Loyal Customers
 15713,143,2,356.7,1,At Risk Customers
-15714,12,2,330.03000000000003,2,Loyal Customers
+15714,12,2,330.03,2,Loyal Customers
 15716,146,4,1101.11,3,Regular Customers
 15717,234,1,150.3,1,At Risk Customers
 15719,33,13,5030.07,0,VIP Customers
 15720,24,1,598.73,2,Loyal Customers
-15721,12,1,471.40000000000003,2,Loyal Customers
+15721,12,1,471.4,2,Loyal Customers
 15722,36,5,2211.21,3,Regular Customers
 15723,365,1,190.70000000000002,1,At Risk Customers
 15724,201,2,218.25,1,At Risk Customers
@@ -2491,13 +2491,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15732,212,2,294.12,1,At Risk Customers
 15733,283,1,162.3,1,At Risk Customers
 15734,115,2,1339.45,3,Regular Customers
-15737,15,8,1188.1200000000001,0,VIP Customers
+15737,15,8,1188.12,0,VIP Customers
 15738,19,16,4812.42,0,VIP Customers
 15739,66,1,449.12,1,At Risk Customers
 15740,49,1,154.88,1,At Risk Customers
 15743,16,4,775.96,2,Loyal Customers
 15744,78,1,34.8,1,At Risk Customers
-15745,19,4,1094.5900000000001,3,Regular Customers
+15745,19,4,1094.59,3,Regular Customers
 15746,134,1,196.88,1,At Risk Customers
 15747,13,3,946.64,2,Loyal Customers
 15748,40,1,144.36,1,At Risk Customers
@@ -2510,10 +2510,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15756,61,4,528.01,3,Regular Customers
 15757,66,2,714.42,3,Regular Customers
 15758,25,1,205.25,2,Loyal Customers
-15759,218,3,253.04000000000002,1,At Risk Customers
+15759,218,3,253.04,1,At Risk Customers
 15762,65,2,583.75,1,At Risk Customers
 15763,32,2,1086.92,3,Regular Customers
-15764,88,6,3279.9700000000003,3,Regular Customers
+15764,88,6,3279.97,3,Regular Customers
 15766,64,1,315.06,1,At Risk Customers
 15768,116,3,621.83,3,Regular Customers
 15769,7,26,56252.72,0,VIP Customers
@@ -2523,7 +2523,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15776,133,1,241.62,1,At Risk Customers
 15777,241,4,1047.1100000000001,3,Regular Customers
 15780,184,3,475.28000000000003,1,At Risk Customers
-15781,25,3,345.46000000000004,2,Loyal Customers
+15781,25,3,345.46,2,Loyal Customers
 15782,10,3,2614.74,3,Regular Customers
 15783,11,1,246.3,2,Loyal Customers
 15785,33,5,2328.9700000000003,3,Regular Customers
@@ -2540,7 +2540,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15800,107,2,696.89,1,At Risk Customers
 15801,46,3,1063.95,3,Regular Customers
 15802,143,1,451.42,1,At Risk Customers
-15803,51,1,415.82000000000005,1,At Risk Customers
+15803,51,1,415.82,1,At Risk Customers
 15804,1,13,4206.39,0,VIP Customers
 15805,23,17,5488.18,0,VIP Customers
 15806,46,3,784.58,3,Regular Customers
@@ -2551,7 +2551,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15811,22,6,2218.62,3,Regular Customers
 15812,107,5,1801.14,3,Regular Customers
 15813,208,2,1303.9099999999999,3,Regular Customers
-15814,17,4,1945.3300000000002,3,Regular Customers
+15814,17,4,1945.33,3,Regular Customers
 15815,64,5,2100.6,3,Regular Customers
 15819,49,4,1905.45,3,Regular Customers
 15820,320,1,206.98,1,At Risk Customers
@@ -2574,7 +2574,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15840,59,2,355.56,1,At Risk Customers
 15841,73,4,1224.06,3,Regular Customers
 15843,304,1,118.95,1,At Risk Customers
-15844,46,1,130.73999999999998,1,At Risk Customers
+15844,46,1,130.74,1,At Risk Customers
 15845,18,8,3711.77,0,VIP Customers
 15847,38,2,389.27,2,Loyal Customers
 15850,19,2,234.88,2,Loyal Customers
@@ -2619,9 +2619,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15906,20,7,1567.69,3,Regular Customers
 15907,4,3,882.72,2,Loyal Customers
 15909,174,1,191.94,1,At Risk Customers
-15910,1,8,1228.88,0,VIP Customers
+15910,1,8,1228.8799999999999,0,VIP Customers
 15912,178,2,264.62,1,At Risk Customers
-15916,16,8,1502.8600000000001,0,VIP Customers
+15916,16,8,1502.86,0,VIP Customers
 15917,248,1,123.1,1,At Risk Customers
 15918,191,2,334.23,1,At Risk Customers
 15919,20,2,525.69,2,Loyal Customers
@@ -2634,16 +2634,16 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15932,4,8,2495.87,0,VIP Customers
 15933,21,3,1107.46,3,Regular Customers
 15935,239,2,416.86,1,At Risk Customers
-15937,64,1,145.35000000000002,1,At Risk Customers
-15938,112,5,404.58000000000004,3,Regular Customers
+15937,64,1,145.35,1,At Risk Customers
+15938,112,5,404.58,3,Regular Customers
 15939,90,15,6115.01,0,VIP Customers
 15940,311,1,35.8,1,At Risk Customers
 15942,134,1,337.44,1,At Risk Customers
-15944,277,1,325.1,1,At Risk Customers
+15944,277,1,325.09999999999997,1,At Risk Customers
 15945,365,1,181.0,1,At Risk Customers
 15947,83,1,1708.24,3,Regular Customers
 15948,8,2,955.24,2,Loyal Customers
-15949,17,2,364.72,2,Loyal Customers
+15949,17,2,364.71999999999997,2,Loyal Customers
 15950,32,4,1744.71,3,Regular Customers
 15951,9,2,708.22,2,Loyal Customers
 15952,34,4,781.91,3,Regular Customers
@@ -2657,7 +2657,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 15969,3,3,666.1,2,Loyal Customers
 15970,304,1,314.09999999999997,1,At Risk Customers
 15971,18,12,4199.85,0,VIP Customers
-15973,367,1,307.82000000000005,1,At Risk Customers
+15973,367,1,307.82,1,At Risk Customers
 15974,39,7,3442.15,3,Regular Customers
 15975,84,1,371.01,1,At Risk Customers
 15976,165,2,427.64,1,At Risk Customers
@@ -2747,21 +2747,21 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16094,12,4,1078.23,2,Loyal Customers
 16096,264,1,320.62,1,At Risk Customers
 16097,240,1,185.04999999999998,1,At Risk Customers
-16098,88,7,2005.63,3,Regular Customers
+16098,88,7,2005.6299999999999,3,Regular Customers
 16099,50,3,731.9,3,Regular Customers
 16101,71,1,1290.7,3,Regular Customers
-16102,42,3,1842.14,3,Regular Customers
+16102,42,3,1842.1399999999999,3,Regular Customers
 16103,7,6,1429.64,0,VIP Customers
 16104,62,1,298.21,1,At Risk Customers
 16105,249,1,336.96,1,At Risk Customers
 16106,66,1,108.38,1,At Risk Customers
-16107,18,7,3204.1600000000003,0,VIP Customers
+16107,18,7,3204.16,0,VIP Customers
 16108,85,1,842.5,1,At Risk Customers
 16109,219,2,611.88,1,At Risk Customers
 16110,45,3,1320.95,3,Regular Customers
 16112,143,4,195.74,1,At Risk Customers
 16113,183,1,161.38,1,At Risk Customers
-16114,171,1,135.75000000000003,1,At Risk Customers
+16114,171,1,135.75,1,At Risk Customers
 16115,10,8,1660.8799999999999,0,VIP Customers
 16116,212,1,612.78,1,At Risk Customers
 16117,190,1,232.21,1,At Risk Customers
@@ -2769,33 +2769,33 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16120,59,4,1309.14,3,Regular Customers
 16121,57,2,854.66,3,Regular Customers
 16122,73,4,684.42,3,Regular Customers
-16123,52,1,307.78000000000003,1,At Risk Customers
+16123,52,1,307.78,1,At Risk Customers
 16124,317,1,249.0,1,At Risk Customers
 16125,367,1,289.35,1,At Risk Customers
 16126,29,4,6287.77,3,Regular Customers
 16127,39,1,656.25,2,Loyal Customers
 16128,18,5,1880.22,3,Regular Customers
 16131,52,6,3506.54,3,Regular Customers
-16133,4,33,14589.04,0,VIP Customers
+16133,4,33,14589.039999999999,0,VIP Customers
 16134,22,2,618.09,2,Loyal Customers
 16135,263,1,517.55,1,At Risk Customers
 16136,60,3,709.38,3,Regular Customers
-16139,19,3,635.4100000000001,2,Loyal Customers
-16140,66,2,725.1800000000001,3,Regular Customers
+16139,19,3,635.41,2,Loyal Customers
+16140,66,2,725.18,3,Regular Customers
 16141,88,1,620.4,1,At Risk Customers
 16142,250,1,535.34,1,At Risk Customers
 16143,3,6,2424.94,0,VIP Customers
 16144,247,1,175.2,1,At Risk Customers
-16145,9,11,3799.4900000000002,0,VIP Customers
+16145,9,11,3799.49,0,VIP Customers
 16146,157,3,734.13,3,Regular Customers
 16147,134,1,375.0,1,At Risk Customers
-16148,296,1,76.32000000000001,1,At Risk Customers
+16148,296,1,76.32,1,At Risk Customers
 16149,5,2,280.52,2,Loyal Customers
 16150,43,5,2053.02,3,Regular Customers
 16152,269,1,1829.04,1,At Risk Customers
 16153,50,5,1824.23,3,Regular Customers
 16156,9,9,3092.04,0,VIP Customers
-16157,16,3,656.69,2,Loyal Customers
+16157,16,3,656.6899999999999,2,Loyal Customers
 16159,282,1,348.2,1,At Risk Customers
 16160,65,2,1025.44,3,Regular Customers
 16161,2,19,5533.67,0,VIP Customers
@@ -2809,31 +2809,31 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16172,95,5,1140.21,3,Regular Customers
 16173,16,6,1418.32,3,Regular Customers
 16174,126,3,1009.55,3,Regular Customers
-16175,94,4,1037.5900000000001,3,Regular Customers
+16175,94,4,1037.59,3,Regular Customers
 16177,50,1,331.95,1,At Risk Customers
-16178,138,1,197.9,1,At Risk Customers
+16178,138,1,197.89999999999998,1,At Risk Customers
 16179,61,1,215.83,1,At Risk Customers
 16180,100,8,10254.18,3,Regular Customers
-16181,73,1,305.54,1,At Risk Customers
+16181,73,1,305.53999999999996,1,At Risk Customers
 16182,72,4,6617.65,3,Regular Customers
 16183,67,1,338.71000000000004,1,At Risk Customers
 16184,64,6,1158.79,3,Regular Customers
 16185,17,2,529.41,2,Loyal Customers
 16186,23,12,4006.94,0,VIP Customers
-16187,32,15,6911.4400000000005,0,VIP Customers
+16187,32,15,6911.44,0,VIP Customers
 16188,45,4,981.86,3,Regular Customers
 16189,16,2,215.48,2,Loyal Customers
-16190,40,1,215.08,1,At Risk Customers
-16191,3,13,5180.52,0,VIP Customers
+16190,40,1,215.07999999999998,1,At Risk Customers
+16191,3,13,5180.5199999999995,0,VIP Customers
 16193,237,1,314.45,1,At Risk Customers
-16198,75,1,400.68100000000004,1,At Risk Customers
-16200,4,2,1068.8700000000001,2,Loyal Customers
+16198,75,1,400.68,1,At Risk Customers
+16200,4,2,1068.87,2,Loyal Customers
 16201,3,4,1863.47,0,VIP Customers
 16202,361,1,365.27,1,At Risk Customers
 16203,59,4,592.9,3,Regular Customers
 16204,23,1,384.18,2,Loyal Customers
 16205,31,4,757.63,3,Regular Customers
-16206,55,4,537.0600000000001,3,Regular Customers
+16206,55,4,537.06,3,Regular Customers
 16207,25,1,394.38,2,Loyal Customers
 16208,45,2,664.26,2,Loyal Customers
 16209,89,5,2262.62,3,Regular Customers
@@ -2843,7 +2843,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16213,79,1,159.0,1,At Risk Customers
 16214,171,3,1062.75,3,Regular Customers
 16215,81,1,242.35,1,At Risk Customers
-16216,267,1,914.9300000000001,1,At Risk Customers
+16216,267,1,914.93,1,At Risk Customers
 16217,235,2,304.25,1,At Risk Customers
 16218,30,7,3084.68,3,Regular Customers
 16221,37,3,860.86,3,Regular Customers
@@ -2855,8 +2855,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16229,87,2,1010.6,3,Regular Customers
 16230,190,2,542.03,1,At Risk Customers
 16232,44,4,990.88,3,Regular Customers
-16233,71,3,536.6800000000001,3,Regular Customers
-16235,41,5,867.3100000000001,3,Regular Customers
+16233,71,3,536.68,3,Regular Customers
+16235,41,5,867.31,3,Regular Customers
 16236,78,1,432.2,1,At Risk Customers
 16239,57,2,414.2,1,At Risk Customers
 16240,24,2,3718.8,3,Regular Customers
@@ -2884,7 +2884,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16272,117,1,411.7,1,At Risk Customers
 16274,373,1,351.75,1,At Risk Customers
 16275,197,1,559.87,1,At Risk Customers
-16276,177,1,810.6,1,At Risk Customers
+16276,177,1,810.5999999999999,1,At Risk Customers
 16278,100,1,566.38,1,At Risk Customers
 16279,21,3,1502.78,3,Regular Customers
 16281,72,1,2062.06,3,Regular Customers
@@ -2893,7 +2893,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16284,31,2,812.68,2,Loyal Customers
 16287,170,1,142.5,1,At Risk Customers
 16292,122,1,302.25,1,At Risk Customers
-16293,22,10,2248.9900000000002,0,VIP Customers
+16293,22,10,2248.99,0,VIP Customers
 16295,10,4,1328.55,2,Loyal Customers
 16297,269,1,301.9,1,At Risk Customers
 16298,23,3,598.2,2,Loyal Customers
@@ -2902,21 +2902,21 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16305,139,1,361.22,1,At Risk Customers
 16306,214,6,632.27,3,Regular Customers
 16308,38,4,2560.0,3,Regular Customers
-16309,106,2,706.57,1,At Risk Customers
+16309,106,2,706.5699999999999,1,At Risk Customers
 16311,18,2,616.26,2,Loyal Customers
-16313,3,2,274.15000000000003,2,Loyal Customers
+16313,3,2,274.15,2,Loyal Customers
 16315,331,1,226.37,1,At Risk Customers
 16316,64,8,2938.91,3,Regular Customers
 16317,120,3,1341.65,3,Regular Customers
-16318,35,1,328.15000000000003,2,Loyal Customers
+16318,35,1,328.15,2,Loyal Customers
 16319,218,1,404.40000000000003,1,At Risk Customers
 16320,172,2,1038.46,3,Regular Customers
-16321,72,5,373.65000000000003,3,Regular Customers
+16321,72,5,373.65,3,Regular Customers
 16322,1,2,326.75,2,Loyal Customers
-16323,196,1,207.50000000000003,1,At Risk Customers
-16324,128,3,408.59000000000003,1,At Risk Customers
+16323,196,1,207.5,1,At Risk Customers
+16324,128,3,408.59,1,At Risk Customers
 16325,47,3,594.24,3,Regular Customers
-16326,6,14,3039.2200000000003,0,VIP Customers
+16326,6,14,3039.22,0,VIP Customers
 16327,14,6,3820.27,0,VIP Customers
 16330,18,3,251.91,2,Loyal Customers
 16332,28,7,1582.8,3,Regular Customers
@@ -2925,7 +2925,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16338,157,1,214.8,1,At Risk Customers
 16339,284,1,94.05,1,At Risk Customers
 16340,107,1,534.31,1,At Risk Customers
-16341,25,4,1971.8700000000001,3,Regular Customers
+16341,25,4,1971.87,3,Regular Customers
 16342,75,4,322.41,3,Regular Customers
 16343,16,2,328.58,2,Loyal Customers
 16344,158,1,101.10000000000001,1,At Risk Customers
@@ -2945,12 +2945,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16360,5,6,3450.41,0,VIP Customers
 16361,10,4,891.21,2,Loyal Customers
 16362,32,5,709.99,3,Regular Customers
-16363,53,1,109.36000000000001,1,At Risk Customers
+16363,53,1,109.36,1,At Risk Customers
 16364,12,2,705.79,2,Loyal Customers
 16365,18,9,1540.42,0,VIP Customers
 16366,19,1,327.3,2,Loyal Customers
 16367,37,2,800.67,2,Loyal Customers
-16368,2,2,479.91,2,Loyal Customers
+16368,2,2,479.90999999999997,2,Loyal Customers
 16369,18,3,1545.41,3,Regular Customers
 16370,82,4,1301.91,3,Regular Customers
 16372,33,2,355.73,2,Loyal Customers
@@ -2965,7 +2965,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16385,60,3,554.86,3,Regular Customers
 16386,29,2,302.57,2,Loyal Customers
 16387,323,1,94.36,1,At Risk Customers
-16389,53,4,1382.0700000000002,3,Regular Customers
+16389,53,4,1382.07,3,Regular Customers
 16392,270,1,217.89000000000001,1,At Risk Customers
 16393,2,13,3040.96,0,VIP Customers
 16394,57,5,1555.34,3,Regular Customers
@@ -2981,7 +2981,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16406,19,1,154.35,2,Loyal Customers
 16407,13,10,2079.68,0,VIP Customers
 16409,36,5,2022.98,3,Regular Customers
-16411,19,2,211.7,2,Loyal Customers
+16411,19,2,211.70000000000002,2,Loyal Customers
 16412,54,1,135.99,1,At Risk Customers
 16413,57,1,262.2,1,At Risk Customers
 16414,22,2,126.25,2,Loyal Customers
@@ -3012,7 +3012,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16448,198,1,182.99,1,At Risk Customers
 16449,198,2,707.69,1,At Risk Customers
 16450,150,1,311.92,1,At Risk Customers
-16451,88,1,266.97,1,At Risk Customers
+16451,88,1,266.96999999999997,1,At Risk Customers
 16454,45,2,6.9,1,At Risk Customers
 16455,64,7,1841.18,3,Regular Customers
 16456,99,5,2158.18,3,Regular Customers
@@ -3027,7 +3027,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16468,74,1,74.9,1,At Risk Customers
 16469,24,4,625.42,2,Loyal Customers
 16470,52,4,752.77,3,Regular Customers
-16471,275,1,223.95000000000002,1,At Risk Customers
+16471,275,1,223.95,1,At Risk Customers
 16473,165,3,316.11,1,At Risk Customers
 16474,7,7,1810.65,0,VIP Customers
 16475,88,4,544.3,3,Regular Customers
@@ -3041,7 +3041,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16485,77,1,363.65,1,At Risk Customers
 16488,33,3,498.8,2,Loyal Customers
 16491,47,1,731.5,2,Loyal Customers
-16493,80,4,1351.63,3,Regular Customers
+16493,80,4,1351.6299999999999,3,Regular Customers
 16494,297,1,826.53,1,At Risk Customers
 16495,3,3,648.26,2,Loyal Customers
 16496,9,3,1599.52,2,Loyal Customers
@@ -3051,9 +3051,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16500,5,6,400.86,2,Loyal Customers
 16503,107,4,1431.93,3,Regular Customers
 16504,25,1,465.88,2,Loyal Customers
-16505,32,1,777.6,2,Loyal Customers
-16506,20,2,90.30000000000001,2,Loyal Customers
-16509,297,1,363.70000000000005,1,At Risk Customers
+16505,32,1,777.5999999999999,2,Loyal Customers
+16506,20,2,90.3,2,Loyal Customers
+16509,297,1,363.7,1,At Risk Customers
 16510,372,1,248.1,1,At Risk Customers
 16511,22,3,918.33,2,Loyal Customers
 16513,5,4,874.59,2,Loyal Customers
@@ -3063,7 +3063,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16518,61,2,484.32,1,At Risk Customers
 16519,25,2,215.07999999999998,2,Loyal Customers
 16520,186,3,1046.57,3,Regular Customers
-16523,2,21,9418.470000000001,0,VIP Customers
+16523,2,21,9418.47,0,VIP Customers
 16525,2,26,13027.45,0,VIP Customers
 16526,172,1,290.36,1,At Risk Customers
 16527,81,1,228.06,1,At Risk Customers
@@ -3113,12 +3113,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16594,75,1,181.09,1,At Risk Customers
 16595,61,1,360.16,1,At Risk Customers
 16596,16,2,250.15,2,Loyal Customers
-16597,4,1,90.04,2,Loyal Customers
+16597,4,1,90.03999999999999,2,Loyal Customers
 16598,286,1,145.05,1,At Risk Customers
 16600,4,6,813.52,2,Loyal Customers
 16601,41,1,242.7,1,At Risk Customers
 16602,36,1,528.08,2,Loyal Customers
-16603,75,2,482.47,1,At Risk Customers
+16603,75,2,482.46999999999997,1,At Risk Customers
 16607,18,14,3347.71,0,VIP Customers
 16609,15,7,5493.46,0,VIP Customers
 16610,219,1,75.66,1,At Risk Customers
@@ -3132,7 +3132,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16619,264,1,226.21,1,At Risk Customers
 16620,4,2,178.96,2,Loyal Customers
 16621,52,4,813.48,3,Regular Customers
-16623,246,1,129.45000000000002,1,At Risk Customers
+16623,246,1,129.45,1,At Risk Customers
 16624,81,2,810.57,3,Regular Customers
 16625,275,1,333.08,1,At Risk Customers
 16626,1,17,4413.1,0,VIP Customers
@@ -3164,16 +3164,16 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16666,19,1,118.98,2,Loyal Customers
 16667,68,2,567.1800000000001,1,At Risk Customers
 16668,15,6,306.72,2,Loyal Customers
-16669,24,3,1348.88,3,Regular Customers
+16669,24,3,1348.8799999999999,3,Regular Customers
 16670,17,11,4095.9,0,VIP Customers
 16671,28,3,1692.27,3,Regular Customers
-16672,2,20,8134.9400000000005,0,VIP Customers
+16672,2,20,8134.94,0,VIP Customers
 16674,55,2,304.24,1,At Risk Customers
 16676,34,4,1592.12,3,Regular Customers
 16678,3,12,3109.99,0,VIP Customers
 16679,366,1,129.75,1,At Risk Customers
 16680,43,1,183.7,1,At Risk Customers
-16681,73,6,1770.3400000000001,3,Regular Customers
+16681,73,6,1770.34,3,Regular Customers
 16682,5,5,1028.0,2,Loyal Customers
 16684,4,28,66653.56,0,VIP Customers
 16685,61,2,324.24,1,At Risk Customers
@@ -3192,7 +3192,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16706,37,3,531.35,2,Loyal Customers
 16708,46,1,656.63,2,Loyal Customers
 16709,85,5,3029.87,3,Regular Customers
-16710,19,10,2467.9900000000002,0,VIP Customers
+16710,19,10,2467.99,0,VIP Customers
 16711,3,5,1651.03,0,VIP Customers
 16712,9,11,3611.31,0,VIP Customers
 16713,19,15,6910.78,0,VIP Customers
@@ -3200,7 +3200,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16715,78,1,301.71999999999997,1,At Risk Customers
 16716,267,2,901.2,1,At Risk Customers
 16717,24,6,3843.08,0,VIP Customers
-16718,369,1,606.0500000000001,1,At Risk Customers
+16718,369,1,606.05,1,At Risk Customers
 16719,15,7,1770.22,0,VIP Customers
 16720,26,1,152.95,2,Loyal Customers
 16721,262,1,292.47,1,At Risk Customers
@@ -3223,22 +3223,22 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16744,11,7,1291.91,0,VIP Customers
 16745,87,17,7180.7,0,VIP Customers
 16746,5,18,6680.11,0,VIP Customers
-16747,38,2,836.0600000000001,3,Regular Customers
+16747,38,2,836.06,3,Regular Customers
 16748,18,5,1515.9,3,Regular Customers
-16750,45,5,623.93,3,Regular Customers
+16750,45,5,623.9300000000001,3,Regular Customers
 16751,31,1,1764.72,3,Regular Customers
 16752,373,1,207.5,1,At Risk Customers
 16753,58,1,223.92000000000002,1,At Risk Customers
 16754,372,1,2002.4,1,At Risk Customers
 16755,114,3,1475.43,3,Regular Customers
 16756,215,1,239.4,1,At Risk Customers
-16757,319,1,106.83000000000001,1,At Risk Customers
-16758,65,1,369.34000000000003,1,At Risk Customers
+16757,319,1,106.83,1,At Risk Customers
+16758,65,1,369.34,1,At Risk Customers
 16759,8,3,789.79,2,Loyal Customers
 16761,97,1,316.62,1,At Risk Customers
 16762,20,3,1207.24,3,Regular Customers
-16763,199,1,611.8499999999999,1,At Risk Customers
-16764,4,13,2790.9500000000003,0,VIP Customers
+16763,199,1,611.85,1,At Risk Customers
+16764,4,13,2790.95,0,VIP Customers
 16765,294,1,34.0,1,At Risk Customers
 16766,273,2,1145.6,1,At Risk Customers
 16767,31,11,5575.56,0,VIP Customers
@@ -3255,10 +3255,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16779,2,22,10611.72,0,VIP Customers
 16780,100,2,422.24,1,At Risk Customers
 16781,372,1,311.25,1,At Risk Customers
-16782,10,13,2267.9500000000003,0,VIP Customers
+16782,10,13,2267.95,0,VIP Customers
 16784,20,1,107.6,2,Loyal Customers
 16788,123,2,594.39,1,At Risk Customers
-16789,8,1,80.80000000000001,2,Loyal Customers
+16789,8,1,80.8,2,Loyal Customers
 16790,4,6,1545.6200000000001,0,VIP Customers
 16791,29,7,1705.78,3,Regular Customers
 16792,282,2,110.38,1,At Risk Customers
@@ -3270,13 +3270,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16801,163,4,1594.23,3,Regular Customers
 16803,65,1,332.3,1,At Risk Customers
 16804,23,3,536.99,2,Loyal Customers
-16805,174,2,460.59000000000003,1,At Risk Customers
+16805,174,2,460.59,1,At Risk Customers
 16806,103,4,762.16,3,Regular Customers
 16807,143,3,1121.59,3,Regular Customers
 16808,99,2,288.42,1,At Risk Customers
 16809,23,5,914.69,3,Regular Customers
 16810,192,1,309.54,1,At Risk Customers
-16811,5,2,547.07,2,Loyal Customers
+16811,5,2,547.0699999999999,2,Loyal Customers
 16812,361,1,479.35,1,At Risk Customers
 16813,8,10,1652.18,0,VIP Customers
 16814,14,21,6416.7,0,VIP Customers
@@ -3306,12 +3306,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16847,43,1,193.44,1,At Risk Customers
 16848,53,1,281.42,1,At Risk Customers
 16849,187,1,124.57,1,At Risk Customers
-16850,334,1,332.41,1,At Risk Customers
+16850,334,1,332.40999999999997,1,At Risk Customers
 16851,4,3,342.45,2,Loyal Customers
 16852,10,2,144.91,2,Loyal Customers
-16855,24,2,328.40000000000003,2,Loyal Customers
-16856,15,1,35.400000000000006,2,Loyal Customers
-16858,369,1,375.69000000000005,1,At Risk Customers
+16855,24,2,328.4,2,Loyal Customers
+16856,15,1,35.4,2,Loyal Customers
+16858,369,1,375.69,1,At Risk Customers
 16859,145,2,747.81,1,At Risk Customers
 16861,60,2,173.76,1,At Risk Customers
 16863,31,2,502.8,2,Loyal Customers
@@ -3329,14 +3329,14 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16883,187,2,272.48,1,At Risk Customers
 16884,38,2,429.84,2,Loyal Customers
 16885,15,3,450.41,2,Loyal Customers
-16887,35,1,192.32999999999998,1,At Risk Customers
+16887,35,1,192.33,1,At Risk Customers
 16889,195,3,1578.67,3,Regular Customers
 16891,2,5,742.43,2,Loyal Customers
 16892,1,5,518.19,2,Loyal Customers
 16893,367,1,145.93,1,At Risk Customers
 16895,65,1,202.27,1,At Risk Customers
 16897,299,2,289.78,1,At Risk Customers
-16898,26,3,501.03000000000003,2,Loyal Customers
+16898,26,3,501.03,2,Loyal Customers
 16899,8,6,1271.06,0,VIP Customers
 16900,17,3,887.11,2,Loyal Customers
 16902,116,1,1706.88,3,Regular Customers
@@ -3350,7 +3350,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16912,29,11,2555.58,0,VIP Customers
 16913,290,1,113.44,1,At Risk Customers
 16914,36,1,183.76,1,At Risk Customers
-16915,9,6,621.6800000000001,2,Loyal Customers
+16915,9,6,621.68,2,Loyal Customers
 16916,24,2,562.41,2,Loyal Customers
 16917,277,1,391.52,1,At Risk Customers
 16918,50,6,1068.82,3,Regular Customers
@@ -3364,7 +3364,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16929,4,7,1295.39,0,VIP Customers
 16930,26,3,378.89,2,Loyal Customers
 16931,5,21,4554.87,0,VIP Customers
-16932,53,1,150.23000000000002,1,At Risk Customers
+16932,53,1,150.23,1,At Risk Customers
 16933,1,2,563.23,2,Loyal Customers
 16934,55,2,931.03,3,Regular Customers
 16936,26,1,261.9,2,Loyal Customers
@@ -3384,12 +3384,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 16955,185,4,518.67,3,Regular Customers
 16956,18,1,308.74,2,Loyal Customers
 16957,239,2,416.64,1,At Risk Customers
-16959,87,1,117.35000000000001,1,At Risk Customers
+16959,87,1,117.35,1,At Risk Customers
 16960,39,3,507.05,2,Loyal Customers
 16961,116,1,234.17000000000002,1,At Risk Customers
-16963,187,1,110.55000000000001,1,At Risk Customers
+16963,187,1,110.55,1,At Risk Customers
 16965,227,1,201.19,1,At Risk Customers
-16966,8,7,2154.97,0,VIP Customers
+16966,8,7,2154.9700000000003,0,VIP Customers
 16967,189,1,319.02,1,At Risk Customers
 16968,4,2,439.43,2,Loyal Customers
 16969,39,3,650.41,3,Regular Customers
@@ -3416,10 +3416,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17002,86,3,1493.73,3,Regular Customers
 17004,46,2,1312.1399999999999,3,Regular Customers
 17006,5,4,781.78,2,Loyal Customers
-17007,51,6,889.9300000000001,3,Regular Customers
+17007,51,6,889.93,3,Regular Customers
 17010,18,1,195.36,2,Loyal Customers
 17011,30,1,270.9,2,Loyal Customers
-17014,8,3,583.4300000000001,2,Loyal Customers
+17014,8,3,583.43,2,Loyal Customers
 17015,29,3,1838.61,3,Regular Customers
 17017,3,20,8694.26,0,VIP Customers
 17018,41,2,920.1,3,Regular Customers
@@ -3434,10 +3434,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17031,12,2,380.35,2,Loyal Customers
 17033,86,3,1030.14,3,Regular Customers
 17034,16,3,745.52,2,Loyal Customers
-17035,246,2,433.53000000000003,1,At Risk Customers
+17035,246,2,433.53,1,At Risk Customers
 17037,88,1,1267.32,1,At Risk Customers
 17038,30,1,112.4,2,Loyal Customers
-17040,138,1,449.73,1,At Risk Customers
+17040,138,1,449.72999999999996,1,At Risk Customers
 17041,27,3,1071.49,3,Regular Customers
 17042,3,5,1036.58,2,Loyal Customers
 17043,32,4,1735.18,3,Regular Customers
@@ -3454,25 +3454,25 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17054,28,5,1356.33,3,Regular Customers
 17058,82,3,1179.89,3,Regular Customers
 17059,30,5,3080.39,3,Regular Customers
-17060,266,1,234.24,1,At Risk Customers
-17061,74,11,5232.2300000000005,0,VIP Customers
+17060,266,1,234.23999999999998,1,At Risk Customers
+17061,74,11,5232.23,0,VIP Customers
 17062,314,4,533.33,1,At Risk Customers
 17063,21,7,1461.14,3,Regular Customers
-17064,59,3,855.45,3,Regular Customers
+17064,59,3,855.4499999999999,3,Regular Customers
 17068,12,21,4552.14,0,VIP Customers
-17069,28,9,2709.7000000000003,0,VIP Customers
+17069,28,9,2709.7,0,VIP Customers
 17070,114,1,304.24,1,At Risk Customers
 17071,28,9,2429.03,0,VIP Customers
 17073,18,4,1446.09,3,Regular Customers
 17075,18,4,834.12,2,Loyal Customers
-17076,36,3,841.0799999999999,3,Regular Customers
+17076,36,3,841.08,3,Regular Customers
 17078,36,2,378.2,2,Loyal Customers
-17079,78,1,118.80000000000001,1,At Risk Customers
+17079,78,1,118.8,1,At Risk Customers
 17080,22,2,287.62,2,Loyal Customers
 17081,25,2,288.91,2,Loyal Customers
-17082,33,2,2003.8500000000001,3,Regular Customers
+17082,33,2,2003.85,3,Regular Customers
 17083,109,3,1405.78,3,Regular Customers
-17084,35,2,2747.9900000000002,3,Regular Customers
+17084,35,2,2747.99,3,Regular Customers
 17085,123,5,1562.4,3,Regular Customers
 17086,7,6,2050.08,0,VIP Customers
 17088,28,4,1991.01,3,Regular Customers
@@ -3504,7 +3504,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17126,152,5,989.45,3,Regular Customers
 17128,335,1,157.09,1,At Risk Customers
 17131,5,5,2463.17,0,VIP Customers
-17133,16,7,4892.240000000001,0,VIP Customers
+17133,16,7,4892.24,0,VIP Customers
 17134,107,2,413.2,1,At Risk Customers
 17135,16,7,1139.73,3,Regular Customers
 17138,276,1,380.5,1,At Risk Customers
@@ -3537,7 +3537,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17176,202,1,306.13,1,At Risk Customers
 17179,178,3,711.79,3,Regular Customers
 17180,56,4,783.97,3,Regular Customers
-17181,57,2,239.92000000000002,1,At Risk Customers
+17181,57,2,239.92,1,At Risk Customers
 17183,8,6,3347.31,0,VIP Customers
 17186,47,2,144.0,1,At Risk Customers
 17187,227,1,203.95,1,At Risk Customers
@@ -3554,15 +3554,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17204,175,4,1564.56,3,Regular Customers
 17205,54,1,384.08,1,At Risk Customers
 17206,53,1,204.24,1,At Risk Customers
-17211,27,8,2317.2200000000003,0,VIP Customers
+17211,27,8,2317.22,0,VIP Customers
 17212,253,1,226.85,1,At Risk Customers
 17213,40,7,2781.23,3,Regular Customers
-17214,60,6,1059.1200000000001,3,Regular Customers
+17214,60,6,1059.12,3,Regular Customers
 17217,234,1,113.5,1,At Risk Customers
 17218,4,10,1951.97,0,VIP Customers
 17219,32,1,114.23,1,At Risk Customers
 17220,24,14,3187.55,0,VIP Customers
-17221,7,2,334.48,2,Loyal Customers
+17221,7,2,334.47999999999996,2,Loyal Customers
 17222,65,1,328.65,1,At Risk Customers
 17223,310,2,416.89,1,At Risk Customers
 17226,309,1,393.49,1,At Risk Customers
@@ -3574,7 +3574,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17232,3,2,417.77,2,Loyal Customers
 17233,35,1,190.88,1,At Risk Customers
 17234,183,1,149.89,1,At Risk Customers
-17235,25,2,550.0600000000001,2,Loyal Customers
+17235,25,2,550.06,2,Loyal Customers
 17236,13,6,916.13,3,Regular Customers
 17237,11,2,314.69,2,Loyal Customers
 17238,3,17,3719.1,0,VIP Customers
@@ -3583,7 +3583,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17243,1,26,8540.05,0,VIP Customers
 17244,53,1,954.9,1,At Risk Customers
 17245,205,1,171.45000000000002,1,At Risk Customers
-17247,15,1,280.09000000000003,2,Loyal Customers
+17247,15,1,280.09,2,Loyal Customers
 17248,120,1,318.65,1,At Risk Customers
 17250,4,2,381.97,2,Loyal Customers
 17251,363,1,269.83,1,At Risk Customers
@@ -3601,8 +3601,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17268,108,4,763.64,3,Regular Customers
 17272,42,4,2148.63,3,Regular Customers
 17274,35,1,107.82,1,At Risk Customers
-17277,228,2,1065.3500000000001,1,At Risk Customers
-17278,241,1,246.04000000000002,1,At Risk Customers
+17277,228,2,1065.35,1,At Risk Customers
+17278,241,1,246.04,1,At Risk Customers
 17279,58,1,187.82999999999998,1,At Risk Customers
 17282,130,3,1685.46,3,Regular Customers
 17284,60,6,1647.48,3,Regular Customers
@@ -3611,7 +3611,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17288,9,7,1417.6299999999999,0,VIP Customers
 17289,32,3,931.02,3,Regular Customers
 17290,4,2,513.01,2,Loyal Customers
-17291,308,1,550.8000000000001,1,At Risk Customers
+17291,308,1,550.8,1,At Risk Customers
 17293,8,9,1854.06,0,VIP Customers
 17295,29,3,547.0,2,Loyal Customers
 17297,17,1,128.18,2,Loyal Customers
@@ -3626,9 +3626,9 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17312,139,3,644.3,3,Regular Customers
 17313,31,1,2328.84,3,Regular Customers
 17314,25,8,2527.92,0,VIP Customers
-17315,2,38,6281.2300000000005,0,VIP Customers
+17315,2,38,6281.23,0,VIP Customers
 17317,46,3,2600.34,3,Regular Customers
-17320,100,3,1200.6200000000001,3,Regular Customers
+17320,100,3,1200.62,3,Regular Customers
 17321,8,2,657.16,2,Loyal Customers
 17323,15,7,906.52,3,Regular Customers
 17324,18,4,986.48,3,Regular Customers
@@ -3637,10 +3637,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17330,23,2,363.9,2,Loyal Customers
 17331,124,1,175.2,1,At Risk Customers
 17333,86,1,494.25,1,At Risk Customers
-17334,302,2,307.02000000000004,1,At Risk Customers
+17334,302,2,307.02,1,At Risk Customers
 17337,151,4,1981.06,3,Regular Customers
 17338,17,8,6493.54,0,VIP Customers
-17339,94,2,243.36,1,At Risk Customers
+17339,94,2,243.35999999999999,1,At Risk Customers
 17340,30,11,12353.29,0,VIP Customers
 17341,157,3,682.29,3,Regular Customers
 17343,355,1,193.64,1,At Risk Customers
@@ -3663,7 +3663,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17362,239,2,312.23,1,At Risk Customers
 17364,1,11,4462.68,0,VIP Customers
 17365,13,8,4767.36,0,VIP Customers
-17367,238,1,167.55,1,At Risk Customers
+17367,238,1,167.54999999999998,1,At Risk Customers
 17368,23,8,1878.87,0,VIP Customers
 17370,73,4,446.18,3,Regular Customers
 17371,17,3,418.4,2,Loyal Customers
@@ -3673,7 +3673,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17375,199,3,400.1,1,At Risk Customers
 17376,71,2,203.2,1,At Risk Customers
 17377,24,20,4058.32,0,VIP Customers
-17379,11,1,389.71999999999997,2,Loyal Customers
+17379,11,1,389.72,2,Loyal Customers
 17381,9,29,20275.61,0,VIP Customers
 17382,65,1,65.4,1,At Risk Customers
 17383,4,1,193.39000000000001,2,Loyal Customers
@@ -3685,7 +3685,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17389,1,34,31833.68,0,VIP Customers
 17391,164,2,508.8,1,At Risk Customers
 17392,307,2,417.27,1,At Risk Customers
-17394,219,1,203.86999999999998,1,At Risk Customers
+17394,219,1,203.87,1,At Risk Customers
 17396,39,8,7330.8,0,VIP Customers
 17397,22,2,681.41,2,Loyal Customers
 17398,115,3,653.38,3,Regular Customers
@@ -3698,12 +3698,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17408,163,1,32.65,1,At Risk Customers
 17409,185,2,771.85,1,At Risk Customers
 17410,16,5,1214.72,3,Regular Customers
-17411,12,3,778.94,2,Loyal Customers
+17411,12,3,778.9399999999999,2,Loyal Customers
 17412,3,7,1258.06,0,VIP Customers
 17414,44,2,778.0,3,Regular Customers
 17415,80,1,507.84,1,At Risk Customers
 17416,30,7,6893.42,0,VIP Customers
-17418,42,2,463.46000000000004,2,Loyal Customers
+17418,42,2,463.46,2,Loyal Customers
 17419,11,12,4226.57,0,VIP Customers
 17420,50,3,598.83,3,Regular Customers
 17422,16,6,1979.37,3,Regular Customers
@@ -3712,14 +3712,14 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17426,8,6,5037.26,0,VIP Customers
 17427,72,1,100.8,1,At Risk Customers
 17428,1,28,17256.85,0,VIP Customers
-17429,128,3,524.9200000000001,1,At Risk Customers
+17429,128,3,524.92,1,At Risk Customers
 17430,33,2,265.76,2,Loyal Customers
 17431,313,1,403.3,1,At Risk Customers
 17432,18,2,365.76,2,Loyal Customers
-17433,88,1,303.16,1,At Risk Customers
+17433,88,1,303.15999999999997,1,At Risk Customers
 17434,2,7,2373.82,0,VIP Customers
 17436,2,2,216.3,2,Loyal Customers
-17438,254,1,388.45000000000005,1,At Risk Customers
+17438,254,1,388.45,1,At Risk Customers
 17440,157,3,186.42000000000002,1,At Risk Customers
 17442,37,6,2248.56,3,Regular Customers
 17443,220,1,534.24,1,At Risk Customers
@@ -3728,18 +3728,18 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17447,40,2,541.53,2,Loyal Customers
 17449,2,7,2519.21,0,VIP Customers
 17450,8,46,194390.79,0,VIP Customers
-17451,1,7,1721.4,0,VIP Customers
+17451,1,7,1721.3999999999999,0,VIP Customers
 17453,18,2,486.72,2,Loyal Customers
 17454,192,4,517.53,3,Regular Customers
 17455,204,1,131.7,1,At Risk Customers
-17456,365,1,249.86,1,At Risk Customers
+17456,365,1,249.85999999999999,1,At Risk Customers
 17457,127,5,1737.7,3,Regular Customers
 17458,15,1,316.5,2,Loyal Customers
 17459,43,2,657.3,2,Loyal Customers
-17460,94,6,622.4300000000001,3,Regular Customers
+17460,94,6,622.43,3,Regular Customers
 17461,23,3,735.82,2,Loyal Customers
 17462,60,2,675.69,3,Regular Customers
-17463,16,5,1875.8600000000001,3,Regular Customers
+17463,16,5,1875.86,3,Regular Customers
 17464,158,1,289.96000000000004,1,At Risk Customers
 17466,10,2,763.28,2,Loyal Customers
 17468,10,2,137.0,2,Loyal Customers
@@ -3764,7 +3764,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17502,9,4,689.1,2,Loyal Customers
 17503,3,2,558.96,2,Loyal Customers
 17504,206,9,2997.03,3,Regular Customers
-17505,162,2,1145.8400000000001,3,Regular Customers
+17505,162,2,1145.84,3,Regular Customers
 17506,76,1,302.2,1,At Risk Customers
 17507,262,2,605.58,1,At Risk Customers
 17508,281,1,387.31,1,At Risk Customers
@@ -3784,7 +3784,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17523,11,4,652.74,2,Loyal Customers
 17524,361,1,145.0,1,At Risk Customers
 17525,360,1,422.7,1,At Risk Customers
-17526,5,4,1195.8999999999999,2,Loyal Customers
+17526,5,4,1195.9,2,Loyal Customers
 17527,54,4,939.37,3,Regular Customers
 17528,1,8,3628.5,0,VIP Customers
 17530,1,10,2367.12,0,VIP Customers
@@ -3792,7 +3792,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17534,54,1,223.36,1,At Risk Customers
 17535,280,1,164.4,1,At Risk Customers
 17536,177,1,76.5,1,At Risk Customers
-17537,30,2,887.6700000000001,2,Loyal Customers
+17537,30,2,887.67,2,Loyal Customers
 17538,26,1,98.42,2,Loyal Customers
 17540,25,2,578.9,2,Loyal Customers
 17542,270,1,170.75,1,At Risk Customers
@@ -3815,12 +3815,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17567,7,8,4331.48,0,VIP Customers
 17569,332,1,344.14,1,At Risk Customers
 17571,50,4,1425.67,3,Regular Customers
-17572,71,4,226.75000000000003,1,At Risk Customers
+17572,71,4,226.75,1,At Risk Customers
 17573,29,3,380.6,2,Loyal Customers
 17574,243,1,185.65,1,At Risk Customers
 17576,8,19,3564.83,0,VIP Customers
 17578,218,1,143.45999999999998,1,At Risk Customers
-17579,5,3,448.90000000000003,2,Loyal Customers
+17579,5,3,448.9,2,Loyal Customers
 17580,253,3,215.72,1,At Risk Customers
 17581,1,25,11025.24,0,VIP Customers
 17582,236,1,175.27,1,At Risk Customers
@@ -3831,11 +3831,11 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17590,2,3,1468.02,2,Loyal Customers
 17591,73,7,2203.67,3,Regular Customers
 17593,4,5,3923.86,0,VIP Customers
-17594,85,2,993.1800000000001,3,Regular Customers
+17594,85,2,993.18,3,Regular Customers
 17595,12,2,386.69,2,Loyal Customers
 17596,23,7,2806.69,0,VIP Customers
 17597,214,1,2044.3700000000001,3,Regular Customers
-17600,18,1,161.67000000000002,2,Loyal Customers
+17600,18,1,161.67,2,Loyal Customers
 17601,239,1,116.00999999999999,1,At Risk Customers
 17602,2,6,5054.42,0,VIP Customers
 17603,78,1,394.72,1,At Risk Customers
@@ -3856,13 +3856,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17624,15,2,843.48,2,Loyal Customers
 17625,18,4,2020.4,3,Regular Customers
 17628,81,1,75.75,1,At Risk Customers
-17629,6,8,1814.1200000000001,0,VIP Customers
+17629,6,8,1814.12,0,VIP Customers
 17630,170,2,503.6,1,At Risk Customers
 17631,2,3,528.33,2,Loyal Customers
 17633,31,4,1324.84,3,Regular Customers
 17634,36,9,2358.59,3,Regular Customers
 17636,19,1,285.56,2,Loyal Customers
-17637,31,2,547.0600000000001,2,Loyal Customers
+17637,31,2,547.06,2,Loyal Customers
 17639,276,1,108.5,1,At Risk Customers
 17640,87,1,621.66,1,At Risk Customers
 17642,120,2,712.29,1,At Risk Customers
@@ -3884,10 +3884,10 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17660,141,1,178.75,1,At Risk Customers
 17663,26,7,1802.91,3,Regular Customers
 17664,19,2,604.64,2,Loyal Customers
-17666,4,2,728.16,2,Loyal Customers
-17667,66,5,2055.51,3,Regular Customers
+17666,4,2,728.1600000000001,2,Loyal Customers
+17667,66,5,2055.5099999999998,3,Regular Customers
 17668,1,2,347.75,2,Loyal Customers
-17669,43,7,3406.7200000000003,3,Regular Customers
+17669,43,7,3406.72,3,Regular Customers
 17670,228,1,205.7,1,At Risk Customers
 17671,16,4,1572.71,3,Regular Customers
 17672,50,2,3178.17,3,Regular Customers
@@ -3904,8 +3904,8 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17685,17,7,3155.83,0,VIP Customers
 17686,7,7,5739.46,0,VIP Customers
 17690,30,15,4726.8,0,VIP Customers
-17691,358,2,290.40000000000003,1,At Risk Customers
-17692,127,4,740.94,3,Regular Customers
+17691,358,2,290.4,1,At Risk Customers
+17692,127,4,740.9399999999999,3,Regular Customers
 17693,137,1,200.47,1,At Risk Customers
 17694,142,1,283.12,1,At Risk Customers
 17695,132,2,765.34,1,At Risk Customers
@@ -3916,7 +3916,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17701,253,1,417.95,1,At Risk Customers
 17702,30,4,1824.37,3,Regular Customers
 17703,35,3,798.74,3,Regular Customers
-17704,169,2,885.19,1,At Risk Customers
+17704,169,2,885.1899999999999,1,At Risk Customers
 17705,3,9,1823.52,0,VIP Customers
 17706,4,17,10504.49,0,VIP Customers
 17707,185,2,152.4,1,At Risk Customers
@@ -3931,12 +3931,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17719,38,15,5396.04,0,VIP Customers
 17720,26,4,1195.94,3,Regular Customers
 17722,96,4,2424.04,3,Regular Customers
-17723,127,6,3276.4000000000005,3,Regular Customers
+17723,127,6,3276.4,3,Regular Customers
 17724,71,3,1033.0,3,Regular Customers
 17725,16,11,3439.08,0,VIP Customers
 17727,15,1,1060.25,2,Loyal Customers
-17728,4,3,2876.01,0,VIP Customers
-17730,3,13,5298.4800000000005,0,VIP Customers
+17728,4,3,2876.0099999999998,0,VIP Customers
+17730,3,13,5298.48,0,VIP Customers
 17731,79,4,1240.11,3,Regular Customers
 17732,373,1,303.97,1,At Risk Customers
 17733,39,2,692.19,2,Loyal Customers
@@ -3953,7 +3953,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17749,178,2,674.52,1,At Risk Customers
 17750,5,9,1710.45,0,VIP Customers
 17752,359,1,80.64,1,At Risk Customers
-17754,1,5,1664.6499999999999,0,VIP Customers
+17754,1,5,1664.65,0,VIP Customers
 17757,1,30,5593.39,0,VIP Customers
 17758,19,8,3408.2,0,VIP Customers
 17759,17,3,819.96,2,Loyal Customers
@@ -3970,7 +3970,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17772,11,2,173.45,2,Loyal Customers
 17774,97,4,1213.73,3,Regular Customers
 17775,255,1,56.4,1,At Risk Customers
-17777,25,3,647.56,2,Loyal Customers
+17777,25,3,647.5600000000001,2,Loyal Customers
 17779,21,3,650.32,2,Loyal Customers
 17781,159,2,188.02,1,At Risk Customers
 17783,72,2,283.47,1,At Risk Customers
@@ -4002,12 +4002,12 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17828,23,4,1820.09,3,Regular Customers
 17829,299,1,889.24,1,At Risk Customers
 17830,2,3,398.7,2,Loyal Customers
-17831,33,1,35.400000000000006,1,At Risk Customers
+17831,33,1,35.4,1,At Risk Customers
 17832,50,1,155.37,1,At Risk Customers
 17835,3,3,342.24,2,Loyal Customers
 17836,47,1,110.21000000000001,1,At Risk Customers
 17837,42,8,1541.23,3,Regular Customers
-17838,27,5,2720.8,3,Regular Customers
+17838,27,5,2720.7999999999997,3,Regular Customers
 17839,42,1,318.15,1,At Risk Customers
 17841,2,124,40519.84,0,VIP Customers
 17843,303,1,205.48,1,At Risk Customers
@@ -4023,20 +4023,20 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17857,4,23,26879.04,0,VIP Customers
 17858,6,12,5140.66,0,VIP Customers
 17859,305,1,141.92,1,At Risk Customers
-17860,369,1,226.45000000000002,1,At Risk Customers
+17860,369,1,226.45,1,At Risk Customers
 17861,3,8,2097.88,0,VIP Customers
 17862,324,1,330.9,1,At Risk Customers
 17863,59,6,3160.0,3,Regular Customers
 17864,13,3,554.85,2,Loyal Customers
 17865,31,20,10526.32,0,VIP Customers
-17866,143,1,329.65000000000003,1,At Risk Customers
+17866,143,1,329.65,1,At Risk Customers
 17867,30,6,1157.8700000000001,3,Regular Customers
 17869,107,5,428.18,3,Regular Customers
 17870,2,12,1865.8899999999999,0,VIP Customers
 17871,205,1,155.9,1,At Risk Customers
 17873,80,5,1848.96,3,Regular Customers
 17874,185,6,683.46,3,Regular Customers
-17877,170,1,237.61,1,At Risk Customers
+17877,170,1,237.60999999999999,1,At Risk Customers
 17878,44,1,379.45,1,At Risk Customers
 17879,174,1,178.52,1,At Risk Customers
 17880,365,1,458.92,1,At Risk Customers
@@ -4055,7 +4055,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17894,72,8,1118.96,3,Regular Customers
 17895,44,1,95.45,1,At Risk Customers
 17896,23,1,256.32,2,Loyal Customers
-17897,173,3,541.81,1,At Risk Customers
+17897,173,3,541.8100000000001,1,At Risk Customers
 17898,85,2,152.06,1,At Risk Customers
 17899,159,1,154.55,1,At Risk Customers
 17900,190,2,112.19999999999999,1,At Risk Customers
@@ -4072,7 +4072,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17919,88,1,1304.04,3,Regular Customers
 17920,4,17,4119.5,0,VIP Customers
 17921,64,4,820.23,3,Regular Customers
-17923,282,1,207.50000000000003,1,At Risk Customers
+17923,282,1,207.5,1,At Risk Customers
 17924,12,7,2962.5,0,VIP Customers
 17925,373,1,244.08,1,At Risk Customers
 17926,133,2,397.29,1,At Risk Customers
@@ -4088,13 +4088,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17939,160,1,99.14,1,At Risk Customers
 17940,49,10,4020.04,0,VIP Customers
 17941,131,1,304.56,1,At Risk Customers
-17942,8,1,77.50000000000001,2,Loyal Customers
+17942,8,1,77.5,2,Loyal Customers
 17946,233,2,149.57999999999998,1,At Risk Customers
 17947,37,1,176.68,1,At Risk Customers
-17948,147,1,358.56000000000006,1,At Risk Customers
+17948,147,1,358.56,1,At Risk Customers
 17949,1,45,58510.48,0,VIP Customers
 17950,72,3,482.2,3,Regular Customers
-17951,40,3,1008.5400000000001,3,Regular Customers
+17951,40,3,1008.54,3,Regular Customers
 17954,5,12,2314.13,0,VIP Customers
 17955,199,4,557.3,3,Regular Customers
 17956,249,1,12.75,1,At Risk Customers
@@ -4116,7 +4116,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 17975,15,13,4483.26,0,VIP Customers
 17976,372,1,321.79,1,At Risk Customers
 17977,29,1,288.14,2,Loyal Customers
-17978,365,1,300.91999999999996,1,At Risk Customers
+17978,365,1,300.92,1,At Risk Customers
 17979,36,4,732.41,3,Regular Customers
 17980,166,3,811.45,3,Regular Customers
 17984,145,1,152.68,1,At Risk Customers
@@ -4155,13 +4155,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18035,36,3,713.89,3,Regular Customers
 18036,32,3,403.12,2,Loyal Customers
 18037,154,6,70.02,1,At Risk Customers
-18040,19,2,357.20000000000005,2,Loyal Customers
+18040,19,2,357.2,2,Loyal Customers
 18041,12,21,4097.37,0,VIP Customers
-18042,54,1,165.04999999999998,1,At Risk Customers
+18042,54,1,165.05,1,At Risk Customers
 18043,25,3,529.29,2,Loyal Customers
 18044,4,10,2088.6,0,VIP Customers
 18045,45,1,178.34,1,At Risk Customers
-18048,203,2,172.29000000000002,1,At Risk Customers
+18048,203,2,172.29,1,At Risk Customers
 18050,359,1,74.4,1,At Risk Customers
 18053,71,1,300.02,1,At Risk Customers
 18055,7,10,6761.34,0,VIP Customers
@@ -4178,7 +4178,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18069,26,5,2009.24,3,Regular Customers
 18071,258,2,453.0,1,At Risk Customers
 18072,186,1,247.44,1,At Risk Customers
-18073,114,12,3859.82,3,Regular Customers
+18073,114,12,3859.8199999999997,3,Regular Customers
 18074,374,1,489.6,1,At Risk Customers
 18075,23,10,2611.75,0,VIP Customers
 18077,8,11,2584.41,0,VIP Customers
@@ -4202,30 +4202,30 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18101,11,2,222.4,2,Loyal Customers
 18102,1,60,259657.3,0,VIP Customers
 18104,37,1,754.64,2,Loyal Customers
-18105,38,1,113.48000000000002,1,At Risk Customers
+18105,38,1,113.47999999999999,1,At Risk Customers
 18106,330,1,421.9,1,At Risk Customers
 18108,254,1,271.0,1,At Risk Customers
 18109,2,26,8004.92,0,VIP Customers
 18110,20,1,198.8,2,Loyal Customers
 18112,12,2,352.69,2,Loyal Customers
-18113,369,1,76.32000000000001,1,At Risk Customers
+18113,369,1,76.32,1,At Risk Customers
 18114,290,1,220.1,1,At Risk Customers
 18116,68,8,1403.1100000000001,3,Regular Customers
 18117,26,1,315.65,2,Loyal Customers
 18118,11,26,5625.08,0,VIP Customers
 18119,368,1,180.7,1,At Risk Customers
 18120,214,1,111.15,1,At Risk Customers
-18121,149,2,653.3000000000001,1,At Risk Customers
+18121,149,2,653.3,1,At Risk Customers
 18122,8,6,1793.06,0,VIP Customers
 18123,24,2,574.4399999999999,2,Loyal Customers
 18125,30,4,1131.75,3,Regular Customers
-18126,61,1,200.92,1,At Risk Customers
+18126,61,1,200.92000000000002,1,At Risk Customers
 18127,19,3,347.08,2,Loyal Customers
-18129,243,1,112.55000000000001,1,At Risk Customers
+18129,243,1,112.55,1,At Risk Customers
 18130,15,3,1059.39,2,Loyal Customers
 18133,212,1,931.5,1,At Risk Customers
 18135,29,5,681.91,3,Regular Customers
-18136,63,3,784.33,3,Regular Customers
+18136,63,3,784.3299999999999,3,Regular Customers
 18138,295,1,152.65,1,At Risk Customers
 18139,18,6,8438.34,0,VIP Customers
 18142,157,2,1019.52,3,Regular Customers
@@ -4234,27 +4234,27 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18145,13,4,2861.55,3,Regular Customers
 18146,141,2,160.35,1,At Risk Customers
 18147,46,2,179.34,1,At Risk Customers
-18149,51,3,612.0799999999999,3,Regular Customers
-18150,32,3,566.58,2,Loyal Customers
+18149,51,3,612.08,3,Regular Customers
+18150,32,3,566.5799999999999,2,Loyal Customers
 18151,135,2,653.35,1,At Risk Customers
 18154,3,2,399.19,2,Loyal Customers
 18155,75,3,371.62,1,At Risk Customers
 18156,13,2,675.64,2,Loyal Customers
 18158,9,2,453.4,2,Loyal Customers
 18159,301,1,530.15,1,At Risk Customers
-18160,57,2,638.0600000000001,3,Regular Customers
+18160,57,2,638.06,3,Regular Customers
 18161,15,5,1618.69,3,Regular Customers
 18164,37,1,399.65,2,Loyal Customers
 18165,177,1,302.46,1,At Risk Customers
-18167,23,3,1384.8600000000001,3,Regular Customers
+18167,23,3,1384.86,3,Regular Customers
 18168,176,6,1160.04,3,Regular Customers
 18169,61,1,202.65,1,At Risk Customers
-18170,33,3,980.3100000000001,3,Regular Customers
+18170,33,3,980.31,3,Regular Customers
 18171,59,5,1231.31,3,Regular Customers
 18172,15,20,7561.68,0,VIP Customers
 18173,87,4,2106.84,3,Regular Customers
 18174,7,1,104.0,2,Loyal Customers
-18176,358,1,476.35,1,At Risk Customers
+18176,358,1,476.34999999999997,1,At Risk Customers
 18177,31,6,1340.8700000000001,3,Regular Customers
 18178,129,4,1590.81,3,Regular Customers
 18179,9,6,1793.17,0,VIP Customers
@@ -4265,7 +4265,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18185,249,1,304.25,1,At Risk Customers
 18188,15,3,2001.04,3,Regular Customers
 18189,78,2,1090.24,3,Regular Customers
-18190,192,2,284.46000000000004,1,At Risk Customers
+18190,192,2,284.46,1,At Risk Customers
 18191,262,1,207.8,1,At Risk Customers
 18192,72,1,957.97,1,At Risk Customers
 18193,165,1,243.76,1,At Risk Customers
@@ -4275,13 +4275,13 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18200,106,1,150.35,1,At Risk Customers
 18202,200,3,1396.99,3,Regular Customers
 18203,157,1,160.42000000000002,1,At Risk Customers
-18204,71,3,1975.3500000000001,3,Regular Customers
+18204,71,3,1975.35,3,Regular Customers
 18205,36,2,517.36,2,Loyal Customers
-18209,29,1,139.10000000000002,2,Loyal Customers
+18209,29,1,139.1,2,Loyal Customers
 18210,2,6,2621.38,0,VIP Customers
 18211,26,5,600.07,3,Regular Customers
 18212,326,1,216.07,1,At Risk Customers
-18213,237,1,232.48000000000002,1,At Risk Customers
+18213,237,1,232.48,1,At Risk Customers
 18215,89,1,299.34000000000003,1,At Risk Customers
 18216,31,1,481.75,2,Loyal Customers
 18217,29,2,621.75,2,Loyal Customers
@@ -4291,23 +4291,23 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18221,22,5,1041.61,3,Regular Customers
 18222,93,1,443.0,1,At Risk Customers
 18223,5,14,6484.54,0,VIP Customers
-18224,264,1,158.95000000000002,1,At Risk Customers
+18224,264,1,158.95,1,At Risk Customers
 18225,3,12,5504.96,0,VIP Customers
 18226,44,11,5228.05,0,VIP Customers
 18227,218,1,93.75,1,At Risk Customers
 18228,57,2,779.9,3,Regular Customers
 18229,12,20,7276.9,0,VIP Customers
-18230,9,7,2810.2000000000003,0,VIP Customers
+18230,9,7,2810.2,0,VIP Customers
 18231,192,5,2071.77,3,Regular Customers
 18232,82,4,592.97,3,Regular Customers
 18233,326,1,440.0,1,At Risk Customers
 18235,72,3,1796.48,3,Regular Customers
 18236,30,6,882.24,3,Regular Customers
 18237,3,5,987.1,2,Loyal Customers
-18239,219,5,1561.6100000000001,3,Regular Customers
+18239,219,5,1561.61,3,Regular Customers
 18240,46,1,422.58,1,At Risk Customers
 18241,10,17,2073.09,0,VIP Customers
-18242,72,4,2232.4900000000002,3,Regular Customers
+18242,72,4,2232.49,3,Regular Customers
 18245,7,7,2567.06,0,VIP Customers
 18246,24,2,596.1,2,Loyal Customers
 18248,123,2,804.02,1,At Risk Customers
@@ -4315,7 +4315,7 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18250,310,1,349.27,1,At Risk Customers
 18251,87,1,4314.72,3,Regular Customers
 18252,51,2,518.27,2,Loyal Customers
-18255,89,1,103.30000000000001,1,At Risk Customers
+18255,89,1,103.3,1,At Risk Customers
 18257,39,8,2337.63,3,Regular Customers
 18259,25,3,2338.6,3,Regular Customers
 18260,173,6,2628.35,3,Regular Customers
@@ -4324,15 +4324,15 @@ CustomerID,Recency,Frequency,Monetary,Cluster,Segment
 18263,26,3,1213.16,3,Regular Customers
 18265,72,2,801.51,3,Regular Customers
 18268,134,1,25.5,1,At Risk Customers
-18269,366,1,168.60000000000002,1,At Risk Customers
+18269,366,1,168.6,1,At Risk Customers
 18270,38,2,283.15000000000003,2,Loyal Customers
 18272,3,6,3078.58,0,VIP Customers
 18273,2,3,204.0,2,Loyal Customers
 18274,30,1,175.92,2,Loyal Customers
 18276,44,1,335.86,1,At Risk Customers
-18277,58,1,110.38,1,At Risk Customers
+18277,58,1,110.38000000000001,1,At Risk Customers
 18278,74,1,173.9,1,At Risk Customers
-18280,278,1,180.60000000000002,1,At Risk Customers
+18280,278,1,180.6,1,At Risk Customers
 18281,181,1,80.82,1,At Risk Customers
 18282,8,2,178.05,2,Loyal Customers
 18283,4,16,2045.53,0,VIP Customers

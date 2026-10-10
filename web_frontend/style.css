@@ -30,20 +30,43 @@ body {
     overflow-x: hidden;
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+/* Toast Notification Styling */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
+
+.toast {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--accent-indigo);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: #FFF;
+    font-size: 0.88rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: slideIn 0.3s ease-out;
 }
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 999px;
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-indigo);
+
+/* Header Dataset Active Badge */
+.dataset-active-pill {
+    background: rgba(192, 132, 252, 0.15);
+    border: 1px solid rgba(192, 132, 252, 0.4);
+    color: var(--accent-purple);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 700;
 }
 
 /* Modal Overlay Styling */
