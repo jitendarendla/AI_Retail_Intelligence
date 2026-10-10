@@ -24,11 +24,12 @@ from utils.segmentation import calculate_rfm, train_customer_segmentation, load_
 from utils.market_basket import load_association_rules, recommend_products, generate_market_basket_rules
 from utils.sales_prediction import prepare_daily_sales, train_sales_forecaster, forecast_future_sales
 from utils.rag_assistant import get_rag_assistant
+import database
 
 app = FastAPI(
     title="AI Retail Intelligence Platform API",
-    description="Enterprise Multi-Dataset Analysis Platform with History Archive, Authentication & Real-Time Uploads",
-    version="3.0.0"
+    description="Enterprise Multi-Dataset Analysis Platform with SQLite Database, Authentication & Real-Time Uploads",
+    version="4.0.0"
 )
 
 # Enable CORS for all origins
@@ -85,7 +86,7 @@ def clean_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
     df_clean = df_clean[(df_clean['Quantity'] > 0) & (df_clean['UnitPrice'] > 0)]
     
     df_clean['InvoiceDate'] = pd.to_datetime(df_clean['InvoiceDate'], errors='coerce')
-    df_clean = df_clean.dropna(subset=['InvoiceDate'])
+    df_clean.dropna(subset=['InvoiceDate'], inplace=True)
     
     df_clean['TotalPrice'] = (df_clean['Quantity'] * df_clean['UnitPrice']).round(2)
     df_clean['Year'] = df_clean['InvoiceDate'].dt.year
@@ -116,7 +117,8 @@ def init_default_dataset():
             "total_customers": int(df['CustomerID'].nunique()),
             "total_products": int(df['Description'].nunique()),
             "mined_rules": len(rules),
-            "is_default": True
+            "is_default": True,
+            "is_active": True
         }
         
         DATA_CACHE["datasets_registry"]["default"] = {
@@ -127,12 +129,89 @@ def init_default_dataset():
             "daily": daily
         }
 
+
+def load_dataset_from_storage(dataset_id: str) -> Optional[dict]:
+    """Load dataset DataFrames from disk storage if registered in SQLite."""
+    conn = database.get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT d.*, a.cleaned_path, a.rfm_path, a.rules_path, a.daily_path
+        FROM datasets d
+        LEFT JOIN dataset_artifacts a ON d.dataset_id = a.dataset_id
+        WHERE d.dataset_id = ?
+    """, (dataset_id,))
+    row = cursor.fetchone()
+    conn.close()
+    
+    if not row:
+        return None
+        
+    meta = {
+        "dataset_id": row["dataset_id"],
+        "filename": row["filename"],
+        "upload_time": row["upload_time"],
+        "raw_rows": row["raw_rows"],
+        "cleaned_rows": row["cleaned_rows"],
+        "total_revenue": round(float(row["total_revenue"]), 2),
+        "total_customers": row["total_customers"],
+        "total_products": row["total_products"],
+        "mined_rules": row["mined_rules"],
+        "is_default": bool(row["is_default"]),
+        "is_active": bool(row["is_active"])
+    }
+    
+    cleaned_path = row["cleaned_path"]
+    if cleaned_path and os.path.exists(cleaned_path):
+        df = pd.read_csv(cleaned_path)
+        if 'InvoiceDate' in df.columns:
+            df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
+    else:
+        df = get_cleaned_data()
+        
+    rfm_path = row["rfm_path"]
+    if rfm_path and os.path.exists(rfm_path):
+        rfm = pd.read_csv(rfm_path)
+    else:
+        rfm = load_rfm_data(df)
+        
+    rules_path = row["rules_path"]
+    if rules_path and os.path.exists(rules_path):
+        rules = pd.read_csv(rules_path)
+    else:
+        rules = load_association_rules(df)
+        
+    daily_path = row["daily_path"]
+    if daily_path and os.path.exists(daily_path):
+        daily = pd.read_csv(daily_path)
+        if 'Date' in daily.columns:
+            daily['Date'] = pd.to_datetime(daily['Date'])
+    else:
+        daily = prepare_daily_sales(df)
+        
+    entry = {
+        "metadata": meta,
+        "df": df,
+        "rfm": rfm,
+        "rules": rules,
+        "daily": daily
+    }
+    DATA_CACHE["datasets_registry"][dataset_id] = entry
+    return entry
+
+
 def get_active_data():
+    """Retrieve active dataset from memory cache or SQLite storage."""
     init_default_dataset()
-    active_id = DATA_CACHE.get("active_id", "default")
+    active_row = database.get_active_dataset_record()
+    active_id = active_row["dataset_id"] if active_row else "default"
+    
     if active_id not in DATA_CACHE["datasets_registry"]:
-        active_id = "default"
-        DATA_CACHE["active_id"] = "default"
+        loaded = load_dataset_from_storage(active_id)
+        if not loaded:
+            active_id = "default"
+            database.set_active_dataset_in_db("default")
+            
+    DATA_CACHE["active_id"] = active_id
     return DATA_CACHE["datasets_registry"][active_id]
 
 
@@ -140,14 +219,15 @@ def get_active_data():
 def startup_event():
     print("🚀 Initializing AI Retail Intelligence Multi-Dataset Backend Server...")
     try:
+        database.init_db()
         init_default_dataset()
-        print("✅ Multi-Dataset Registry pre-loaded successfully!")
+        print("✅ Production SQLite Database & Dataset Registry ready!")
     except Exception as e:
         print(f"⚠️ Startup warning: {e}")
 
 
 # ==========================================
-# 🔐 AUTHENTICATION ENDPOINTS
+# 🔐 AUTHENTICATION ENDPOINTS (SQLite)
 # ==========================================
 
 @app.post("/api/auth/login")
@@ -155,18 +235,60 @@ def api_login(payload: dict = Body(...)):
     username = payload.get("username", "").strip()
     password = payload.get("password", "").strip()
     
-    if (username.lower() == "admin" and password == "admin123") or (username.lower() == "retailer" and password == "retailer123"):
+    auth_res = database.authenticate_user(username, password)
+    if not auth_res:
+        raise HTTPException(status_code=401, detail="Invalid username or password. Demo accounts: admin / admin123, retailer / retailer123, intern / intern123")
+        
+    return {
+        "success": True,
+        "token": auth_res["token"],
+        "user": auth_res["user"]
+    }
+
+
+@app.post("/api/auth/register")
+def api_register(payload: dict = Body(...)):
+    username = payload.get("username", "").strip()
+    email = payload.get("email", "").strip()
+    password = payload.get("password", "").strip()
+    full_name = payload.get("full_name", username).strip()
+    role = payload.get("role", "Retail Store Manager").strip()
+    company = payload.get("company", "DMVCORETECH").strip()
+
+    if not username or not email or not password:
+        raise HTTPException(status_code=400, detail="Username, email, and password are required.")
+
+    try:
+        user_info = database.create_user(username, email, password, full_name, role, company)
+        auth_res = database.authenticate_user(username, password)
         return {
             "success": True,
-            "token": "token_dmvcoretech_retail_ai_2026",
-            "user": {
-                "username": username.capitalize(),
-                "role": "Retail Store Manager",
-                "company": "DMVCORETECH",
-                "avatar": "🛍️"
-            }
+            "message": "User registered successfully in SQLite database.",
+            "token": auth_res["token"],
+            "user": auth_res["user"]
         }
-    raise HTTPException(status_code=401, detail="Invalid username or password. Use demo login: admin / admin123")
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Registration error: {ex}")
+
+
+@app.post("/api/auth/logout")
+def api_logout(payload: dict = Body(default={})):
+    token = payload.get("token", "").strip()
+    if token:
+        database.invalidate_session_token(token)
+    return {"success": True, "message": "Logged out successfully."}
+
+
+@app.get("/api/auth/me")
+def api_get_me(token: Optional[str] = Query(None)):
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing authentication token.")
+    user = database.validate_session_token(token)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid or expired session.")
+    return {"authenticated": True, "user": user}
 
 
 # ==========================================
@@ -176,31 +298,31 @@ def api_login(payload: dict = Body(...)):
 @app.get("/api/datasets")
 def api_list_datasets():
     init_default_dataset()
-    registry = DATA_CACHE["datasets_registry"]
-    active_id = DATA_CACHE.get("active_id", "default")
+    db_datasets = database.list_datasets_from_db()
+    active_row = database.get_active_dataset_record()
+    active_id = active_row["dataset_id"] if active_row else "default"
     
-    result = []
-    for d_id, item in registry.items():
-        meta = item["metadata"].copy()
-        meta["is_active"] = (d_id == active_id)
-        result.append(meta)
-        
     return {
         "active_id": active_id,
-        "datasets": result
+        "datasets": db_datasets
     }
 
 
 @app.post("/api/datasets/select/{dataset_id}")
 def api_select_dataset(dataset_id: str):
     init_default_dataset()
-    if dataset_id not in DATA_CACHE["datasets_registry"]:
-        raise HTTPException(status_code=404, detail="Dataset ID not found in history archive.")
+    meta = database.set_active_dataset_in_db(dataset_id)
+    if not meta:
+        raise HTTPException(status_code=404, detail="Dataset ID not found in database archive.")
         
     DATA_CACHE["active_id"] = dataset_id
+    
+    # Load into memory if not present
+    if dataset_id not in DATA_CACHE["datasets_registry"]:
+        load_dataset_from_storage(dataset_id)
+        
     active_data = DATA_CACHE["datasets_registry"][dataset_id]
-    active_meta = active_data["metadata"]
-    print(f"🔄 Switched active analysis dataset to: {active_meta['filename']} (ID: {dataset_id})")
+    print(f"🔄 Switched active analysis dataset in SQLite to: {meta['filename']} (ID: {dataset_id})")
     
     # Sync RAG Assistant Knowledge Base with selected dataset
     try:
@@ -212,22 +334,23 @@ def api_select_dataset(dataset_id: str):
     return {
         "success": True,
         "active_id": dataset_id,
-        "metadata": active_meta
+        "metadata": meta
     }
 
 
 @app.delete("/api/datasets/{dataset_id}")
 def api_delete_dataset(dataset_id: str):
-    init_default_dataset()
     if dataset_id == "default":
         raise HTTPException(status_code=400, detail="Cannot delete default system dataset.")
         
+    deleted = database.delete_dataset_from_db(dataset_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Dataset not found.")
+        
     if dataset_id in DATA_CACHE["datasets_registry"]:
         del DATA_CACHE["datasets_registry"][dataset_id]
-        if DATA_CACHE.get("active_id") == dataset_id:
-            DATA_CACHE["active_id"] = "default"
-            
-    return {"success": True, "message": "Dataset removed from history archive."}
+        
+    return {"success": True, "message": "Dataset permanently removed from database archive."}
 
 
 @app.post("/api/upload")
@@ -243,31 +366,48 @@ async def api_upload_dataset(file: UploadFile = File(...)):
         else:
             raise HTTPException(status_code=400, detail="Unsupported file format. Please upload a .csv or .xlsx file.")
             
-        print(f"📥 Real-time processing custom uploaded dataset: {filename} ({len(raw_df):,} raw rows)...")
+        print(f"📥 Processing uploaded dataset: {filename} ({len(raw_df):,} raw rows)...")
         
-        # Data Cleaning Pipeline
+        # 1. Clean Data
         cleaned_df = clean_dataframe(raw_df)
         
-        # Real-time Customer RFM Segmentation
+        # 2. RFM Segmentation
         rfm_df = train_customer_segmentation(cleaned_df)
         
-        # Real-time Market Basket Rule Mining
+        # 3. Market Basket Rules
         try:
             rules_df = generate_market_basket_rules(cleaned_df)
         except Exception as ex:
-            print(f"Warning mining rules on custom dataset: {ex}")
+            print(f"Warning mining rules: {ex}")
             rules_df = load_association_rules(cleaned_df)
             
-        # Real-time Daily Sales Aggregation
+        # 4. Daily Sales
         daily_df = prepare_daily_sales(cleaned_df)
         
-        # Generate Dataset ID and Metadata
+        # 5. Disk Persistence & Storage
         dataset_id = str(uuid.uuid4())[:8]
-        upload_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ds_dir = os.path.join(ARCHIVE_DIR, dataset_id)
+        os.makedirs(ds_dir, exist_ok=True)
         
+        raw_path = os.path.join(ds_dir, f"raw_{filename}")
+        cleaned_path = os.path.join(ds_dir, "cleaned.csv")
+        rfm_path = os.path.join(ds_dir, "rfm.csv")
+        rules_path = os.path.join(ds_dir, "rules.csv")
+        daily_path = os.path.join(ds_dir, "daily.csv")
+        
+        with open(raw_path, "wb") as f:
+            f.write(contents)
+            
+        cleaned_df.to_csv(cleaned_path, index=False)
+        rfm_df.to_csv(rfm_path, index=False)
+        rules_df.to_csv(rules_path, index=False)
+        daily_df.to_csv(daily_path, index=False)
+        
+        upload_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         metadata = {
             "dataset_id": dataset_id,
             "filename": filename,
+            "file_path": raw_path,
             "upload_time": upload_time,
             "raw_rows": len(raw_df),
             "cleaned_rows": len(cleaned_df),
@@ -275,10 +415,19 @@ async def api_upload_dataset(file: UploadFile = File(...)):
             "total_customers": int(cleaned_df['CustomerID'].nunique()),
             "total_products": int(cleaned_df['Description'].nunique()),
             "mined_rules": len(rules_df),
-            "is_default": False
+            "is_default": False,
+            "is_active": True
         }
         
-        # Save to Multi-Dataset Registry
+        # 6. Save in SQLite Database
+        database.save_dataset_record(metadata, {
+            "cleaned_path": cleaned_path,
+            "rfm_path": rfm_path,
+            "rules_path": rules_path,
+            "daily_path": daily_path
+        }, set_active=True)
+        
+        # 7. Update In-Memory Cache
         DATA_CACHE["datasets_registry"][dataset_id] = {
             "metadata": metadata,
             "df": cleaned_df,
@@ -286,17 +435,15 @@ async def api_upload_dataset(file: UploadFile = File(...)):
             "rules": rules_df,
             "daily": daily_df
         }
-        
-        # Set Newly Uploaded Dataset as Active
         DATA_CACHE["active_id"] = dataset_id
         
-        # Sync RAG Assistant Knowledge Base with Newly Uploaded Dataset
+        # 8. Rebuild RAG Vector Store
         try:
             assistant = get_rag_assistant()
             assistant.build_knowledge_base(cleaned_df, rules_df, rfm_df)
         except Exception as ex:
             print(f"RAG rebuild warning on upload: {ex}")
-        
+            
         return {
             "success": True,
             "dataset_id": dataset_id,
@@ -306,6 +453,28 @@ async def api_upload_dataset(file: UploadFile = File(...)):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error parsing uploaded dataset: {str(e)}")
+
+
+# ==========================================
+# 📊 SYSTEM & DATABASE HEALTH ENDPOINTS
+# ==========================================
+
+@app.get("/api/health")
+def api_health():
+    db_stats = database.get_db_statistics()
+    return {
+        "status": "healthy",
+        "service": "AI Retail Intelligence Enterprise Suite",
+        "company": "DMVCORETECH",
+        "version": "4.0.0",
+        "database": db_stats,
+        "active_dataset_id": DATA_CACHE.get("active_id", "default")
+    }
+
+
+@app.get("/api/db/stats")
+def api_db_stats():
+    return database.get_db_statistics()
 
 
 # ==========================================
@@ -615,6 +784,19 @@ def api_chat(payload: dict = Body(...)):
             if matched_prod and not rules_df.empty:
                 recommendations = recommend_products(matched_prod, rules_df, top_n=5)
                 
+        # Log interaction into SQLite database
+        try:
+            is_violation = "Scope Guardrail Activated" in response
+            database.log_chat_query(
+                dataset_id=active_meta.get("dataset_id", "default"),
+                username=payload.get("username", "retail_user"),
+                query=query_text,
+                response=response,
+                is_violation=is_violation
+            )
+        except Exception as log_ex:
+            print(f"Chat log warning: {log_ex}")
+
         return {
             "response": response,
             "active_dataset": active_meta["filename"],

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 🔐 AUTHENTICATION & LOGIN HANDLER
+    // 🔐 AUTHENTICATION & LOGIN/REGISTRATION HANDLER
     // ==========================================
     function initAuth() {
         const token = localStorage.getItem('retail_ai_token');
@@ -39,21 +39,73 @@ document.addEventListener('DOMContentLoaded', () => {
             loadDashboard();
             loadCatalogProducts();
             loadDatasetHistory();
+            loadDbStatistics();
+        }
+
+        // Tab Switching in Auth Modal
+        const tabBtnSignIn = document.getElementById('tabBtnSignIn');
+        const tabBtnRegister = document.getElementById('tabBtnRegister');
+        const signInPanel = document.getElementById('signInPanel');
+        const registerPanel = document.getElementById('registerPanel');
+        const errDiv = document.getElementById('loginError');
+        const succDiv = document.getElementById('loginSuccess');
+
+        if (tabBtnSignIn && tabBtnRegister) {
+            tabBtnSignIn.addEventListener('click', () => {
+                tabBtnSignIn.classList.add('active');
+                tabBtnRegister.classList.remove('active');
+                signInPanel.style.display = 'block';
+                registerPanel.style.display = 'none';
+                errDiv.style.display = 'none';
+                succDiv.style.display = 'none';
+            });
+
+            tabBtnRegister.addEventListener('click', () => {
+                tabBtnRegister.classList.add('active');
+                tabBtnSignIn.classList.remove('active');
+                signInPanel.style.display = 'none';
+                registerPanel.style.display = 'block';
+                errDiv.style.display = 'none';
+                succDiv.style.display = 'none';
+            });
         }
 
         // Login Action
         document.getElementById('btnLogin').addEventListener('click', performLogin);
-        document.getElementById('btnDemoLogin').addEventListener('click', () => {
-            document.getElementById('loginUser').value = 'admin';
-            document.getElementById('loginPass').value = 'admin123';
-            performLogin();
+
+        // Register Action
+        const btnRegister = document.getElementById('btnRegister');
+        if (btnRegister) {
+            btnRegister.addEventListener('click', performRegister);
+        }
+
+        // Demo Accounts Quick Buttons
+        document.querySelectorAll('.btn-demo-quick').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const u = e.currentTarget.getAttribute('data-user');
+                const p = e.currentTarget.getAttribute('data-pass');
+                document.getElementById('loginUser').value = u;
+                document.getElementById('loginPass').value = p;
+                performLogin();
+            });
         });
 
         // Logout Action
-        document.getElementById('btnLogout').addEventListener('click', () => {
+        document.getElementById('btnLogout').addEventListener('click', async () => {
+            const currentToken = localStorage.getItem('retail_ai_token');
+            if (currentToken) {
+                try {
+                    await fetch('/api/auth/logout', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({token: currentToken})
+                    });
+                } catch (e) {}
+            }
             localStorage.removeItem('retail_ai_token');
             localStorage.removeItem('retail_ai_user');
             document.getElementById('loginModal').style.display = 'flex';
+            showToast('👋 Successfully logged out of DMVCORETECH AI Retail Suite.', 'info');
         });
     }
 
@@ -88,15 +140,104 @@ document.addEventListener('DOMContentLoaded', () => {
 
             errDiv.style.display = 'none';
             document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('userBadgeName').textContent = `${data.user.avatar} ${data.user.username} (${data.user.company})`;
+            document.getElementById('userBadgeName').textContent = `${data.user.avatar || '🛍️'} ${data.user.username} (${data.user.company || 'DMVCORETECH'})`;
             
-            showToast(`Welcome back, ${data.user.username}! Signed in to ${data.user.company} Retail Suite.`);
+            showToast(`Welcome back, ${data.user.full_name || data.user.username}! Signed in to ${data.user.company} Retail Suite.`);
             loadDashboard();
             loadCatalogProducts();
             loadDatasetHistory();
+            loadDbStatistics();
         } catch (e) {
             errDiv.textContent = 'Server connection error during login.';
             errDiv.style.display = 'block';
+        }
+    }
+
+    async function performRegister() {
+        const fullName = document.getElementById('regFullName').value.trim();
+        const username = document.getElementById('regUser').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const role = document.getElementById('regRole').value;
+        const password = document.getElementById('regPass').value.trim();
+        const errDiv = document.getElementById('loginError');
+        const succDiv = document.getElementById('loginSuccess');
+
+        if (!username || !email || !password || !fullName) {
+            errDiv.textContent = 'Please fill out all registration fields.';
+            errDiv.style.display = 'block';
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    full_name: fullName,
+                    role,
+                    company: 'DMVCORETECH'
+                })
+            });
+
+            if (!res.ok) {
+                const errData = await res.json();
+                errDiv.textContent = errData.detail || 'Registration failed.';
+                errDiv.style.display = 'block';
+                succDiv.style.display = 'none';
+                return;
+            }
+
+            const data = await res.json();
+            localStorage.setItem('retail_ai_token', data.token);
+            localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
+
+            errDiv.style.display = 'none';
+            succDiv.textContent = '✅ Account created and persisted in SQLite! Redirecting...';
+            succDiv.style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('userBadgeName').textContent = `${data.user.avatar || '🛍️'} ${data.user.username} (${data.user.company})`;
+                showToast(`🎉 Welcome ${data.user.full_name}! Account created & persisted in SQLite database.`);
+                loadDashboard();
+                loadCatalogProducts();
+                loadDatasetHistory();
+                loadDbStatistics();
+            }, 800);
+
+        } catch (e) {
+            errDiv.textContent = 'Server error during account registration.';
+            errDiv.style.display = 'block';
+        }
+    }
+
+    // ==========================================
+    // 🗄️ DATABASE & SYSTEM HEALTH LOADER
+    // ==========================================
+    async function loadDbStatistics() {
+        try {
+            const res = await fetch('/api/db/stats');
+            if (!res.ok) return;
+            const data = await res.json();
+
+            // Header Pill
+            const dbBadge = document.getElementById('dbStatusLabel');
+            if (dbBadge) {
+                dbBadge.textContent = `🟢 SQLite: ${data.database_file} (${data.database_size_kb} KB)`;
+            }
+
+            // Tab 8 Cards
+            if (document.getElementById('dbSizeKb')) {
+                document.getElementById('dbSizeKb').textContent = `${data.database_size_kb} KB`;
+                document.getElementById('dbUsersCount').textContent = data.total_registered_users;
+                document.getElementById('dbDatasetsCount').textContent = data.total_archived_datasets;
+                document.getElementById('dbChatsCount').textContent = data.total_logged_chat_queries;
+            }
+        } catch (e) {
+            console.warn('Error loading DB stats:', e);
         }
     }
 
@@ -132,7 +273,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>
                     ${d.is_active ? 
                         '<span style="color:#34D399; font-weight:700;">Currently Analyzing</span>' : 
-                        `<button class="btn-secondary btn-select-ds" data-id="${d.dataset_id}" style="padding:6px 12px;">⚡ Select & Analyze</button>`}
+                        `<div style="display:flex; gap:6px;">
+                            <button class="btn-secondary btn-select-ds" data-id="${d.dataset_id}" style="padding:6px 10px;">⚡ Select</button>
+                            ${!d.is_default ? `<button class="btn-secondary btn-delete-ds" data-id="${d.dataset_id}" style="padding:6px 10px; border-color:#EF4444; color:#F87171;">🗑️</button>` : ''}
+                        </div>`}
                 </td>
             `;
             tbody.appendChild(tr);
@@ -141,8 +285,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add Listeners to Select Buttons
         document.querySelectorAll('.btn-select-ds').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                const dsId = e.target.getAttribute('data-id');
+                const dsId = e.currentTarget.getAttribute('data-id');
                 await switchActiveDataset(dsId);
+            });
+        });
+
+        // Add Listeners to Delete Buttons
+        document.querySelectorAll('.btn-delete-ds').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const dsId = e.currentTarget.getAttribute('data-id');
+                if (confirm('Are you sure you want to permanently delete this dataset from the SQLite database archive?')) {
+                    await deleteDataset(dsId);
+                }
             });
         });
     }
@@ -159,6 +313,17 @@ document.addEventListener('DOMContentLoaded', () => {
             loadMarketBasket();
             loadCatalogProducts();
             loadPrediction();
+            loadDbStatistics();
+        }
+    }
+
+    async function deleteDataset(dsId) {
+        const res = await fetch(`/api/datasets/${dsId}`, {method: 'DELETE'});
+        const data = await res.json();
+        if (data.success) {
+            showToast('🗑️ Dataset removed permanently from SQLite database.', 'info');
+            loadDatasetHistory();
+            loadDbStatistics();
         }
     }
 
@@ -651,11 +816,14 @@ document.addEventListener('DOMContentLoaded', () => {
         history.appendChild(botDiv);
         history.scrollTop = history.scrollHeight;
 
+        const userJson = localStorage.getItem('retail_ai_user');
+        const currentUser = userJson ? JSON.parse(userJson).username : 'retail_user';
+
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({query: q})
+                body: JSON.stringify({query: q, username: currentUser})
             });
             const data = await res.json();
             

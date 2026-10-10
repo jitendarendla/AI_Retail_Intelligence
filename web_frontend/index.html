@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,436 +12,606 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
 
-<!-- TOAST NOTIFICATION CONTAINER -->
-<div id="toastContainer" class="toast-container"></div>
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
 
-<!-- LOGIN MODAL OVERLAY -->
-<div id="loginModal" class="modal-overlay">
-    <div class="login-card">
-        <div class="brand" style="border:none; margin-bottom:10px;">
-            <h2>🛍️ RETAIL AI</h2>
-            <p>DMVCORETECH Enterprise Suite</p>
-        </div>
-        <h3 style="text-align:center; color:#818CF8; margin-bottom:20px; font-size:1.1rem;">Retailer Portal Sign In</h3>
-        
-        <div id="loginError" style="display:none; background:rgba(239,68,68,0.2); border:1px solid #EF4444; color:#FCA5A5; padding:10px; border-radius:8px; font-size:0.85rem; margin-bottom:14px; text-align:center;"></div>
-        
-        <div class="form-group">
-            <label for="loginUser">Username</label>
-            <input type="text" id="loginUser" placeholder="Enter username (e.g. admin)...">
-        </div>
-        <div class="form-group">
-            <label for="loginPass">Password</label>
-            <input type="password" id="loginPass" placeholder="Enter password (e.g. admin123)...">
-        </div>
-
-        <button id="btnLogin" class="btn-primary" style="width:100%; margin-top:14px; padding:14px;">Sign In to Dashboard</button>
-        <button id="btnDemoLogin" class="btn-secondary" style="width:100%; margin-top:10px; padding:10px;">⚡ Quick Fill Demo Credentials (admin / admin123)</button>
-    </div>
-</div>
-
-<div class="app-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="brand">
-            <h2>🛍️ RETAIL AI</h2>
-            <p>DMVCORETECH Suite</p>
-        </div>
-
-        <nav class="nav-menu">
-            <div class="nav-item active" data-tab="dashboard"><i data-lucide="layout-dashboard"></i> Executive Dashboard</div>
-            <div class="nav-item" data-tab="history"><i data-lucide="folder-archive"></i> Dataset History & Archive</div>
-            <div class="nav-item" data-tab="analytics"><i data-lucide="line-chart"></i> Sales & Analytics</div>
-            <div class="nav-item" data-tab="rfm"><i data-lucide="users"></i> RFM Segmentation</div>
-            <div class="nav-item" data-tab="basket"><i data-lucide="shopping-cart"></i> Market Basket</div>
-            <div class="nav-item" data-tab="recommender"><i data-lucide="sparkles"></i> AI Recommender</div>
-            <div class="nav-item" data-tab="prediction"><i data-lucide="trending-up"></i> Sales Forecast (RF)</div>
-            <div class="nav-item" data-tab="chatbot"><i data-lucide="message-square"></i> RAG AI Assistant</div>
-            <div class="nav-item" data-tab="exports"><i data-lucide="file-text"></i> Export Reports</div>
-        </nav>
-
-        <div class="sidebar-widget">
-            <label for="countryFilter">🌍 Country Filter</label>
-            <select id="countryFilter">
-                <option value="All">All Countries</option>
-            </select>
-        </div>
-    </aside>
-
-    <!-- Main Workspace -->
-    <main class="main-content">
-        <!-- Top Header -->
-        <header class="top-header">
-            <div class="search-container">
-                <i data-lucide="search" style="color:#94A3B8;"></i>
-                <input type="text" id="skuSearchInput" placeholder="Quick Search SKU / Product (e.g. HEART)...">
+    <!-- LOGIN & REGISTRATION MODAL OVERLAY -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="login-card" style="width: 440px;">
+            <div class="brand" style="border:none; margin-bottom:10px;">
+                <h2>🛍️ RETAIL AI</h2>
+                <p>DMVCORETECH Enterprise Suite</p>
             </div>
             
-            <div class="header-user-bar">
-                <div class="dataset-active-pill"><span id="activeDatasetLabel">Active: Online Retail.xlsx</span></div>
-                <button id="btnOpenUploadModal" class="btn-upload"><i data-lucide="upload-cloud"></i> Upload New Dataset</button>
-                <div class="user-badge"><span id="userBadgeName">Retailer Admin</span></div>
-                <button id="btnLogout" class="btn-logout"><i data-lucide="log-out"></i> Logout</button>
+            <!-- Auth Tabs -->
+            <div class="auth-tabs" style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
+                <button id="tabBtnSignIn" class="auth-tab-btn active" style="flex:1; padding:8px; background:rgba(99,102,241,0.2); border:1px solid #818CF8; color:#FFF; border-radius:8px; font-weight:700; cursor:pointer;">🔑 Sign In</button>
+                <button id="tabBtnRegister" class="auth-tab-btn" style="flex:1; padding:8px; background:none; border:1px solid transparent; color:#94A3B8; border-radius:8px; font-weight:600; cursor:pointer;">📝 Register Account</button>
             </div>
-        </header>
 
-        <!-- DATASET UPLOAD MODAL -->
-        <div id="uploadModal" class="modal-overlay" style="display:none;">
-            <div class="login-card" style="width:520px;">
-                <h3 style="color:#818CF8; margin-bottom:6px; display:flex; justify-content:space-between; align-align:center;">
-                    <span>📤 Upload Dataset for Real-Time Analysis</span>
-                    <span id="btnCloseUploadModal" style="cursor:pointer; font-size:1.2rem;">✖</span>
-                </h3>
-                <p style="font-size:0.82rem; color:#94A3B8; margin-bottom:16px;">Upload any custom retail transaction dataset (.csv or .xlsx). The platform will automatically clean the raw data, archive it in history, and build dedicated customer segments & market basket models.</p>
+            <div id="loginError" style="display:none; background:rgba(239,68,68,0.2); border:1px solid #EF4444; color:#FCA5A5; padding:10px; border-radius:8px; font-size:0.85rem; margin-bottom:14px; text-align:center;"></div>
+            <div id="loginSuccess" style="display:none; background:rgba(16,185,129,0.2); border:1px solid #10B981; color:#6EE7B7; padding:10px; border-radius:8px; font-size:0.85rem; margin-bottom:14px; text-align:center;"></div>
+
+            <!-- Sign In Panel -->
+            <div id="signInPanel">
+                <div class="form-group">
+                    <label for="loginUser">Username or Email</label>
+                    <input type="text" id="loginUser" placeholder="Enter username (e.g. admin)...">
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <input type="password" id="loginPass" placeholder="Enter password (e.g. admin123)...">
+                </div>
+
+                <button id="btnLogin" class="btn-primary" style="width:100%; margin-top:14px; padding:12px;">Sign In to Dashboard</button>
                 
-                <div id="uploadDropzone" class="dropzone">
-                    <i data-lucide="file-up" style="width:48px; height:48px; color:#818CF8; margin-bottom:10px;"></i>
-                    <p>Drag & Drop CSV/Excel file here or <strong style="color:#818CF8;">Browse File</strong></p>
-                    <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" style="display:none;">
-                </div>
-
-                <div id="uploadStatus" style="display:none; margin-top:14px; text-align:center; font-size:0.88rem;"></div>
-            </div>
-        </div>
-
-        <!-- Quick Search Results Box -->
-        <div id="searchResultsBox" style="display:none; background: rgba(30,41,59,0.9); border: 1px solid #818CF8; border-radius:14px; padding:16px; margin-bottom:20px;">
-            <h4 id="searchProdTitle" style="color:#818CF8; margin-bottom:10px;"></h4>
-            <div class="kpi-grid" style="margin-bottom:0;">
-                <div class="kpi-card"><div class="kpi-label">Revenue</div><div id="searchRev" class="kpi-value"></div></div>
-                <div class="kpi-card"><div class="kpi-label">Units Sold</div><div id="searchUnits" class="kpi-value"></div></div>
-                <div class="kpi-card"><div class="kpi-label">Customers</div><div id="searchCust" class="kpi-value"></div></div>
-                <div class="kpi-card"><div class="kpi-label">Avg Price</div><div id="searchPrice" class="kpi-value"></div></div>
-            </div>
-        </div>
-
-        <!-- Hero Banner -->
-        <section class="hero-banner">
-            <h1 class="hero-title">AI Retail Intelligence Platform</h1>
-            <p class="hero-subtitle">Multi-Dataset Analysis Engine, Customer Segmentation, Association Mining & History Archive</p>
-            <div class="pill-group">
-                <span class="pill pill-indigo">⚡ DMVCORETECH Suite</span>
-                <span class="pill pill-emerald" id="heroCustomers">👥 4,338 Customers</span>
-                <span class="pill pill-pink" id="heroRules">🛒 1,030 Rules</span>
-                <span class="pill pill-amber">🔮 RF Forecaster</span>
-            </div>
-        </section>
-
-        <!-- TAB 1: EXECUTIVE DASHBOARD -->
-        <div id="tab-dashboard" class="tab-content active">
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-icon">💰</div>
-                    <div id="kpiRevenue" class="kpi-value">£0</div>
-                    <div class="kpi-label">Total Revenue</div>
-                    <div class="kpi-sub">▲ Verified</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">📦</div>
-                    <div id="kpiOrders" class="kpi-value">0</div>
-                    <div class="kpi-label">Total Orders</div>
-                    <div class="kpi-sub">▲ Invoices</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">👥</div>
-                    <div id="kpiCustomers" class="kpi-value">0</div>
-                    <div class="kpi-label">Active Customers</div>
-                    <div class="kpi-sub">▲ Accounts</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">🏷️</div>
-                    <div id="kpiProducts" class="kpi-value">0</div>
-                    <div class="kpi-label">Catalog Products</div>
-                    <div class="kpi-sub">▲ SKUs</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-icon">💳</div>
-                    <div id="kpiAvgOrder" class="kpi-value">£0</div>
-                    <div class="kpi-label">Avg Order Value</div>
-                    <div class="kpi-sub">▲ Per Basket</div>
+                <div style="margin-top:14px; font-size:0.78rem; color:#94A3B8; text-align:center;">Demo Accounts (Pre-configured in SQLite):</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px;">
+                    <button class="btn-demo-quick btn-secondary" data-user="admin" data-pass="admin123" style="padding:6px; font-size:0.75rem;">👑 Admin</button>
+                    <button class="btn-demo-quick btn-secondary" data-user="retailer" data-pass="retailer123" style="padding:6px; font-size:0.75rem;">🛍️ Retailer</button>
+                    <button class="btn-demo-quick btn-secondary" data-user="intern" data-pass="intern123" style="padding:6px; font-size:0.75rem;">🎓 Intern</button>
                 </div>
             </div>
 
-            <div class="grid-2">
-                <div class="chart-card">
-                    <h3>📈 Monthly Revenue Trend</h3>
-                    <div class="chart-wrapper"><canvas id="chartMonthlyRevenue"></canvas></div>
+            <!-- Register Panel -->
+            <div id="registerPanel" style="display:none;">
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" placeholder="e.g. John Doe">
                 </div>
-                <div class="chart-card">
-                    <h3>📅 Daily Revenue Distribution</h3>
-                    <div class="chart-wrapper"><canvas id="chartDailySales"></canvas></div>
+                <div class="form-group">
+                    <label for="regUser">Username</label>
+                    <input type="text" id="regUser" placeholder="e.g. jiten_dmv">
                 </div>
-            </div>
-
-            <div class="grid-2">
-                <div class="chart-card">
-                    <h3>🏆 Top 10 Revenue Products</h3>
-                    <div class="chart-wrapper"><canvas id="chartTopProducts"></canvas></div>
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" placeholder="e.g. user@dmvcoretech.com">
                 </div>
-                <div class="chart-card">
-                    <h3>💎 Top 10 Spender Customers</h3>
-                    <div class="chart-wrapper"><canvas id="chartTopCustomers"></canvas></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 9: DATASET HISTORY & ARCHIVE -->
-        <div id="tab-history" class="tab-content">
-            <div class="chart-card" style="margin-bottom:20px;">
-                <h3>📜 Dataset Upload History & Separate Analysis Archive</h3>
-                <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">Every dataset uploaded to the platform is separately processed and archived below. Click <strong>"Select & Analyze Dataset"</strong> to switch active analytical models instantly.</p>
-                
-                <div class="table-container">
-                    <table id="historyTable">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Dataset Filename</th>
-                                <th>Upload Timestamp</th>
-                                <th>Clean Rows</th>
-                                <th>Total Revenue</th>
-                                <th>Customers</th>
-                                <th>SKUs</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 2: SALES & ANALYTICS -->
-        <div id="tab-analytics" class="tab-content">
-            <div class="grid-2">
-                <div class="chart-card">
-                    <h3>🌍 Country Revenue Breakdown</h3>
-                    <div class="chart-wrapper"><canvas id="chartCountryRevenue"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <h3>🗓️ Weekday Revenue Dynamics</h3>
-                    <div class="chart-wrapper"><canvas id="chartWeekdayRevenue"></canvas></div>
-                </div>
-            </div>
-
-            <div class="chart-card" style="margin-bottom:26px;">
-                <h3>⏰ Hourly Sales Concentration</h3>
-                <div class="chart-wrapper"><canvas id="chartHourlyRevenue"></canvas></div>
-            </div>
-
-            <div class="chart-card">
-                <h3>📋 Schema & Dataset Audit</h3>
-                <div class="table-container">
-                    <table id="summaryAuditTable">
-                        <thead><tr><th>Metric</th><th>Value</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 3: RFM SEGMENTATION -->
-        <div id="tab-rfm" class="tab-content">
-            <div class="persona-grid">
-                <div class="persona-card vip-card">
-                    <h4>👑 VIP Customers</h4>
-                    <h2 id="cntVIP">0</h2>
-                    <p id="spendVIP">Spend: £0<br>Strategy: Exclusive Perks & Dedicated Manager</p>
-                </div>
-                <div class="persona-card loyal-card">
-                    <h4>💎 Loyal Customers</h4>
-                    <h2 id="cntLoyal">0</h2>
-                    <p id="spendLoyal">Spend: £0<br>Strategy: Cross-sell & Loyalty Points</p>
-                </div>
-                <div class="persona-card reg-card">
-                    <h4>🎯 Regular Customers</h4>
-                    <h2 id="cntRegular">0</h2>
-                    <p id="spendRegular">Spend: £0<br>Strategy: Re-engagement Discounts</p>
-                </div>
-                <div class="persona-card risk-card">
-                    <h4>⚠️ At Risk Customers</h4>
-                    <h2 id="cntRisk">0</h2>
-                    <p id="spendRisk">Spend: £0<br>Strategy: Win-Back Campaigns</p>
-                </div>
-            </div>
-
-            <div class="grid-2">
-                <div class="chart-card">
-                    <h3>📊 Segment Revenue Breakdown</h3>
-                    <div class="chart-wrapper"><canvas id="chartSegmentRevenue"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <h3>🌌 3D RFM Cluster Space</h3>
-                    <div id="plotRFM3D" style="width:100%; height:320px;"></div>
-                </div>
-            </div>
-
-            <div class="chart-card">
-                <h3>🔍 Customer ID Lookup</h3>
-                <div style="display:flex; gap:10px; margin-bottom:16px;">
-                    <input type="text" id="lookupCustInput" placeholder="Type Customer ID (e.g. 17850)..." style="background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:10px 16px; border-radius:8px; flex-grow:1;">
-                    <button id="btnLookupCust" style="background:linear-gradient(90deg, #6366F1, #8B5CF6); color:#FFF; border:none; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;">Search</button>
-                </div>
-                <div id="custLookupResult" style="display:none; padding:14px; background:rgba(30,41,59,0.8); border-radius:10px;"></div>
-            </div>
-        </div>
-
-        <!-- TAB 4: MARKET BASKET -->
-        <div id="tab-basket" class="tab-content">
-            <div class="kpi-grid">
-                <div class="kpi-card"><div class="kpi-label">Total Rules Mined</div><div id="mbTotalRules" class="kpi-value">0</div></div>
-                <div class="kpi-card"><div class="kpi-label">Filtered Rules</div><div id="mbFilteredRules" class="kpi-value">0</div></div>
-                <div class="kpi-card"><div class="kpi-label">Max Lift Score</div><div id="mbMaxLift" class="kpi-value">0</div></div>
-                <div class="kpi-card"><div class="kpi-label">Max Confidence</div><div id="mbMaxConf" class="kpi-value">0%</div></div>
-            </div>
-
-            <div class="sidebar-widget" style="margin-bottom:20px; background:var(--bg-card);">
-                <label for="liftSlider">🎛️ Minimum Lift Threshold Filter: <span id="liftVal">1.5</span></label>
-                <input type="range" id="liftSlider" min="1.0" max="10.0" step="0.5" value="1.5" style="width:100%;">
-            </div>
-
-            <div class="chart-card">
-                <h3>🛒 Association Rules Data Table</h3>
-                <div class="table-container">
-                    <table id="rulesTable">
-                        <thead><tr><th>Antecedents (If bought...)</th><th>Consequents (...Also buys)</th><th>Support (%)</th><th>Confidence (%)</th><th>Lift</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 5: AI RECOMMENDER -->
-        <div id="tab-recommender" class="tab-content">
-            <div class="chart-card" style="margin-bottom:20px;">
-                <h3>🔍 Search Catalog Product for Cross-Selling</h3>
-                <div style="display:flex; gap:10px;">
-                    <select id="recProductSelect" style="flex-grow:1; background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:12px; border-radius:8px;">
-                        <option value="">Loading catalog products...</option>
+                <div class="form-group">
+                    <label for="regRole">Role</label>
+                    <select id="regRole" style="width:100%; background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:10px; border-radius:8px;">
+                        <option value="Retail Store Manager">Retail Store Manager</option>
+                        <option value="Senior Retail Merchandiser">Senior Retail Merchandiser</option>
+                        <option value="Inventory Analyst">Inventory Analyst</option>
+                        <option value="AIML Intern">AIML Intern</option>
+                        <option value="Executive Director">Executive Director</option>
                     </select>
-                    <button id="btnGetRecs" style="background:linear-gradient(90deg, #6366F1, #8B5CF6); color:#FFF; border:none; padding:12px 24px; border-radius:8px; font-weight:700; cursor:pointer;">🚀 Get Recommendations</button>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="regPass">Password</label>
+                    <input type="password" id="regPass" placeholder="Choose a secure password...">
+                </div>
 
-            <div id="recsResultsBox" style="display:none;">
-                <h3 style="margin-bottom:12px; color:#818CF8;">Top 5 Co-Purchased Products:</h3>
-                <div id="recsGrid" class="recs-grid"></div>
-            </div>
-        </div>
-
-        <!-- TAB 6: SALES PREDICTION -->
-        <div id="tab-prediction" class="tab-content">
-            <div class="kpi-grid">
-                <div class="kpi-card"><div class="kpi-label">Mean Absolute Error (MAE)</div><div id="rfMAE" class="kpi-value">£0</div></div>
-                <div class="kpi-card"><div class="kpi-label">Root Mean Sq Error (RMSE)</div><div id="rfRMSE" class="kpi-value">£0</div></div>
-                <div class="kpi-card"><div class="kpi-label">R² Accuracy Score</div><div id="rfR2" class="kpi-value">0.0</div></div>
-            </div>
-
-            <div class="sidebar-widget" style="margin-bottom:20px; background:var(--bg-card);">
-                <label for="forecastHorizon">🔮 Interactive Sales Forecast Days Ahead: <span id="daysVal">14</span> Days</label>
-                <input type="range" id="forecastHorizon" min="1" max="60" value="14" style="width:100%;">
-            </div>
-
-            <div class="chart-card">
-                <h3>📊 Historical Sales vs Future Revenue Forecast</h3>
-                <div class="chart-wrapper"><canvas id="chartForecast"></canvas></div>
+                <button id="btnRegister" class="btn-primary" style="width:100%; margin-top:14px; padding:12px; background:linear-gradient(90deg, #10B981, #059669);">Create Account & Sign In</button>
             </div>
         </div>
+    </div>
 
-        <!-- TAB 7: RAG CHATBOT & AI RECOMMENDATION ASSISTANT -->
-        <div id="tab-chatbot" class="tab-content">
-            <div class="chat-container">
-                <div class="chat-header-bar" style="padding:14px 20px; background:rgba(30,41,59,0.9); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <h3 style="color:#818CF8; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
-                            <span>🤖 DMVCORETECH AI Retail & Recommendation Assistant</span>
-                        </h3>
-                        <p style="font-size:0.78rem; color:#94A3B8;">Strictly scoped to active uploaded retail dataset analytics & product cross-selling.</p>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h2>🛍️ RETAIL AI</h2>
+                <p>DMVCORETECH Suite</p>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item active" data-tab="dashboard"><i data-lucide="layout-dashboard"></i> Executive
+                    Dashboard</div>
+                <div class="nav-item" data-tab="history"><i data-lucide="folder-archive"></i> Dataset History & Archive
+                </div>
+                <div class="nav-item" data-tab="analytics"><i data-lucide="line-chart"></i> Sales & Analytics</div>
+                <div class="nav-item" data-tab="rfm"><i data-lucide="users"></i> RFM Segmentation</div>
+                <div class="nav-item" data-tab="basket"><i data-lucide="shopping-cart"></i> Market Basket</div>
+                <div class="nav-item" data-tab="recommender"><i data-lucide="sparkles"></i> AI Recommender</div>
+                <div class="nav-item" data-tab="prediction"><i data-lucide="trending-up"></i> Sales Forecast (RF)</div>
+                <div class="nav-item" data-tab="chatbot"><i data-lucide="message-square"></i> RAG AI Assistant</div>
+                <div class="nav-item" data-tab="exports"><i data-lucide="file-text"></i> System Health & Audit</div>
+            </nav>
+
+            <div class="sidebar-widget">
+                <label for="countryFilter">🌍 Country Filter</label>
+                <select id="countryFilter">
+                    <option value="All">All Countries</option>
+                </select>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="search-container">
+                    <i data-lucide="search" style="color:#94A3B8;"></i>
+                    <input type="text" id="skuSearchInput" placeholder="Quick Search SKU / Product (e.g. HEART)...">
+                </div>
+
+                <div class="header-user-bar">
+                    <div class="db-status-pill" id="dbStatusBadge" title="Persistent SQLite Database Connected"><span id="dbStatusLabel">🟢 SQLite DB Connected</span></div>
+                    <div class="dataset-active-pill"><span id="activeDatasetLabel">Active: Online Retail.xlsx</span></div>
+                    <button id="btnOpenUploadModal" class="btn-upload"><i data-lucide="upload-cloud"></i> Upload New Dataset</button>
+                    <div class="user-badge"><span id="userBadgeName">Retailer Admin</span></div>
+                    <button id="btnLogout" class="btn-logout"><i data-lucide="log-out"></i> Logout</button>
+                </div>
+            </header>
+
+            <!-- DATASET UPLOAD MODAL -->
+            <div id="uploadModal" class="modal-overlay" style="display:none;">
+                <div class="login-card" style="width:520px;">
+                    <h3
+                        style="color:#818CF8; margin-bottom:6px; display:flex; justify-content:space-between; align-align:center;">
+                        <span>📤 Upload Dataset for Real-Time Analysis</span>
+                        <span id="btnCloseUploadModal" style="cursor:pointer; font-size:1.2rem;">✖</span>
+                    </h3>
+                    <p style="font-size:0.82rem; color:#94A3B8; margin-bottom:16px;">Upload any custom retail
+                        transaction dataset (.csv or .xlsx). The platform will automatically clean the raw data, archive
+                        it in history, and build dedicated customer segments & market basket models.</p>
+
+                    <div id="uploadDropzone" class="dropzone">
+                        <i data-lucide="file-up"
+                            style="width:48px; height:48px; color:#818CF8; margin-bottom:10px;"></i>
+                        <p>Drag & Drop CSV/Excel file here or <strong style="color:#818CF8;">Browse File</strong></p>
+                        <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" style="display:none;">
                     </div>
-                    <span class="pill pill-emerald" id="chatActiveDatasetPill">Dataset: Online Retail.xlsx</span>
-                </div>
 
-                <div class="chat-suggestion-chips" style="padding:12px 20px; display:flex; gap:8px; flex-wrap:wrap; background:rgba(15,23,42,0.6); border-bottom:1px solid rgba(255,255,255,0.05);">
-                    <button class="chip-btn" data-prompt="What is the total revenue and order count in active dataset?">📊 Revenue & Orders</button>
-                    <button class="chip-btn" data-prompt="Which products generated the highest revenue?">🏆 Top 10 Products</button>
-                    <button class="chip-btn" data-prompt="What items are frequently bought together?">🛒 Co-Purchased Rules</button>
-                    <button class="chip-btn" data-prompt="Customer RFM segmentation summary">👑 VIP & Loyal Customers</button>
-                    <button class="chip-btn" data-prompt="Recommend items for WHITE HANGING HEART T-LIGHT HOLDER">💡 Cross-Sell Recs</button>
-                    <button class="chip-btn chip-warning" data-prompt="Who is our prime minister?">⚠️ Who is our prime minister? (Scope Test)</button>
+                    <div id="uploadStatus" style="display:none; margin-top:14px; text-align:center; font-size:0.88rem;">
+                    </div>
                 </div>
+            </div>
 
-                <div id="chatHistory" class="chat-history">
-                    <div class="chat-msg chat-assistant">
-                        👋 <strong>Hello! I am your DMVCORETECH AI Retail & Recommendation Assistant.</strong><br><br>
-                        I can analyze your uploaded retail datasets, extract customer RFM insights, mine product association rules, and provide instant cross-selling recommendations.<br><br>
-                        🔒 <em>Note: I am strictly programmed to answer questions regarding your uploaded dataset only and will decline out-of-domain queries.</em>
+            <!-- Quick Search Results Box -->
+            <div id="searchResultsBox"
+                style="display:none; background: rgba(30,41,59,0.9); border: 1px solid #818CF8; border-radius:14px; padding:16px; margin-bottom:20px;">
+                <h4 id="searchProdTitle" style="color:#818CF8; margin-bottom:10px;"></h4>
+                <div class="kpi-grid" style="margin-bottom:0;">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Revenue</div>
+                        <div id="searchRev" class="kpi-value"></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Units Sold</div>
+                        <div id="searchUnits" class="kpi-value"></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Customers</div>
+                        <div id="searchCust" class="kpi-value"></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Avg Price</div>
+                        <div id="searchPrice" class="kpi-value"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Banner -->
+            <section class="hero-banner">
+                <h1 class="hero-title">AI Retail Intelligence Platform</h1>
+                <p class="hero-subtitle">Multi-Dataset Analysis Engine, Customer Segmentation, Association Mining &
+                    History Archive</p>
+                <div class="pill-group">
+                    <span class="pill pill-indigo">⚡ DMVCORETECH Suite</span>
+                    <span class="pill pill-emerald" id="heroCustomers">👥 4,338 Customers</span>
+                    <span class="pill pill-pink" id="heroRules">🛒 1,030 Rules</span>
+                    <span class="pill pill-amber">🔮 RF Forecaster</span>
+                </div>
+            </section>
+
+            <!-- TAB 1: EXECUTIVE DASHBOARD -->
+            <div id="tab-dashboard" class="tab-content active">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">💰</div>
+                        <div id="kpiRevenue" class="kpi-value">£0</div>
+                        <div class="kpi-label">Total Revenue</div>
+                        <div class="kpi-sub">▲ Verified</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📦</div>
+                        <div id="kpiOrders" class="kpi-value">0</div>
+                        <div class="kpi-label">Total Orders</div>
+                        <div class="kpi-sub">▲ Invoices</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">👥</div>
+                        <div id="kpiCustomers" class="kpi-value">0</div>
+                        <div class="kpi-label">Active Customers</div>
+                        <div class="kpi-sub">▲ Accounts</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🏷️</div>
+                        <div id="kpiProducts" class="kpi-value">0</div>
+                        <div class="kpi-label">Catalog Products</div>
+                        <div class="kpi-sub">▲ SKUs</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">💳</div>
+                        <div id="kpiAvgOrder" class="kpi-value">£0</div>
+                        <div class="kpi-label">Avg Order Value</div>
+                        <div class="kpi-sub">▲ Per Basket</div>
                     </div>
                 </div>
 
-                <div class="chat-input-bar">
-                    <input type="text" id="chatInput" placeholder="Ask a question about the uploaded dataset or type 'recommend <product>'...">
-                    <button id="btnSendChat">Send Query 🚀</button>
+                <div class="grid-2">
+                    <div class="chart-card">
+                        <h3>📈 Monthly Revenue Trend</h3>
+                        <div class="chart-wrapper"><canvas id="chartMonthlyRevenue"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>📅 Daily Revenue Distribution</h3>
+                        <div class="chart-wrapper"><canvas id="chartDailySales"></canvas></div>
+                    </div>
                 </div>
+
+                <div class="grid-2">
+                    <div class="chart-card">
+                        <h3>🏆 Top 10 Revenue Products</h3>
+                        <div class="chart-wrapper"><canvas id="chartTopProducts"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>💎 Top 10 Spender Customers</h3>
+                        <div class="chart-wrapper"><canvas id="chartTopCustomers"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 9: DATASET HISTORY & ARCHIVE -->
+            <div id="tab-history" class="tab-content">
+                <div class="chart-card" style="margin-bottom:20px;">
+                    <h3>📜 Dataset Upload History & Separate Analysis Archive</h3>
+                    <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:16px;">Every dataset uploaded to
+                        the platform is separately processed and archived below. Click <strong>"Select & Analyze
+                            Dataset"</strong> to switch active analytical models instantly.</p>
+
+                    <div class="table-container">
+                        <table id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Dataset Filename</th>
+                                    <th>Upload Timestamp</th>
+                                    <th>Clean Rows</th>
+                                    <th>Total Revenue</th>
+                                    <th>Customers</th>
+                                    <th>SKUs</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: SALES & ANALYTICS -->
+            <div id="tab-analytics" class="tab-content">
+                <div class="grid-2">
+                    <div class="chart-card">
+                        <h3>🌍 Country Revenue Breakdown</h3>
+                        <div class="chart-wrapper"><canvas id="chartCountryRevenue"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>🗓️ Weekday Revenue Dynamics</h3>
+                        <div class="chart-wrapper"><canvas id="chartWeekdayRevenue"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="chart-card" style="margin-bottom:26px;">
+                    <h3>⏰ Hourly Sales Concentration</h3>
+                    <div class="chart-wrapper"><canvas id="chartHourlyRevenue"></canvas></div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>📋 Schema & Dataset Audit</h3>
+                    <div class="table-container">
+                        <table id="summaryAuditTable">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: RFM SEGMENTATION -->
+            <div id="tab-rfm" class="tab-content">
+                <div class="persona-grid">
+                    <div class="persona-card vip-card">
+                        <h4>👑 VIP Customers</h4>
+                        <h2 id="cntVIP">0</h2>
+                        <p id="spendVIP">Spend: £0<br>Strategy: Exclusive Perks & Dedicated Manager</p>
+                    </div>
+                    <div class="persona-card loyal-card">
+                        <h4>💎 Loyal Customers</h4>
+                        <h2 id="cntLoyal">0</h2>
+                        <p id="spendLoyal">Spend: £0<br>Strategy: Cross-sell & Loyalty Points</p>
+                    </div>
+                    <div class="persona-card reg-card">
+                        <h4>🎯 Regular Customers</h4>
+                        <h2 id="cntRegular">0</h2>
+                        <p id="spendRegular">Spend: £0<br>Strategy: Re-engagement Discounts</p>
+                    </div>
+                    <div class="persona-card risk-card">
+                        <h4>⚠️ At Risk Customers</h4>
+                        <h2 id="cntRisk">0</h2>
+                        <p id="spendRisk">Spend: £0<br>Strategy: Win-Back Campaigns</p>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="chart-card">
+                        <h3>📊 Segment Revenue Breakdown</h3>
+                        <div class="chart-wrapper"><canvas id="chartSegmentRevenue"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>🌌 3D RFM Cluster Space</h3>
+                        <div id="plotRFM3D" style="width:100%; height:320px;"></div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>🔍 Customer ID Lookup</h3>
+                    <div style="display:flex; gap:10px; margin-bottom:16px;">
+                        <input type="text" id="lookupCustInput" placeholder="Type Customer ID (e.g. 17850)..."
+                            style="background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:10px 16px; border-radius:8px; flex-grow:1;">
+                        <button id="btnLookupCust"
+                            style="background:linear-gradient(90deg, #6366F1, #8B5CF6); color:#FFF; border:none; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;">Search</button>
+                    </div>
+                    <div id="custLookupResult"
+                        style="display:none; padding:14px; background:rgba(30,41,59,0.8); border-radius:10px;"></div>
+                </div>
+            </div>
+
+            <!-- TAB 4: MARKET BASKET -->
+            <div id="tab-basket" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Rules Mined</div>
+                        <div id="mbTotalRules" class="kpi-value">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Filtered Rules</div>
+                        <div id="mbFilteredRules" class="kpi-value">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Max Lift Score</div>
+                        <div id="mbMaxLift" class="kpi-value">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Max Confidence</div>
+                        <div id="mbMaxConf" class="kpi-value">0%</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget" style="margin-bottom:20px; background:var(--bg-card);">
+                    <label for="liftSlider">🎛️ Minimum Lift Threshold Filter: <span id="liftVal">1.5</span></label>
+                    <input type="range" id="liftSlider" min="1.0" max="10.0" step="0.5" value="1.5" style="width:100%;">
+                </div>
+
+                <div class="chart-card">
+                    <h3>🛒 Association Rules Data Table</h3>
+                    <div class="table-container">
+                        <table id="rulesTable">
+                            <thead>
+                                <tr>
+                                    <th>Antecedents (If bought...)</th>
+                                    <th>Consequents (...Also buys)</th>
+                                    <th>Support (%)</th>
+                                    <th>Confidence (%)</th>
+                                    <th>Lift</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: AI RECOMMENDER -->
+            <div id="tab-recommender" class="tab-content">
+                <div class="chart-card" style="margin-bottom:20px;">
+                    <h3>🔍 Search Catalog Product for Cross-Selling</h3>
+                    <div style="display:flex; gap:10px;">
+                        <select id="recProductSelect"
+                            style="flex-grow:1; background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:12px; border-radius:8px;">
+                            <option value="">Loading catalog products...</option>
+                        </select>
+                        <button id="btnGetRecs"
+                            style="background:linear-gradient(90deg, #6366F1, #8B5CF6); color:#FFF; border:none; padding:12px 24px; border-radius:8px; font-weight:700; cursor:pointer;">🚀
+                            Get Recommendations</button>
+                    </div>
+                </div>
+
+                <div id="recsResultsBox" style="display:none;">
+                    <h3 style="margin-bottom:12px; color:#818CF8;">Top 5 Co-Purchased Products:</h3>
+                    <div id="recsGrid" class="recs-grid"></div>
+                </div>
+            </div>
+
+            <!-- TAB 6: SALES PREDICTION -->
+            <div id="tab-prediction" class="tab-content">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Mean Absolute Error (MAE)</div>
+                        <div id="rfMAE" class="kpi-value">£0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Root Mean Sq Error (RMSE)</div>
+                        <div id="rfRMSE" class="kpi-value">£0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">R² Accuracy Score</div>
+                        <div id="rfR2" class="kpi-value">0.0</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget" style="margin-bottom:20px; background:var(--bg-card);">
+                    <label for="forecastHorizon">🔮 Interactive Sales Forecast Days Ahead: <span id="daysVal">14</span>
+                        Days</label>
+                    <input type="range" id="forecastHorizon" min="1" max="60" value="14" style="width:100%;">
+                </div>
+
+                <div class="chart-card">
+                    <h3>📊 Historical Sales vs Future Revenue Forecast</h3>
+                    <div class="chart-wrapper"><canvas id="chartForecast"></canvas></div>
+                </div>
+            </div>
+
+            <!-- TAB 7: RAG CHATBOT & AI RECOMMENDATION ASSISTANT -->
+            <div id="tab-chatbot" class="tab-content">
+                <div class="chat-container">
+                    <div class="chat-header-bar"
+                        style="padding:14px 20px; background:rgba(30,41,59,0.9); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <h3 style="color:#818CF8; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+                                <span> DMVCORETECH AI Retail & Recommendation Assistant</span>
+                            </h3>
+                            <p style="font-size:0.78rem; color:#94A3B8;">Strictly scoped to active uploaded retail
+                                dataset analytics & product cross-selling.</p>
+                        </div>
+                        <span class="pill pill-emerald" id="chatActiveDatasetPill">Dataset: Online Retail.xlsx</span>
+                    </div>
+
+                    <div class="chat-suggestion-chips"
+                        style="padding:12px 20px; display:flex; gap:8px; flex-wrap:wrap; background:rgba(15,23,42,0.6); border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <button class="chip-btn"
+                            data-prompt="What is the total revenue and order count in active dataset?">📊 Revenue &
+                            Orders</button>
+                        <button class="chip-btn" data-prompt="Which products generated the highest revenue?">🏆 Top 10
+                            Products</button>
+                        <button class="chip-btn" data-prompt="What items are frequently bought together?">🛒
+                            Co-Purchased Rules</button>
+                        <button class="chip-btn" data-prompt="Customer RFM segmentation summary">👑 VIP & Loyal
+                            Customers</button>
+                        <button class="chip-btn" data-prompt="Recommend items for WHITE HANGING HEART T-LIGHT HOLDER">💡
+                            Cross-Sell Recs</button>
+                        <button class="chip-btn chip-warning" data-prompt="Who is our prime minister?">⚠️ Who is our
+                            prime minister? (Scope Test)</button>
+                    </div>
+
+                    <div id="chatHistory" class="chat-history">
+                        <div class="chat-msg chat-assistant">
+                            👋 <strong>Hello! I am your DMVCORETECH AI Retail & Recommendation
+                                Assistant.</strong><br><br>
+                            I can analyze your uploaded retail datasets, extract customer RFM insights, mine product
+                            association rules, and provide instant cross-selling recommendations.<br><br>
+                            🔒 <em>Note: I am strictly programmed to answer questions regarding your uploaded dataset
+                                only and will decline out-of-domain queries.</em>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-bar">
+                        <input type="text" id="chatInput"
+                            placeholder="Ask a question about the uploaded dataset or type 'recommend <product>'...">
+                        <button id="btnSendChat">Send Query 🚀</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 8: SYSTEM HEALTH, DATABASE AUDIT & EXPORTS -->
+            <div id="tab-exports" class="tab-content">
+                <div class="chart-card" style="margin-bottom:24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                        <h3 style="margin:0;">🗄️ Enterprise SQLite Database Status & Audit</h3>
+                        <span class="pill pill-emerald" id="tabDbStatusBadge">🟢 Connected: retail_intelligence.db</span>
+                    </div>
+                    <div class="kpi-grid" style="margin-bottom:0;">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">💾</div>
+                            <div id="dbStorageEngine" class="kpi-value" style="font-size:1.15rem;">SQLite 3</div>
+                            <div class="kpi-label">Storage Engine</div>
+                            <div class="kpi-sub">ACID Compliant</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">📁</div>
+                            <div id="dbSizeKb" class="kpi-value">0 KB</div>
+                            <div class="kpi-label">Database File Size</div>
+                            <div class="kpi-sub">On-Disk</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">👥</div>
+                            <div id="dbUsersCount" class="kpi-value">0</div>
+                            <div class="kpi-label">Registered Users</div>
+                            <div class="kpi-sub">PBKDF2 Hashed</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">📜</div>
+                            <div id="dbDatasetsCount" class="kpi-value">0</div>
+                            <div class="kpi-label">Archived Datasets</div>
+                            <div class="kpi-sub">Permanent Registry</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">💬</div>
+                            <div id="dbChatsCount" class="kpi-value">0</div>
+                            <div class="kpi-label">Logged Queries</div>
+                            <div class="kpi-sub">Audit History</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="chart-card" style="text-align:center;">
+                        <h3>📥 Cleaned Retail Dataset</h3>
+                        <p style="color:var(--text-muted); margin:12px 0;">392,692 Line Items CSV Format</p>
+                        <a href="/data/processed/cleaned_retail_data.csv" download class="pill pill-indigo"
+                            style="text-decoration:none; padding:12px 24px;">Download CSV</a>
+                    </div>
+                    <div class="chart-card" style="text-align:center;">
+                        <h3>📥 Customer Segment Accounts</h3>
+                        <p style="color:var(--text-muted); margin:12px 0;">4,338 Accounts with RFM Segments</p>
+                        <a href="/reports/customer_segments_rfm.csv" download class="pill pill-emerald"
+                            style="text-decoration:none; padding:12px 24px;">Download CSV</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- FLOATING AI ASSISTANT CHATBOT WIDGET -->
+    <div id="btnToggleFloatChat" class="float-chat-trigger" title="Open AI Retail Assistant Chatbot">
+        <span> AI Assistant</span>
+    </div>
+
+    <div id="floatingChatWidget" class="float-chat-card" style="display:none;">
+        <div class="float-chat-header">
+            <div>
+                <h4 style="margin:0; color:#FFF; font-size:0.95rem;">🛍️ Retail AI Assistant</h4>
+                <span style="font-size:0.75rem; color:#A78BFA;" id="floatChatDatasetPill">Active Dataset QA</span>
+            </div>
+            <button id="btnCloseFloatChat"
+                style="background:none; border:none; color:#FFF; font-size:1.2rem; cursor:pointer;">✖</button>
+        </div>
+
+        <div class="float-chip-row">
+            <button class="float-chip" data-prompt="What is the total revenue?">📊 Revenue</button>
+            <button class="float-chip" data-prompt="Top products?">🏆 Top Items</button>
+            <button class="float-chip" data-prompt="Frequently bought together">🛒 Basket</button>
+            <button class="float-chip" data-prompt="Who is our prime minister?">⚠️ Scope Test</button>
+        </div>
+
+        <div id="floatChatHistory" class="float-chat-body">
+            <div class="chat-msg chat-assistant">
+                🤖 Ask me anything about your active retail dataset or request cross-sell recommendations!
             </div>
         </div>
 
-        <!-- TAB 8: EXPORTS -->
-        <div id="tab-exports" class="tab-content">
-            <div class="grid-2">
-                <div class="chart-card" style="text-align:center;">
-                    <h3>📥 Cleaned Retail Dataset</h3>
-                    <p style="color:var(--text-muted); margin:12px 0;">392,692 Line Items CSV Format</p>
-                    <a href="/data/processed/cleaned_retail_data.csv" download class="pill pill-indigo" style="text-decoration:none; padding:12px 24px;">Download CSV</a>
-                </div>
-                <div class="chart-card" style="text-align:center;">
-                    <h3>📥 Customer Segment Accounts</h3>
-                    <p style="color:var(--text-muted); margin:12px 0;">4,338 Accounts with RFM Segments</p>
-                    <a href="/reports/customer_segments_rfm.csv" download class="pill pill-emerald" style="text-decoration:none; padding:12px 24px;">Download CSV</a>
-                </div>
-            </div>
-        </div>
-    </main>
-</div>
-
-<!-- FLOATING AI ASSISTANT CHATBOT WIDGET -->
-<div id="btnToggleFloatChat" class="float-chat-trigger" title="Open AI Retail Assistant Chatbot">
-    <span>🤖 AI Assistant</span>
-</div>
-
-<div id="floatingChatWidget" class="float-chat-card" style="display:none;">
-    <div class="float-chat-header">
-        <div>
-            <h4 style="margin:0; color:#FFF; font-size:0.95rem;">🛍️ Retail AI Assistant</h4>
-            <span style="font-size:0.75rem; color:#A78BFA;" id="floatChatDatasetPill">Active Dataset QA</span>
-        </div>
-        <button id="btnCloseFloatChat" style="background:none; border:none; color:#FFF; font-size:1.2rem; cursor:pointer;">✖</button>
-    </div>
-
-    <div class="float-chip-row">
-        <button class="float-chip" data-prompt="What is the total revenue?">📊 Revenue</button>
-        <button class="float-chip" data-prompt="Top products?">🏆 Top Items</button>
-        <button class="float-chip" data-prompt="Frequently bought together">🛒 Basket</button>
-        <button class="float-chip" data-prompt="Who is our prime minister?">⚠️ Scope Test</button>
-    </div>
-
-    <div id="floatChatHistory" class="float-chat-body">
-        <div class="chat-msg chat-assistant">
-            🤖 Ask me anything about your active retail dataset or request cross-sell recommendations!
+        <div class="float-chat-footer">
+            <input type="text" id="floatChatInput" placeholder="Ask dataset question...">
+            <button id="btnSendFloatChat">Send</button>
         </div>
     </div>
 
-    <div class="float-chat-footer">
-        <input type="text" id="floatChatInput" placeholder="Ask dataset question...">
-        <button id="btnSendFloatChat">Send</button>
-    </div>
-</div>
-
-<!-- Custom JS -->
-<script src="/static/app.js"></script>
-<script>
-    lucide.createIcons();
-</script>
+    <!-- Custom JS -->
+    <script src="/static/app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
+
 </html>

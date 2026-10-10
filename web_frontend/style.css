@@ -780,3 +780,41 @@ tr:hover {
     cursor: pointer;
 }
 
+/* Database Status Pill in Top Header */
+.db-status-pill {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34D399;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Auth Modal Tabs & Buttons */
+.auth-tab-btn.active {
+    background: rgba(99, 102, 241, 0.25) !important;
+    border-color: #818CF8 !important;
+    color: #FFF !important;
+}
+
+.btn-demo-quick {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(30, 41, 59, 0.6);
+    color: #CBD5E1;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-demo-quick:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: #818CF8;
+    color: #FFF;
+}
+
+
