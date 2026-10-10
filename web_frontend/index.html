@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Retail Intelligence Platform | Enterprise Suite</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Chart.js & Plotly CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h2>🛍️ RETAIL AI</h2>
+            <p>Enterprise Intelligence Suite</p>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-item active" data-tab="dashboard"><i data-lucide="layout-dashboard"></i> Executive Dashboard</div>
+            <div class="nav-item" data-tab="analytics"><i data-lucide="line-chart"></i> Sales & Analytics</div>
+            <div class="nav-item" data-tab="rfm"><i data-lucide="users"></i> RFM Segmentation</div>
+            <div class="nav-item" data-tab="basket"><i data-lucide="shopping-cart"></i> Market Basket</div>
+            <div class="nav-item" data-tab="recommender"><i data-lucide="sparkles"></i> AI Recommender</div>
+            <div class="nav-item" data-tab="prediction"><i data-lucide="trending-up"></i> Sales Forecast (RF)</div>
+            <div class="nav-item" data-tab="chatbot"><i data-lucide="message-square"></i> RAG AI Assistant</div>
+            <div class="nav-item" data-tab="exports"><i data-lucide="file-text"></i> Export Reports</div>
+        </nav>
+
+        <div class="sidebar-widget">
+            <label for="countryFilter">🌍 Country Filter</label>
+            <select id="countryFilter">
+                <option value="All">All Countries</option>
+            </select>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-container">
+                <i data-lucide="search" style="color:#94A3B8;"></i>
+                <input type="text" id="skuSearchInput" placeholder="Quick Search SKU / Product (e.g. HEART)...">
+            </div>
+            <div style="font-size: 0.85rem; color: #94A3B8;">
+                <span id="activeRecordsBadge">📊 392,692 Line Items</span>
+            </div>
+        </header>
+
+        <!-- Quick Search Results Box -->
+        <div id="searchResultsBox" style="display:none; background: rgba(30,41,59,0.9); border: 1px solid #818CF8; border-radius:14px; padding:16px; margin-bottom:20px;">
+            <h4 id="searchProdTitle" style="color:#818CF8; margin-bottom:10px;"></h4>
+            <div class="kpi-grid" style="margin-bottom:0;">
+                <div class="kpi-card"><div class="kpi-label">Revenue</div><div id="searchRev" class="kpi-value"></div></div>
+                <div class="kpi-card"><div class="kpi-label">Units Sold</div><div id="searchUnits" class="kpi-value"></div></div>
+                <div class="kpi-card"><div class="kpi-label">Customers</div><div id="searchCust" class="kpi-value"></div></div>
+                <div class="kpi-card"><div class="kpi-label">Avg Price</div><div id="searchPrice" class="kpi-value"></div></div>
+            </div>
+        </div>
+
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <h1 class="hero-title">AI Retail Intelligence Platform</h1>
+            <p class="hero-subtitle">Real-Time Revenue Analytics, RFM Segmentation, Association Mining & Predictive Forecasting</p>
+            <div class="pill-group">
+                <span class="pill pill-indigo">⚡ Live REST API</span>
+                <span class="pill pill-emerald">👥 4,338 Customers</span>
+                <span class="pill pill-pink">🛒 1,030 Rules</span>
+                <span class="pill pill-amber">🔮 RF Forecaster</span>
+            </div>
+        </section>
+
+        <!-- TAB 1: EXECUTIVE DASHBOARD -->
+        <div id="tab-dashboard" class="tab-content active">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon">💰</div>
+                    <div id="kpiRevenue" class="kpi-value">£0</div>
+                    <div class="kpi-label">Total Revenue</div>
+                    <div class="kpi-sub">▲ Verified</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">📦</div>
+                    <div id="kpiOrders" class="kpi-value">0</div>
+                    <div class="kpi-label">Total Orders</div>
+                    <div class="kpi-sub">▲ Invoices</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">👥</div>
+                    <div id="kpiCustomers" class="kpi-value">0</div>
+                    <div class="kpi-label">Active Customers</div>
+                    <div class="kpi-sub">▲ Accounts</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">🏷️</div>
+                    <div id="kpiProducts" class="kpi-value">0</div>
+                    <div class="kpi-label">Catalog Products</div>
+                    <div class="kpi-sub">▲ SKUs</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">💳</div>
+                    <div id="kpiAvgOrder" class="kpi-value">£0</div>
+                    <div class="kpi-label">Avg Order Value</div>
+                    <div class="kpi-sub">▲ Per Basket</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="chart-card">
+                    <h3>📈 Monthly Revenue Trend</h3>
+                    <div class="chart-wrapper"><canvas id="chartMonthlyRevenue"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>📅 Daily Revenue Distribution</h3>
+                    <div class="chart-wrapper"><canvas id="chartDailySales"></canvas></div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="chart-card">
+                    <h3>🏆 Top 10 Revenue Products</h3>
+                    <div class="chart-wrapper"><canvas id="chartTopProducts"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>💎 Top 10 Spender Customers</h3>
+                    <div class="chart-wrapper"><canvas id="chartTopCustomers"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SALES & ANALYTICS -->
+        <div id="tab-analytics" class="tab-content">
+            <div class="grid-2">
+                <div class="chart-card">
+                    <h3>🌍 Country Revenue Breakdown</h3>
+                    <div class="chart-wrapper"><canvas id="chartCountryRevenue"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>🗓️ Weekday Revenue Dynamics</h3>
+                    <div class="chart-wrapper"><canvas id="chartWeekdayRevenue"></canvas></div>
+                </div>
+            </div>
+
+            <div class="chart-card" style="margin-bottom:26px;">
+                <h3>⏰ Hourly Sales Concentration</h3>
+                <div class="chart-wrapper"><canvas id="chartHourlyRevenue"></canvas></div>
+            </div>
+
+            <div class="chart-card">
+                <h3>📋 Schema & Dataset Audit</h3>
+                <div class="table-container">
+                    <table id="summaryAuditTable">
+                        <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: RFM SEGMENTATION -->
+        <div id="tab-rfm" class="tab-content">
+            <div class="persona-grid">
+                <div class="persona-card vip-card">
+                    <h4>👑 VIP Customers</h4>
+                    <h2 id="cntVIP">0</h2>
+                    <p id="spendVIP">Spend: £0<br>Strategy: Exclusive Perks & Dedicated Manager</p>
+                </div>
+                <div class="persona-card loyal-card">
+                    <h4>💎 Loyal Customers</h4>
+                    <h2 id="cntLoyal">0</h2>
+                    <p id="spendLoyal">Spend: £0<br>Strategy: Cross-sell & Loyalty Points</p>
+                </div>
+                <div class="persona-card reg-card">
+                    <h4>🎯 Regular Customers</h4>
+                    <h2 id="cntRegular">0</h2>
+                    <p id="spendRegular">Spend: £0<br>Strategy: Re-engagement Discounts</p>
+                </div>
+                <div class="persona-card risk-card">
+                    <h4>⚠️ At Risk Customers</h4>
+                    <h2 id="cntRisk">0</h2>
+                    <p id="spendRisk">Spend: £0<br>Strategy: Win-Back Campaigns</p>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="chart-card">
+                    <h3>📊 Segment Revenue Breakdown</h3>
+                    <div class="chart-wrapper"><canvas id="chartSegmentRevenue"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>🌌 3D RFM Cluster Space</h3>
+                    <div id="plotRFM3D" style="width:100%; height:320px;"></div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>🔍 Customer ID Lookup</h3>
+                <div style="display:flex; gap:10px; margin-bottom:16px;">
+                    <input type="text" id="lookupCustInput" placeholder="Type Customer ID (e.g. 17850)..." style="background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:10px 16px; border-radius:8px; flex-grow:1;">
+                    <button id="btnLookupCust" style="background:linear-gradient(90deg, #6366F1, #8B5CF6); color:#FFF; border:none; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer;">Search</button>
+                </div>
+                <div id="custLookupResult" style="display:none; padding:14px; background:rgba(30,41,59,0.8); border-radius:10px;"></div>
+            </div>
+        </div>
+
+        <!-- TAB 4: MARKET BASKET -->
+        <div id="tab-basket" class="tab-content">
+            <div class="kpi-grid">
+                <div class="kpi-card"><div class="kpi-label">Total Rules Mined</div><div id="mbTotalRules" class="kpi-value">0</div></div>
+                <div class="kpi-card"><div class="kpi-label">Filtered Rules</div><div id="mbFilteredRules" class="kpi-value">0</div></div>
+                <div class="kpi-card"><div class="kpi-label">Max Lift Score</div><div id="mbMaxLift" class="kpi-value">0</div></div>
+                <div class="kpi-card"><div class="kpi-label">Max Confidence</div><div id="mbMaxConf" class="kpi-value">0%</div></div>
+            </div>
+
+            <div class="sidebar-widget" style="margin-bottom:20px; background:var(--bg-card);">
+                <label for="liftSlider">🎛️ Minimum Lift Threshold Filter: <span id="liftVal">1.5</span></label>
+                <input type="range" id="liftSlider" min="1.0" max="10.0" step="0.5" value="1.5" style="width:100%;">
+            </div>
+
+            <div class="chart-card">
+                <h3>🛒 Association Rules Data Table</h3>
+                <div class="table-container">
+                    <table id="rulesTable">
+                        <thead><tr><th>Antecedents (If bought...)</th><th>Consequents (...Also buys)</th><th>Support (%)</th><th>Confidence (%)</th><th>Lift</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: AI RECOMMENDER -->
+        <div id="tab-recommender" class="tab-content">
+            <div class="chart-card" style="margin-bottom:20px;">
+                <h3>🔍 Search Catalog Product for Cross-Selling</h3>
+                <div style="display:flex; gap:10px;">
+                    <select id="recProductSelect" style="flex-grow:1; background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:12px; border-radius:8px;">
+                        <option value="">Loading catalog products...</option>
+                    </select>
+                    <button id="btnGetRecs" style="background:linear-gradient(90deg, #6366F1, #8B5CF6); color:#FFF; border:none; padding:12px 24px; border-radius:8px; font-weight:700; cursor:pointer;">🚀 Get Recommendations</button>
+                </div>
+            </div>
+
+            <div id="recsResultsBox" style="display:none;">
+                <h3 style="margin-bottom:12px; color:#818CF8;">Top 5 Co-Purchased Products:</h3>
+                <div id="recsGrid" class="recs-grid"></div>
+            </div>
+        </div>
+
+        <!-- TAB 6: SALES PREDICTION -->
+        <div id="tab-prediction" class="tab-content">
+            <div class="kpi-grid">
+                <div class="kpi-card"><div class="kpi-label">Mean Absolute Error (MAE)</div><div id="rfMAE" class="kpi-value">£0</div></div>
+                <div class="kpi-card"><div class="kpi-label">Root Mean Sq Error (RMSE)</div><div id="rfRMSE" class="kpi-value">£0</div></div>
+                <div class="kpi-card"><div class="kpi-label">R² Accuracy Score</div><div id="rfR2" class="kpi-value">0.0</div></div>
+            </div>
+
+            <div class="sidebar-widget" style="margin-bottom:20px; background:var(--bg-card);">
+                <label for="forecastHorizon">🔮 Interactive Sales Forecast Days Ahead: <span id="daysVal">14</span> Days</label>
+                <input type="range" id="forecastHorizon" min="1" max="60" value="14" style="width:100%;">
+            </div>
+
+            <div class="chart-card">
+                <h3>📊 Historical Sales vs Future Revenue Forecast</h3>
+                <div class="chart-wrapper"><canvas id="chartForecast"></canvas></div>
+            </div>
+        </div>
+
+        <!-- TAB 7: RAG CHATBOT -->
+        <div id="tab-chatbot" class="tab-content">
+            <div class="chat-container">
+                <div id="chatHistory" class="chat-history">
+                    <div class="chat-msg chat-assistant">Hello! I am your AI Retail Assistant. Ask me anything about revenue trends, top spenders, customer segments, or product recommendations!</div>
+                </div>
+                <div class="chat-input-bar">
+                    <input type="text" id="chatInput" placeholder="Ask a question (e.g. Which product generated highest revenue?)...">
+                    <button id="btnSendChat">Send Query</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 8: EXPORTS -->
+        <div id="tab-exports" class="tab-content">
+            <div class="grid-2">
+                <div class="chart-card" style="text-align:center;">
+                    <h3>📥 Cleaned Retail Dataset</h3>
+                    <p style="color:var(--text-muted); margin:12px 0;">392,692 Line Items CSV Format</p>
+                    <a href="/data/processed/cleaned_retail_data.csv" download class="pill pill-indigo" style="text-decoration:none; padding:12px 24px;">Download CSV</a>
+                </div>
+                <div class="chart-card" style="text-align:center;">
+                    <h3>📥 Customer Segment Accounts</h3>
+                    <p style="color:var(--text-muted); margin:12px 0;">4,338 Accounts with RFM Segments</p>
+                    <a href="/reports/customer_segments_rfm.csv" download class="pill pill-emerald" style="text-decoration:none; padding:12px 24px;">Download CSV</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Custom JS -->
+<script src="/static/app.js"></script>
+<script>
+    lucide.createIcons();
+</script>
+</body>
+</html>
