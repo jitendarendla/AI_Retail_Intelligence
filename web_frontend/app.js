@@ -112,6 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
         data.datasets.forEach(d => {
             if (d.is_active) {
                 document.getElementById('activeDatasetLabel').textContent = `Active: ${d.filename}`;
+                if (document.getElementById('chatActiveDatasetPill')) {
+                    document.getElementById('chatActiveDatasetPill').textContent = `Dataset: ${d.filename}`;
+                }
+                if (document.getElementById('floatChatDatasetPill')) {
+                    document.getElementById('floatChatDatasetPill').textContent = `QA: ${d.filename}`;
+                }
             }
 
             const tr = document.createElement('tr');
@@ -580,19 +586,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 300));
 
-        // RAG Chatbot
-        document.getElementById('btnSendChat').addEventListener('click', sendChatMessage);
+        // RAG Chatbot Tab Listeners
+        document.getElementById('btnSendChat').addEventListener('click', () => executeChatQuery('chatInput', 'chatHistory'));
         document.getElementById('chatInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendChatMessage();
+            if (e.key === 'Enter') executeChatQuery('chatInput', 'chatHistory');
         });
+
+        // Chat Suggestion Chips (Tab 7)
+        document.querySelectorAll('.chip-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const prompt = e.target.getAttribute('data-prompt');
+                document.getElementById('chatInput').value = prompt;
+                executeChatQuery('chatInput', 'chatHistory');
+            });
+        });
+
+        // Floating Chatbot Widget Toggle
+        const floatTrigger = document.getElementById('btnToggleFloatChat');
+        const floatWidget = document.getElementById('floatingChatWidget');
+        const floatClose = document.getElementById('btnCloseFloatChat');
+
+        if (floatTrigger && floatWidget) {
+            floatTrigger.addEventListener('click', () => {
+                floatWidget.style.display = floatWidget.style.display === 'none' ? 'flex' : 'none';
+            });
+            floatClose.addEventListener('click', () => {
+                floatWidget.style.display = 'none';
+            });
+
+            document.getElementById('btnSendFloatChat').addEventListener('click', () => executeChatQuery('floatChatInput', 'floatChatHistory'));
+            document.getElementById('floatChatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') executeChatQuery('floatChatInput', 'floatChatHistory');
+            });
+
+            document.querySelectorAll('.float-chip').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const prompt = e.target.getAttribute('data-prompt');
+                    document.getElementById('floatChatInput').value = prompt;
+                    executeChatQuery('floatChatInput', 'floatChatHistory');
+                });
+            });
+        }
     }
 
-    async function sendChatMessage() {
-        const input = document.getElementById('chatInput');
+    async function executeChatQuery(inputId, historyId) {
+        const input = document.getElementById(inputId);
         const q = input.value.trim();
         if (!q) return;
 
-        const history = document.getElementById('chatHistory');
+        const history = document.getElementById(historyId);
 
         // User message
         const userDiv = document.createElement('div');
@@ -602,21 +644,50 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = '';
         history.scrollTop = history.scrollHeight;
 
-        // Assistant loading
+        // Assistant loading indicator
         const botDiv = document.createElement('div');
         botDiv.className = 'chat-msg chat-assistant';
-        botDiv.textContent = 'Searching FAISS vector database...';
+        botDiv.innerHTML = '<span style="color:#818CF8;">⏳ Searching active dataset FAISS vector index & analyzing query...</span>';
         history.appendChild(botDiv);
         history.scrollTop = history.scrollHeight;
 
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({query: q})
-        });
-        const data = await res.json();
-        botDiv.textContent = data.response;
-        history.scrollTop = history.scrollHeight;
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({query: q})
+            });
+            const data = await res.json();
+            
+            // Format Markdown text to HTML safely
+            let formattedText = formatChatResponse(data.response);
+            
+            // If cross-sell recommendations returned, embed interactive cards
+            if (data.recommendations && data.recommendations.length > 0) {
+                formattedText += `<br><br><strong style="color:#818CF8;">💡 Top Co-Purchased Cross-Sell Recommendations:</strong><ul style="margin-top:6px; padding-left:18px;">`;
+                data.recommendations.forEach(r => {
+                    formattedText += `<li style="color:#34D399; margin-bottom:4px;"><strong>${r}</strong></li>`;
+                });
+                formattedText += `</ul>`;
+            }
+
+            botDiv.innerHTML = formattedText;
+            history.scrollTop = history.scrollHeight;
+        } catch (ex) {
+            botDiv.innerHTML = `<span style="color:#EF4444;">❌ Error querying AI Assistant: ${ex.message}</span>`;
+            history.scrollTop = history.scrollHeight;
+        }
+    }
+
+    function formatChatResponse(text) {
+        if (!text) return '';
+        let html = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/• (.*?)(?=\n|$)/g, '<li style="margin-left:14px;">$1</li>')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>');
+        return html;
     }
 
     // ==========================================

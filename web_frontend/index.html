@@ -349,15 +349,39 @@
             </div>
         </div>
 
-        <!-- TAB 7: RAG CHATBOT -->
+        <!-- TAB 7: RAG CHATBOT & AI RECOMMENDATION ASSISTANT -->
         <div id="tab-chatbot" class="tab-content">
             <div class="chat-container">
-                <div id="chatHistory" class="chat-history">
-                    <div class="chat-msg chat-assistant">Hello! I am your AI Retail Assistant. Ask me anything about revenue trends, top spenders, customer segments, or product recommendations!</div>
+                <div class="chat-header-bar" style="padding:14px 20px; background:rgba(30,41,59,0.9); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h3 style="color:#818CF8; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+                            <span>🤖 DMVCORETECH AI Retail & Recommendation Assistant</span>
+                        </h3>
+                        <p style="font-size:0.78rem; color:#94A3B8;">Strictly scoped to active uploaded retail dataset analytics & product cross-selling.</p>
+                    </div>
+                    <span class="pill pill-emerald" id="chatActiveDatasetPill">Dataset: Online Retail.xlsx</span>
                 </div>
+
+                <div class="chat-suggestion-chips" style="padding:12px 20px; display:flex; gap:8px; flex-wrap:wrap; background:rgba(15,23,42,0.6); border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <button class="chip-btn" data-prompt="What is the total revenue and order count in active dataset?">📊 Revenue & Orders</button>
+                    <button class="chip-btn" data-prompt="Which products generated the highest revenue?">🏆 Top 10 Products</button>
+                    <button class="chip-btn" data-prompt="What items are frequently bought together?">🛒 Co-Purchased Rules</button>
+                    <button class="chip-btn" data-prompt="Customer RFM segmentation summary">👑 VIP & Loyal Customers</button>
+                    <button class="chip-btn" data-prompt="Recommend items for WHITE HANGING HEART T-LIGHT HOLDER">💡 Cross-Sell Recs</button>
+                    <button class="chip-btn chip-warning" data-prompt="Who is our prime minister?">⚠️ Who is our prime minister? (Scope Test)</button>
+                </div>
+
+                <div id="chatHistory" class="chat-history">
+                    <div class="chat-msg chat-assistant">
+                        👋 <strong>Hello! I am your DMVCORETECH AI Retail & Recommendation Assistant.</strong><br><br>
+                        I can analyze your uploaded retail datasets, extract customer RFM insights, mine product association rules, and provide instant cross-selling recommendations.<br><br>
+                        🔒 <em>Note: I am strictly programmed to answer questions regarding your uploaded dataset only and will decline out-of-domain queries.</em>
+                    </div>
+                </div>
+
                 <div class="chat-input-bar">
-                    <input type="text" id="chatInput" placeholder="Ask a question (e.g. Which product generated highest revenue?)...">
-                    <button id="btnSendChat">Send Query</button>
+                    <input type="text" id="chatInput" placeholder="Ask a question about the uploaded dataset or type 'recommend <product>'...">
+                    <button id="btnSendChat">Send Query 🚀</button>
                 </div>
             </div>
         </div>
@@ -378,6 +402,39 @@
             </div>
         </div>
     </main>
+</div>
+
+<!-- FLOATING AI ASSISTANT CHATBOT WIDGET -->
+<div id="btnToggleFloatChat" class="float-chat-trigger" title="Open AI Retail Assistant Chatbot">
+    <span>🤖 AI Assistant</span>
+</div>
+
+<div id="floatingChatWidget" class="float-chat-card" style="display:none;">
+    <div class="float-chat-header">
+        <div>
+            <h4 style="margin:0; color:#FFF; font-size:0.95rem;">🛍️ Retail AI Assistant</h4>
+            <span style="font-size:0.75rem; color:#A78BFA;" id="floatChatDatasetPill">Active Dataset QA</span>
+        </div>
+        <button id="btnCloseFloatChat" style="background:none; border:none; color:#FFF; font-size:1.2rem; cursor:pointer;">✖</button>
+    </div>
+
+    <div class="float-chip-row">
+        <button class="float-chip" data-prompt="What is the total revenue?">📊 Revenue</button>
+        <button class="float-chip" data-prompt="Top products?">🏆 Top Items</button>
+        <button class="float-chip" data-prompt="Frequently bought together">🛒 Basket</button>
+        <button class="float-chip" data-prompt="Who is our prime minister?">⚠️ Scope Test</button>
+    </div>
+
+    <div id="floatChatHistory" class="float-chat-body">
+        <div class="chat-msg chat-assistant">
+            🤖 Ask me anything about your active retail dataset or request cross-sell recommendations!
+        </div>
+    </div>
+
+    <div class="float-chat-footer">
+        <input type="text" id="floatChatInput" placeholder="Ask dataset question...">
+        <button id="btnSendFloatChat">Send</button>
+    </div>
 </div>
 
 <!-- Custom JS -->

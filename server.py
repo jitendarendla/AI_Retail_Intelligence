@@ -198,8 +198,16 @@ def api_select_dataset(dataset_id: str):
         raise HTTPException(status_code=404, detail="Dataset ID not found in history archive.")
         
     DATA_CACHE["active_id"] = dataset_id
-    active_meta = DATA_CACHE["datasets_registry"][dataset_id]["metadata"]
+    active_data = DATA_CACHE["datasets_registry"][dataset_id]
+    active_meta = active_data["metadata"]
     print(f"🔄 Switched active analysis dataset to: {active_meta['filename']} (ID: {dataset_id})")
+    
+    # Sync RAG Assistant Knowledge Base with selected dataset
+    try:
+        assistant = get_rag_assistant()
+        assistant.build_knowledge_base(active_data["df"], active_data.get("rules"), active_data.get("rfm"))
+    except Exception as ex:
+        print(f"RAG rebuild warning on dataset switch: {ex}")
     
     return {
         "success": True,
@@ -281,6 +289,13 @@ async def api_upload_dataset(file: UploadFile = File(...)):
         
         # Set Newly Uploaded Dataset as Active
         DATA_CACHE["active_id"] = dataset_id
+        
+        # Sync RAG Assistant Knowledge Base with Newly Uploaded Dataset
+        try:
+            assistant = get_rag_assistant()
+            assistant.build_knowledge_base(cleaned_df, rules_df, rfm_df)
+        except Exception as ex:
+            print(f"RAG rebuild warning on upload: {ex}")
         
         return {
             "success": True,
@@ -575,11 +590,38 @@ def api_chat(payload: dict = Body(...)):
         return {"response": "Please enter a valid business question."}
     
     try:
+        active_data = get_active_data()
+        active_meta = active_data["metadata"]
         assistant = get_rag_assistant()
+        
+        # Ensure RAG Assistant knowledge base is initialized with active dataset
+        if not assistant.documents:
+            assistant.build_knowledge_base(active_data["df"], active_data.get("rules"), active_data.get("rfm"))
+            
         response = assistant.query(query_text)
-        return {"response": response}
+        
+        # Check if query is asking for recommendations for a specific product
+        q_lower = query_text.lower()
+        recommendations = []
+        if any(k in q_lower for k in ['recommend', 'cross-sell', 'co-purchased', 'bought with', 'pairs with']):
+            rules_df = active_data.get("rules", pd.DataFrame())
+            df = active_data["df"]
+            prods = df['Description'].unique()
+            matched_prod = None
+            for p in prods:
+                if str(p).lower() in q_lower and len(str(p)) > 3:
+                    matched_prod = str(p)
+                    break
+            if matched_prod and not rules_df.empty:
+                recommendations = recommend_products(matched_prod, rules_df, top_n=5)
+                
+        return {
+            "response": response,
+            "active_dataset": active_meta["filename"],
+            "recommendations": recommendations
+        }
     except Exception as e:
-        return {"response": f"Error querying AI assistant: {e}"}
+        return {"response": f"Error querying AI assistant: {e}", "active_dataset": "Unknown", "recommendations": []}
 
 
 @app.get("/api/search")

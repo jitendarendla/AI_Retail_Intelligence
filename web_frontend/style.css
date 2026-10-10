@@ -631,3 +631,152 @@ tr:hover {
 .tab-content.active {
     display: block;
 }
+
+/* Prompt Suggestion Chips */
+.chip-btn {
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #818CF8;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.chip-btn:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: #818CF8;
+    transform: translateY(-1px);
+}
+.chip-warning {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #FBBF24;
+}
+.chip-warning:hover {
+    background: rgba(245, 158, 11, 0.3);
+    border-color: #FBBF24;
+}
+
+/* FLOATING AI ASSISTANT CHATBOT WIDGET */
+.float-chat-trigger {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+    color: #FFF;
+    padding: 14px 22px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.float-chat-trigger:hover {
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+}
+
+.float-chat-card {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    width: 380px;
+    height: 520px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUpFloat 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFloat {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.float-chat-header {
+    padding: 14px 18px;
+    background: linear-gradient(90deg, #1E1B4B, #311B92);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.float-chip-row {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    background: rgba(30, 41, 59, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.float-chip {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #A78BFA;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.float-chip:hover {
+    background: rgba(99, 102, 241, 0.3);
+}
+
+.float-chat-body {
+    flex-grow: 1;
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.float-chat-body .chat-msg {
+    max-width: 88%;
+    font-size: 0.84rem;
+    padding: 10px 14px;
+}
+
+.float-chat-footer {
+    display: flex;
+    padding: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 8px;
+}
+.float-chat-footer input {
+    flex-grow: 1;
+    background: #090D16;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #FFF;
+    font-size: 0.82rem;
+    outline: none;
+}
+.float-chat-footer button {
+    background: linear-gradient(90deg, #6366F1, #8B5CF6);
+    color: #FFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+

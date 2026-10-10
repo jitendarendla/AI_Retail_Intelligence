@@ -164,20 +164,83 @@ class RAGAssistant:
             except Exception as e:
                 print(f"Could not load FAISS index: {e}")
 
+    def is_domain_question(self, user_question: str) -> bool:
+        """Strict domain guardrail check to ensure assistant only answers dataset-related questions."""
+        q_lower = user_question.lower().strip()
+        
+        # Explicit out-of-domain terms (politics, general trivia, code generation, external knowledge)
+        out_of_domain_terms = [
+            'prime minister', 'pm of', 'president', 'minister', 'capital of',
+            'weather', 'movie', 'actor', 'actress', 'cricket', 'football',
+            'who is the', 'who was', 'who is', 'politics', 'election', 'government',
+            'recipe', 'code for', 'programming', 'python code', 'how to write code',
+            'math problem', 'physics', 'chemistry', 'biology', 'quantum', 'space',
+            'who created', 'who invented', 'country capital', 'tell me a joke', 'sing a song',
+            'modi', 'biden', 'trump', 'sunak', 'starmer', 'curry', 'movie recommendation'
+        ]
+        
+        for term in out_of_domain_terms:
+            if term in q_lower:
+                return False
+                
+        # Greetings & identity questions are allowed
+        greetings = ['hi', 'hello', 'hey', 'help', 'what can you do', 'who are you', 'capabilities', 'what are you', 'good morning', 'good evening']
+        if any(q_lower == g or q_lower.startswith(g + ' ') for g in greetings):
+            return True
+            
+        # Domain keywords related to retail dataset analytics
+        domain_keywords = [
+            'sale', 'sales', 'revenue', 'product', 'products', 'customer', 'customers',
+            'order', 'orders', 'invoice', 'invoices', 'basket', 'recommend', 'recommendation',
+            'rfm', 'segment', 'segments', 'segmentation', 'forecast', 'prediction', 'top',
+            'total', 'country', 'uk', 'united kingdom', 'buyer', 'buyers', 'price', 'quantity',
+            'date', 'month', 'year', 'day', 'hour', 'stat', 'unit', 'growth', 'trend', 'margin',
+            'stock', 'sku', 'dataset', 'analysis', 'data', 'upload', 'history', 'store', 'retail',
+            'performance', 'most', 'best', 'worst', 'spending', 'frequency', 'recency', 'monetary',
+            'lift', 'confidence', 'support', 'predict', 'future', 'insight', 'item', 'items',
+            'bought', 'together', 'co-purchased', 'average', 'spend', 'highest', 'lowest',
+            'rules', 'association', 'pattern', 'summary', 'overview'
+        ]
+        
+        for kw in domain_keywords:
+            if kw in q_lower:
+                return True
+                
+        return False
+
     def query(self, user_question: str) -> str:
         """
-        RAG Query Pipeline:
-        1. Retrieve relevant context from vector database / documents
-        2. Synthesize accurate natural language answer
+        RAG Query Pipeline with Domain Scope Guardrail:
+        1. Validate query domain scope (Reject out-of-domain / non-dataset questions)
+        2. Retrieve relevant context from vector database / documents
+        3. Synthesize accurate natural language answer
         """
+        q_lower = user_question.lower().strip()
+
+        # 1. Check Greetings
+        if any(q_lower == g or q_lower.startswith(g + ' ') for g in ['hi', 'hello', 'hey', 'help', 'who are you', 'what can you do']):
+            return ("👋 **Hello! Welcome to DMVCORETECH AI Retail Intelligence Assistant.**\n\n"
+                    "I am specialized strictly in analyzing your uploaded retail datasets, customer RFM segments, market basket recommendations, and sales forecasts.\n\n"
+                    "💡 **Ask me questions like:**\n"
+                    "• *What is the total revenue and order count in the uploaded dataset?*\n"
+                    "• *Which products generated the highest revenue?*\n"
+                    "• *What are the top spending customer accounts?*\n"
+                    "• *What items are frequently bought together?*\n"
+                    "• *Give customer segmentation breakdown.*")
+
+        # 2. Strict Domain Scope Guardrail Check
+        if not self.is_domain_question(user_question):
+            return ("⚠️ **Scope Guardrail Activated**\n\n"
+                    "I am the **DMVCORETECH AI Retail Intelligence Assistant**. I am strictly configured to answer questions regarding your **uploaded retail datasets and store analytics**.\n\n"
+                    "❌ I cannot answer out-of-domain questions (such as general knowledge, politics, external trivia, or code generation).\n\n"
+                    "💡 *Please ask a question related to your active retail dataset (e.g. 'Total revenue', 'Top products', or 'Frequently bought together items').*")
+
         if not self.documents:
             self.load_vector_db()
             
         if not self.documents:
-            return "Knowledge base not initialized. Please build or train the RAG database first."
+            return "Knowledge base initializing for current dataset. Please ask again in a moment."
             
-        q_lower = user_question.lower().strip()
-        
         # Semantic search using SentenceTransformers + FAISS if ready
         retrieved_contexts = []
         if self.st_model and self.index and FAISS_AVAILABLE:
@@ -195,35 +258,35 @@ class RAGAssistant:
             for doc in self.documents:
                 t = doc['topic']
                 c = doc['content'].lower()
-                if any(k in q_lower for k in ['revenue', 'highest', 'top selling', 'product']) and t in ['top_products', 'sales_summary']:
+                if any(k in q_lower for k in ['revenue', 'highest', 'top selling', 'product', 'item']) and t in ['top_products', 'sales_summary']:
                     retrieved_contexts.append(doc['content'])
-                elif any(k in q_lower for k in ['customer', 'spend', 'buyer']) and t in ['top_customers', 'customer_segments']:
+                elif any(k in q_lower for k in ['customer', 'spend', 'buyer', 'vip', 'loyal', 'rfm']) and t in ['top_customers', 'customer_segments']:
                     retrieved_contexts.append(doc['content'])
                 elif any(k in q_lower for k in ['country', 'uk', 'united kingdom', 'location']) and t == 'country_sales':
                     retrieved_contexts.append(doc['content'])
-                elif any(k in q_lower for k in ['together', 'basket', 'recommend', 'pair']) and t == 'bought_together':
+                elif any(k in q_lower for k in ['together', 'basket', 'recommend', 'pair', 'co-purchased']) and t == 'bought_together':
                     retrieved_contexts.append(doc['content'])
-                elif any(k in q_lower for k in ['summary', 'total', 'overview']) and t == 'sales_summary':
+                elif any(k in q_lower for k in ['summary', 'total', 'overview', 'order']) and t == 'sales_summary':
                     retrieved_contexts.append(doc['content'])
                     
         if not retrieved_contexts:
             retrieved_contexts = [doc['content'] for doc in self.documents[:2]]
             
-        context_str = "\n".join(retrieved_contexts)
+        context_str = "\n• ".join(retrieved_contexts)
         
         # Generation via Flan-T5 if model available
         if self.flan_t5:
             try:
-                prompt = f"Answer the business question based on context:\nContext: {context_str}\nQuestion: {user_question}\nAnswer:"
+                prompt = f"Answer business question based on context:\nContext: {context_str}\nQuestion: {user_question}\nAnswer:"
                 res = self.flan_t5(prompt)
                 generated = res[0]['generated_text'].strip()
                 if len(generated) > 10:
-                    return f"**Answer:** {generated}\n\n📌 **Context Data:**\n{context_str}"
+                    return f"💡 **AI Insights:** {generated}\n\n📌 **Active Dataset Context:**\n• {context_str}"
             except Exception as e:
                 print(f"Flan-T5 generation note: {e}")
                 
         # High quality domain QA response formatting
-        return f"💡 **Business Intelligence Insights:**\n\n{context_str}"
+        return f"💡 **Active Dataset Business Intelligence Insights:**\n\n• {context_str}"
 
 
 _assistant_instance = None
@@ -234,3 +297,4 @@ def get_rag_assistant() -> RAGAssistant:
     if _assistant_instance is None:
         _assistant_instance = RAGAssistant()
     return _assistant_instance
+
