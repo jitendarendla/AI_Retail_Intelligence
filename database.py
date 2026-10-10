@@ -1,18 +1,46 @@
 import os
-import sqlite3
+import psycopg2
+import psycopg2.extras
 import hashlib
 import secrets
 import datetime
 from typing import Optional, List, Dict, Any
 
-DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retail_intelligence.db")
+# PostgreSQL Database Configuration
+PG_HOST = os.getenv("PG_HOST", "localhost")
+PG_PORT = int(os.getenv("PG_PORT", 5432))
+PG_USER = os.getenv("PG_USER", "postgre")
+PG_PASSWORD = os.getenv("PG_PASSWORD", "Sonu@801")
+PG_DBNAME = os.getenv("PG_DBNAME", "retail_intelligence")
 
-def get_db_connection() -> sqlite3.Connection:
-    """Thread-safe SQLite connection factory with row factory dict-like access."""
-    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys = ON;")
-    return conn
+def get_db_connection():
+    """Create and return a PostgreSQL connection with DictCursor."""
+    try:
+        conn = psycopg2.connect(
+            host=PG_HOST,
+            port=PG_PORT,
+            user=PG_USER,
+            password=PG_PASSWORD,
+            dbname=PG_DBNAME,
+            cursor_factory=psycopg2.extras.DictCursor
+        )
+        return conn
+    except Exception as e:
+        # Fallback to user 'postgres' if 'postgre' encounters credential issues
+        if PG_USER == "postgre":
+            try:
+                conn = psycopg2.connect(
+                    host=PG_HOST,
+                    port=PG_PORT,
+                    user="postgres",
+                    password=PG_PASSWORD,
+                    dbname=PG_DBNAME,
+                    cursor_factory=psycopg2.extras.DictCursor
+                )
+                return conn
+            except Exception:
+                pass
+        raise e
 
 
 def hash_password(password: str) -> tuple[str, str]:
@@ -29,161 +57,159 @@ def verify_password(password: str, hashed: str, salt: str) -> bool:
 
 
 def init_db():
-    """Initialize database tables, indexes, and seed default production users and datasets."""
+    """Initialize PostgreSQL database tables, indexes, and seed default production users and datasets."""
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
 
     # 1. Users Table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE NOT NULL,
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(100) UNIQUE NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         salt TEXT NOT NULL,
-        full_name TEXT NOT NULL,
-        role TEXT NOT NULL DEFAULT 'Retail Store Manager',
-        company TEXT NOT NULL DEFAULT 'DMVCORETECH',
-        avatar TEXT DEFAULT '🛍️',
-        created_at TEXT NOT NULL
+        full_name VARCHAR(150) NOT NULL,
+        role VARCHAR(100) NOT NULL DEFAULT 'Retail Store Manager',
+        company VARCHAR(100) NOT NULL DEFAULT 'DMVCORETECH',
+        avatar VARCHAR(50) DEFAULT '🛍️',
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
     """)
 
     # 2. User Sessions Table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS user_sessions (
-        token TEXT PRIMARY KEY,
-        user_id INTEGER NOT NULL,
-        username TEXT NOT NULL,
-        role TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        expires_at TEXT NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        token VARCHAR(255) PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        username VARCHAR(100) NOT NULL,
+        role VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMP NOT NULL
     );
     """)
 
     # 3. Datasets Registry Table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS datasets (
-        dataset_id TEXT PRIMARY KEY,
-        user_id INTEGER,
-        filename TEXT NOT NULL,
+        dataset_id VARCHAR(50) PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        filename VARCHAR(255) NOT NULL,
         file_path TEXT NOT NULL,
-        upload_time TEXT NOT NULL,
+        upload_time VARCHAR(50) NOT NULL,
         raw_rows INTEGER DEFAULT 0,
         cleaned_rows INTEGER DEFAULT 0,
-        total_revenue REAL DEFAULT 0.0,
+        total_revenue NUMERIC(15, 2) DEFAULT 0.0,
         total_customers INTEGER DEFAULT 0,
         total_products INTEGER DEFAULT 0,
         mined_rules INTEGER DEFAULT 0,
-        is_default INTEGER DEFAULT 0,
-        is_active INTEGER DEFAULT 0,
-        created_at TEXT NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+        is_default BOOLEAN DEFAULT FALSE,
+        is_active BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
     """)
 
     # 4. Dataset Artifacts Table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS dataset_artifacts (
-        dataset_id TEXT PRIMARY KEY,
+        dataset_id VARCHAR(50) PRIMARY KEY REFERENCES datasets(dataset_id) ON DELETE CASCADE,
         cleaned_path TEXT NOT NULL,
         rfm_path TEXT,
         rules_path TEXT,
         daily_path TEXT,
-        created_at TEXT NOT NULL,
-        FOREIGN KEY (dataset_id) REFERENCES datasets(dataset_id) ON DELETE CASCADE
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
     """)
 
     # 5. Chat & RAG Audit Logs Table
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS chat_logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        dataset_id TEXT,
-        username TEXT,
+        id SERIAL PRIMARY KEY,
+        dataset_id VARCHAR(50),
+        username VARCHAR(100),
         query TEXT NOT NULL,
         response TEXT NOT NULL,
-        is_scope_violation INTEGER DEFAULT 0,
-        created_at TEXT NOT NULL
+        is_scope_violation BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
     """)
 
-    conn.commit()
-
-    # Seed Default Users
+    # Seed Default Users in PostgreSQL
     seed_users = [
         ("admin", "admin@dmvcoretech.com", "admin123", "System Administrator", "Platform Administrator", "DMVCORETECH", "👑"),
         ("retailer", "retailer@dmvcoretech.com", "retailer123", "Elena Rostova", "Senior Retail Merchandiser", "DMVCORETECH", "🛍️"),
         ("intern", "intern@dmvcoretech.com", "intern123", "AIML Intern", "AIML Data Scientist Intern", "DMVCORETECH", "🎓")
     ]
 
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
     for u_name, u_email, u_pass, u_full, u_role, u_comp, u_avatar in seed_users:
-        cursor.execute("SELECT id FROM users WHERE username = ?", (u_name,))
+        cursor.execute("SELECT id FROM users WHERE username = %s;", (u_name,))
         if not cursor.fetchone():
             p_hash, p_salt = hash_password(u_pass)
             cursor.execute("""
-                INSERT INTO users (username, email, password_hash, salt, full_name, role, company, avatar, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (u_name, u_email, p_hash, p_salt, u_full, u_role, u_comp, u_avatar, now_str))
+                INSERT INTO users (username, email, password_hash, salt, full_name, role, company, avatar)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            """, (u_name, u_email, p_hash, p_salt, u_full, u_role, u_comp, u_avatar))
 
     # Seed Default Online Retail Dataset Record
-    cursor.execute("SELECT dataset_id FROM datasets WHERE dataset_id = 'default'")
+    cursor.execute("SELECT dataset_id FROM datasets WHERE dataset_id = 'default';")
     if not cursor.fetchone():
         cleaned_path = os.path.abspath("data/processed/cleaned_retail_data.csv")
         rfm_path = os.path.abspath("data/processed/rfm_data.csv")
         rules_path = os.path.abspath("data/processed/association_rules.csv")
         daily_path = os.path.abspath("data/processed/daily_sales.csv")
         raw_path = os.path.abspath("data/raw/Online Retail.xlsx")
+        now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         cursor.execute("""
             INSERT INTO datasets (
                 dataset_id, user_id, filename, file_path, upload_time,
                 raw_rows, cleaned_rows, total_revenue, total_customers, total_products,
-                mined_rules, is_default, is_active, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                mined_rules, is_default, is_active
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
         """, (
             "default", 1, "Online Retail.xlsx (Default)", raw_path, now_str,
             541909, 392692, 8887208.89, 4338, 3866,
-            1030, 1, 1, now_str
+            1030, True, True
         ))
 
         cursor.execute("""
-            INSERT INTO dataset_artifacts (dataset_id, cleaned_path, rfm_path, rules_path, daily_path, created_at)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, ("default", cleaned_path, rfm_path, rules_path, daily_path, now_str))
+            INSERT INTO dataset_artifacts (dataset_id, cleaned_path, rfm_path, rules_path, daily_path)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (dataset_id) DO UPDATE SET cleaned_path = EXCLUDED.cleaned_path;
+        """, ("default", cleaned_path, rfm_path, rules_path, daily_path))
 
-    conn.commit()
+    cursor.close()
     conn.close()
-    print("✅ Production SQLite Database initialized & verified successfully:", DB_FILE)
+    print("✅ Production PostgreSQL Database connected & initialized successfully on port 5432!")
 
 
 # ==========================================
-# 🔐 AUTHENTICATION & USER MANAGEMENT
+# 🔐 AUTHENTICATION & USER MANAGEMENT (PostgreSQL)
 # ==========================================
 
 def create_user(username: str, email: str, password: str, full_name: str, role: str = "Retail Store Manager", company: str = "DMVCORETECH", avatar: str = "🛍️") -> Dict[str, Any]:
-    """Register a new user into SQLite database."""
+    """Register a new user into PostgreSQL database."""
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id FROM users WHERE username = ? OR email = ?", (username.strip().lower(), email.strip().lower()))
+    cursor.execute("SELECT id FROM users WHERE username = %s OR email = %s;", (username.strip().lower(), email.strip().lower()))
     if cursor.fetchone():
+        cursor.close()
         conn.close()
         raise ValueError("Username or Email already registered.")
 
     p_hash, p_salt = hash_password(password)
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     cursor.execute("""
-        INSERT INTO users (username, email, password_hash, salt, full_name, role, company, avatar, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (username.strip().lower(), email.strip().lower(), p_hash, p_salt, full_name.strip(), role.strip(), company.strip(), avatar, now_str))
+        INSERT INTO users (username, email, password_hash, salt, full_name, role, company, avatar)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        RETURNING id;
+    """, (username.strip().lower(), email.strip().lower(), p_hash, p_salt, full_name.strip(), role.strip(), company.strip(), avatar))
 
-    user_id = cursor.lastrowid
-    conn.commit()
+    user_id = cursor.fetchone()["id"]
+    cursor.close()
     conn.close()
 
     return {
@@ -198,32 +224,35 @@ def create_user(username: str, email: str, password: str, full_name: str, role: 
 
 
 def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
-    """Verify user credentials and create active session token."""
+    """Verify user credentials in PostgreSQL and create active session token."""
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM users WHERE username = ? OR email = ?", (username.strip().lower(), username.strip().lower()))
+    cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s;", (username.strip().lower(), username.strip().lower()))
     user_row = cursor.fetchone()
 
     if not user_row:
+        cursor.close()
         conn.close()
         return None
 
     if not verify_password(password, user_row["password_hash"], user_row["salt"]):
+        cursor.close()
         conn.close()
         return None
 
     # Generate Session Token
-    token = f"token_{secrets.token_urlsafe(24)}"
+    token = f"token_pg_{secrets.token_urlsafe(24)}"
     now = datetime.datetime.now()
     expires = now + datetime.timedelta(days=7)
 
     cursor.execute("""
         INSERT INTO user_sessions (token, user_id, username, role, created_at, expires_at)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (token, user_row["id"], user_row["username"], user_row["role"], now.strftime("%Y-%m-%d %H:%M:%S"), expires.strftime("%Y-%m-%d %H:%M:%S")))
+        VALUES (%s, %s, %s, %s, %s, %s);
+    """, (token, user_row["id"], user_row["username"], user_row["role"], now, expires))
 
-    conn.commit()
+    cursor.close()
     conn.close()
 
     return {
@@ -241,7 +270,7 @@ def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
 
 
 def validate_session_token(token: str) -> Optional[Dict[str, Any]]:
-    """Validate session token against SQLite user_sessions table."""
+    """Validate session token against PostgreSQL user_sessions table."""
     if not token:
         return None
     conn = get_db_connection()
@@ -251,17 +280,17 @@ def validate_session_token(token: str) -> Optional[Dict[str, Any]]:
         SELECT s.*, u.full_name, u.email, u.company, u.avatar
         FROM user_sessions s
         JOIN users u ON s.user_id = u.id
-        WHERE s.token = ?
+        WHERE s.token = %s;
     """, (token,))
     row = cursor.fetchone()
+    cursor.close()
     conn.close()
 
     if not row:
         return None
 
     # Check expiration
-    expires = datetime.datetime.strptime(row["expires_at"], "%Y-%m-%d %H:%M:%S")
-    if datetime.datetime.now() > expires:
+    if datetime.datetime.now() > row["expires_at"]:
         return None
 
     return {
@@ -278,60 +307,71 @@ def validate_session_token(token: str) -> Optional[Dict[str, Any]]:
 def invalidate_session_token(token: str):
     """Remove session token upon logout."""
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM user_sessions WHERE token = ?", (token,))
-    conn.commit()
+    cursor.execute("DELETE FROM user_sessions WHERE token = %s;", (token,))
+    cursor.close()
     conn.close()
 
 
 # ==========================================
-# 📜 DATASETS DATABASE PERSISTENCE
+# 📜 DATASETS POSTGRESQL PERSISTENCE
 # ==========================================
 
 def save_dataset_record(metadata: Dict[str, Any], artifacts: Dict[str, str], set_active: bool = True):
-    """Persist new dataset metadata and storage paths in SQLite."""
+    """Persist new dataset metadata and storage paths in PostgreSQL."""
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
 
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     d_id = metadata["dataset_id"]
 
     if set_active:
-        cursor.execute("UPDATE datasets SET is_active = 0")
+        cursor.execute("UPDATE datasets SET is_active = FALSE;")
 
     cursor.execute("""
-        INSERT OR REPLACE INTO datasets (
+        INSERT INTO datasets (
             dataset_id, user_id, filename, file_path, upload_time,
             raw_rows, cleaned_rows, total_revenue, total_customers, total_products,
-            mined_rules, is_default, is_active, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            mined_rules, is_default, is_active
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (dataset_id) DO UPDATE SET
+            is_active = EXCLUDED.is_active,
+            total_revenue = EXCLUDED.total_revenue,
+            cleaned_rows = EXCLUDED.cleaned_rows;
     """, (
         d_id, metadata.get("user_id", 1), metadata["filename"], metadata.get("file_path", ""),
         metadata["upload_time"], metadata.get("raw_rows", 0), metadata.get("cleaned_rows", 0),
         metadata.get("total_revenue", 0.0), metadata.get("total_customers", 0),
         metadata.get("total_products", 0), metadata.get("mined_rules", 0),
-        1 if metadata.get("is_default") else 0, 1 if set_active else 0, now_str
+        bool(metadata.get("is_default")), set_active
     ))
 
     cursor.execute("""
-        INSERT OR REPLACE INTO dataset_artifacts (dataset_id, cleaned_path, rfm_path, rules_path, daily_path, created_at)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO dataset_artifacts (dataset_id, cleaned_path, rfm_path, rules_path, daily_path)
+        VALUES (%s, %s, %s, %s, %s)
+        ON CONFLICT (dataset_id) DO UPDATE SET
+            cleaned_path = EXCLUDED.cleaned_path,
+            rfm_path = EXCLUDED.rfm_path,
+            rules_path = EXCLUDED.rules_path,
+            daily_path = EXCLUDED.daily_path;
     """, (
         d_id, artifacts["cleaned_path"], artifacts.get("rfm_path"),
-        artifacts.get("rules_path"), artifacts.get("daily_path"), now_str
+        artifacts.get("rules_path"), artifacts.get("daily_path")
     ))
 
-    conn.commit()
+    cursor.close()
     conn.close()
 
 
 def list_datasets_from_db() -> List[Dict[str, Any]]:
-    """Retrieve all archived datasets with active flags from SQLite."""
+    """Retrieve all archived datasets with active flags from PostgreSQL."""
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM datasets ORDER BY created_at DESC")
+    cursor.execute("SELECT * FROM datasets ORDER BY created_at DESC;")
     rows = cursor.fetchall()
+    cursor.close()
     conn.close()
 
     result = []
@@ -353,19 +393,20 @@ def list_datasets_from_db() -> List[Dict[str, Any]]:
 
 
 def set_active_dataset_in_db(dataset_id: str) -> Optional[Dict[str, Any]]:
-    """Set specified dataset as active in SQLite."""
+    """Set specified dataset as active in PostgreSQL."""
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM datasets WHERE dataset_id = ?", (dataset_id,))
+    cursor.execute("SELECT * FROM datasets WHERE dataset_id = %s;", (dataset_id,))
     row = cursor.fetchone()
     if not row:
+        cursor.close()
         conn.close()
         return None
 
-    cursor.execute("UPDATE datasets SET is_active = 0")
-    cursor.execute("UPDATE datasets SET is_active = 1 WHERE dataset_id = ?", (dataset_id,))
-    conn.commit()
+    cursor.execute("UPDATE datasets SET is_active = FALSE;")
+    cursor.execute("UPDATE datasets SET is_active = TRUE WHERE dataset_id = %s;", (dataset_id,))
 
     meta = {
         "dataset_id": row["dataset_id"],
@@ -380,12 +421,13 @@ def set_active_dataset_in_db(dataset_id: str) -> Optional[Dict[str, Any]]:
         "is_default": bool(row["is_default"]),
         "is_active": True
     }
+    cursor.close()
     conn.close()
     return meta
 
 
 def get_active_dataset_record() -> Optional[Dict[str, Any]]:
-    """Retrieve active dataset record and its artifact paths."""
+    """Retrieve active dataset record and artifact paths from PostgreSQL."""
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -393,8 +435,8 @@ def get_active_dataset_record() -> Optional[Dict[str, Any]]:
         SELECT d.*, a.cleaned_path, a.rfm_path, a.rules_path, a.daily_path
         FROM datasets d
         LEFT JOIN dataset_artifacts a ON d.dataset_id = a.dataset_id
-        WHERE d.is_active = 1
-        LIMIT 1
+        WHERE d.is_active = TRUE
+        LIMIT 1;
     """)
     row = cursor.fetchone()
 
@@ -405,10 +447,11 @@ def get_active_dataset_record() -> Optional[Dict[str, Any]]:
             FROM datasets d
             LEFT JOIN dataset_artifacts a ON d.dataset_id = a.dataset_id
             WHERE d.dataset_id = 'default'
-            LIMIT 1
+            LIMIT 1;
         """)
         row = cursor.fetchone()
 
+    cursor.close()
     conn.close()
     if not row:
         return None
@@ -416,77 +459,98 @@ def get_active_dataset_record() -> Optional[Dict[str, Any]]:
 
 
 def delete_dataset_from_db(dataset_id: str) -> bool:
-    """Delete custom dataset record from SQLite."""
+    """Delete custom dataset record from PostgreSQL."""
     if dataset_id == "default":
         return False
     conn = get_db_connection()
+    conn.autocommit = True
     cursor = conn.cursor()
 
-    cursor.execute("SELECT is_active FROM datasets WHERE dataset_id = ?", (dataset_id,))
+    cursor.execute("SELECT is_active FROM datasets WHERE dataset_id = %s;", (dataset_id,))
     row = cursor.fetchone()
     if not row:
+        cursor.close()
         conn.close()
         return False
 
     was_active = bool(row["is_active"])
-    cursor.execute("DELETE FROM datasets WHERE dataset_id = ?", (dataset_id,))
+    cursor.execute("DELETE FROM datasets WHERE dataset_id = %s;", (dataset_id,))
 
     if was_active:
-        cursor.execute("UPDATE datasets SET is_active = 1 WHERE dataset_id = 'default'")
+        cursor.execute("UPDATE datasets SET is_active = TRUE WHERE dataset_id = 'default';")
 
-    conn.commit()
+    cursor.close()
     conn.close()
     return True
 
 
 # ==========================================
-# 📊 AUDIT & CHAT LOGGING
+# 📊 AUDIT & CHAT LOGGING (PostgreSQL)
 # ==========================================
 
 def log_chat_query(dataset_id: str, username: str, query: str, response: str, is_violation: bool = False):
-    """Log user interactions with RAG chatbot in SQLite."""
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    """Log user interactions with RAG chatbot into PostgreSQL."""
+    try:
+        conn = get_db_connection()
+        conn.autocommit = True
+        cursor = conn.cursor()
 
-    cursor.execute("""
-        INSERT INTO chat_logs (dataset_id, username, query, response, is_scope_violation, created_at)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (dataset_id, username, query, response, 1 if is_violation else 0, now_str))
+        cursor.execute("""
+            INSERT INTO chat_logs (dataset_id, username, query, response, is_scope_violation)
+            VALUES (%s, %s, %s, %s, %s);
+        """, (dataset_id, username, query, response, is_violation))
 
-    conn.commit()
-    conn.close()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"PostgreSQL chat log warning: {e}")
 
 
 def get_db_statistics() -> Dict[str, Any]:
-    """Provide production database health and statistics metrics."""
-    conn = get_db_connection()
-    cursor = conn.cursor()
+    """Provide PostgreSQL production database health and statistics metrics."""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
 
-    cursor.execute("SELECT COUNT(*) FROM users")
-    total_users = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) as cnt FROM users;")
+        total_users = cursor.fetchone()["cnt"]
 
-    cursor.execute("SELECT COUNT(*) FROM datasets")
-    total_datasets = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) as cnt FROM datasets;")
+        total_datasets = cursor.fetchone()["cnt"]
 
-    cursor.execute("SELECT COUNT(*) FROM user_sessions")
-    active_sessions = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) as cnt FROM user_sessions;")
+        active_sessions = cursor.fetchone()["cnt"]
 
-    cursor.execute("SELECT COUNT(*) FROM chat_logs")
-    total_chats = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) as cnt FROM chat_logs;")
+        total_chats = cursor.fetchone()["cnt"]
 
-    conn.close()
+        cursor.execute("SELECT pg_database_size(%s) as size;", (PG_DBNAME,))
+        db_size_bytes = cursor.fetchone()["size"]
 
-    db_size = os.path.getsize(DB_FILE) if os.path.exists(DB_FILE) else 0
+        cursor.execute("SELECT version();")
+        version_str = cursor.fetchone()[0]
 
-    return {
-        "database_type": "SQLite3 (ACID-Compliant Persistent Storage)",
-        "database_file": os.path.basename(DB_FILE),
-        "database_path": DB_FILE,
-        "database_size_kb": round(db_size / 1024, 2),
-        "total_registered_users": total_users,
-        "total_archived_datasets": total_datasets,
-        "active_sessions": active_sessions,
-        "total_logged_chat_queries": total_chats,
-        "status": "HEALTHY_AND_CONNECTED"
-    }
+        cursor.close()
+        conn.close()
+
+        return {
+            "database_type": "PostgreSQL (Enterprise Relational DB)",
+            "database_host": PG_HOST,
+            "database_port": PG_PORT,
+            "database_user": PG_USER,
+            "database_name": PG_DBNAME,
+            "database_size_kb": round(db_size_bytes / 1024, 2),
+            "total_registered_users": total_users,
+            "total_archived_datasets": total_datasets,
+            "active_sessions": active_sessions,
+            "total_logged_chat_queries": total_chats,
+            "version": version_str.split("on")[0].strip(),
+            "status": "HEALTHY_AND_CONNECTED"
+        }
+    except Exception as e:
+        return {
+            "database_type": "PostgreSQL",
+            "database_host": PG_HOST,
+            "database_port": PG_PORT,
+            "status": f"ERROR: {str(e)}"
+        }

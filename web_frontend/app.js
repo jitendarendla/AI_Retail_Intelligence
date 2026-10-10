@@ -2,9 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global Chart Instances Cache
     const charts = {};
 
-    // Initialize Auth & App
+    // Initialize View Navigation & App
+    initViewRouter();
     initAuth();
-    initNav();
+    initDashboardNav();
     initUploadHandlers();
     initEventListeners();
 
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
         toast.className = 'toast';
-        toast.style.borderColor = type === 'success' ? '#34D399' : '#EF4444';
+        toast.style.borderColor = type === 'success' ? '#34D399' : (type === 'info' ? '#818CF8' : '#EF4444');
         toast.innerHTML = message;
         container.appendChild(toast);
         setTimeout(() => {
@@ -21,27 +22,118 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => toast.remove(), 300);
         }, 4000);
     }
+    window.showToast = showToast;
 
-    // ==========================================
-    // 🔐 AUTHENTICATION & LOGIN/REGISTRATION HANDLER
-    // ==========================================
-    function initAuth() {
+    // Contact Form Handler
+    window.submitContactForm = function() {
+        const name = document.getElementById('contactName').value.trim();
+        showToast(`✅ Thank you ${name}! Your inquiry has been submitted to DMVCORETECH support.`);
+        document.getElementById('contactForm').reset();
+    };
+
+    // ========================================================
+    // 🧭 1. VIEW ROUTING (Home Page <-> Dashboard)
+    // ========================================================
+    function initViewRouter() {
+        const homeSection = document.getElementById('homePageSection');
+        const dashSection = document.getElementById('dashboardSection');
+        const loginModal = document.getElementById('loginModal');
+
+        // Check if user already authenticated
         const token = localStorage.getItem('retail_ai_token');
         const userJson = localStorage.getItem('retail_ai_user');
 
-        const loginModal = document.getElementById('loginModal');
-        if (!token || !userJson) {
-            loginModal.style.display = 'flex';
+        if (token && userJson) {
+            // Default to Dashboard if logged in
+            showDashboard();
         } else {
-            loginModal.style.display = 'none';
-            const user = JSON.parse(userJson);
-            document.getElementById('userBadgeName').textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'DMVCORETECH'})`;
-            loadDashboard();
-            loadCatalogProducts();
-            loadDatasetHistory();
-            loadDbStatistics();
+            // Default to Home page
+            showHomePage();
         }
 
+        // Navigation Button Listeners
+        const btnHomeSignIn = document.getElementById('btnHomeSignIn');
+        if (btnHomeSignIn) {
+            btnHomeSignIn.addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+            });
+        }
+
+        const btnCloseAuth = document.getElementById('btnCloseAuthModal');
+        if (btnCloseAuth) {
+            btnCloseAuth.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+            });
+        }
+
+        const btnHeroGetStarted = document.getElementById('btnHeroGetStarted');
+        if (btnHeroGetStarted) {
+            btnHeroGetStarted.addEventListener('click', () => {
+                const currentToken = localStorage.getItem('retail_ai_token');
+                if (currentToken) {
+                    showDashboard();
+                } else {
+                    loginModal.style.display = 'flex';
+                }
+            });
+        }
+
+        const btnHeroViewDocs = document.getElementById('btnHeroViewDocs');
+        if (btnHeroViewDocs) {
+            btnHeroViewDocs.addEventListener('click', () => {
+                const templ = document.getElementById('templatesSection');
+                if (templ) templ.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        const btnNavBackHome = document.getElementById('btnNavBackHome');
+        if (btnNavBackHome) {
+            btnNavBackHome.addEventListener('click', () => {
+                showHomePage();
+            });
+        }
+    }
+
+    function showHomePage() {
+        document.getElementById('homePageSection').style.display = 'block';
+        document.getElementById('dashboardSection').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showDashboard() {
+        document.getElementById('homePageSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
+
+        const userJson = localStorage.getItem('retail_ai_user');
+        if (userJson) {
+            const user = JSON.parse(userJson);
+            const badge = document.getElementById('userBadgeName');
+            if (badge) badge.textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'DMVCORETECH'})`;
+
+            // Update Profile Tab Details
+            if (document.getElementById('profFullName')) {
+                document.getElementById('profFullName').textContent = user.full_name || user.username;
+                document.getElementById('profRole').textContent = user.role || 'Retail Store Manager';
+                document.getElementById('profCompany').textContent = user.company || 'DMVCORETECH';
+                document.getElementById('profEmail').textContent = user.email || 'user@dmvcoretech.com';
+                document.getElementById('profAvatar').textContent = user.avatar || '🛍️';
+            }
+        }
+
+        // Initialize Lucide icons
+        if (window.lucide) lucide.createIcons();
+
+        // Load Dashboard Data
+        loadDashboard();
+        loadCatalogProducts();
+        loadDatasetHistory();
+        loadDbStatistics();
+    }
+
+    // ========================================================
+    // 🔐 2. AUTHENTICATION & REGISTRATION (PostgreSQL)
+    // ========================================================
+    function initAuth() {
         // Tab Switching in Auth Modal
         const tabBtnSignIn = document.getElementById('tabBtnSignIn');
         const tabBtnRegister = document.getElementById('tabBtnRegister');
@@ -79,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btnRegister.addEventListener('click', performRegister);
         }
 
-        // Demo Accounts Quick Buttons
+        // Demo Quick Accounts
         document.querySelectorAll('.btn-demo-quick').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const u = e.currentTarget.getAttribute('data-user');
@@ -104,8 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             localStorage.removeItem('retail_ai_token');
             localStorage.removeItem('retail_ai_user');
-            document.getElementById('loginModal').style.display = 'flex';
             showToast('👋 Successfully logged out of DMVCORETECH AI Retail Suite.', 'info');
+            showHomePage();
         });
     }
 
@@ -140,15 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             errDiv.style.display = 'none';
             document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('userBadgeName').textContent = `${data.user.avatar || '🛍️'} ${data.user.username} (${data.user.company || 'DMVCORETECH'})`;
             
-            showToast(`Welcome back, ${data.user.full_name || data.user.username}! Signed in to ${data.user.company} Retail Suite.`);
-            loadDashboard();
-            loadCatalogProducts();
-            loadDatasetHistory();
-            loadDbStatistics();
+            showToast(`Welcome back, ${data.user.full_name || data.user.username}! Signed in via PostgreSQL.`);
+            showDashboard();
         } catch (e) {
-            errDiv.textContent = 'Server connection error during login.';
+            errDiv.textContent = 'Connection error with PostgreSQL server.';
             errDiv.style.display = 'block';
         }
     }
@@ -195,17 +283,13 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
 
             errDiv.style.display = 'none';
-            succDiv.textContent = '✅ Account created and persisted in SQLite! Redirecting...';
+            succDiv.textContent = '✅ Account created in PostgreSQL! Launching Dashboard...';
             succDiv.style.display = 'block';
 
             setTimeout(() => {
                 document.getElementById('loginModal').style.display = 'none';
-                document.getElementById('userBadgeName').textContent = `${data.user.avatar || '🛍️'} ${data.user.username} (${data.user.company})`;
-                showToast(`🎉 Welcome ${data.user.full_name}! Account created & persisted in SQLite database.`);
-                loadDashboard();
-                loadCatalogProducts();
-                loadDatasetHistory();
-                loadDbStatistics();
+                showToast(`🎉 Welcome ${data.user.full_name}! Account created & stored in PostgreSQL.`);
+                showDashboard();
             }, 800);
 
         } catch (e) {
@@ -214,9 +298,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ==========================================
-    // 🗄️ DATABASE & SYSTEM HEALTH LOADER
-    // ==========================================
+    // ========================================================
+    // 🗄️ 3. POSTGRESQL DATABASE & SYSTEM HEALTH
+    // ========================================================
     async function loadDbStatistics() {
         try {
             const res = await fetch('/api/db/stats');
@@ -226,36 +310,81 @@ document.addEventListener('DOMContentLoaded', () => {
             // Header Pill
             const dbBadge = document.getElementById('dbStatusLabel');
             if (dbBadge) {
-                dbBadge.textContent = `🟢 SQLite: ${data.database_file} (${data.database_size_kb} KB)`;
+                dbBadge.textContent = `🟢 PostgreSQL: ${data.database_port || 5432} (${data.database_name || 'retail_intelligence'})`;
             }
 
-            // Tab 8 Cards
-            if (document.getElementById('dbSizeKb')) {
-                document.getElementById('dbSizeKb').textContent = `${data.database_size_kb} KB`;
-                document.getElementById('dbUsersCount').textContent = data.total_registered_users;
-                document.getElementById('dbDatasetsCount').textContent = data.total_archived_datasets;
-                document.getElementById('dbChatsCount').textContent = data.total_logged_chat_queries;
+            // Profile Tab Stats
+            if (document.getElementById('profTotalUsers')) {
+                document.getElementById('profTotalUsers').textContent = data.total_registered_users || 3;
+                document.getElementById('profTotalChats').textContent = data.total_logged_chat_queries || 0;
             }
         } catch (e) {
-            console.warn('Error loading DB stats:', e);
+            console.warn('Error loading PostgreSQL stats:', e);
         }
     }
 
-    // ==========================================
-    // 📜 MULTI-DATASET HISTORY ARCHIVE & SELECTION
-    // ==========================================
+    // ========================================================
+    // 🧭 4. DASHBOARD SIDEBAR NAVIGATION (Matches Hand Sketch)
+    // ========================================================
+    function initDashboardNav() {
+        const navItems = document.querySelectorAll('.sidebar .nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetTab = item.getAttribute('data-tab');
+                
+                // If clicked "Upload data" item, open upload modal
+                if (item.id === 'navItemUploadData') {
+                    document.getElementById('uploadModal').style.display = 'flex';
+                    return;
+                }
+
+                if (!targetTab) return;
+
+                navItems.forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+
+                // Switch Tab Content
+                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                const activeTab = document.getElementById(`tab-${targetTab}`);
+                if (activeTab) activeTab.classList.add('active');
+
+                // Trigger tab-specific loaders
+                if (targetTab === 'dashboard') loadDashboard();
+                if (targetTab === 'analytics') loadAnalytics();
+                if (targetTab === 'prediction') loadPrediction();
+                if (targetTab === 'history') loadDatasetHistory();
+                if (targetTab === 'profile') loadDbStatistics();
+            });
+        });
+
+        // Notification Bell Dropdown Toggle
+        const btnBell = document.getElementById('btnNotificationBell');
+        const notifDropdown = document.getElementById('notificationDropdown');
+        if (btnBell && notifDropdown) {
+            btnBell.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notifDropdown.style.display = notifDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.addEventListener('click', () => {
+                notifDropdown.style.display = 'none';
+            });
+        }
+    }
+
+    // ========================================================
+    // 📜 5. POSTGRESQL DATASET HISTORY & SELECTION
+    // ========================================================
     async function loadDatasetHistory() {
         const res = await fetch('/api/datasets');
         const data = await res.json();
         const tbody = document.querySelector('#historyTable tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
 
         data.datasets.forEach(d => {
             if (d.is_active) {
                 document.getElementById('activeDatasetLabel').textContent = `Active: ${d.filename}`;
-                if (document.getElementById('chatActiveDatasetPill')) {
-                    document.getElementById('chatActiveDatasetPill').textContent = `Dataset: ${d.filename}`;
-                }
                 if (document.getElementById('floatChatDatasetPill')) {
                     document.getElementById('floatChatDatasetPill').textContent = `QA: ${d.filename}`;
                 }
@@ -294,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.btn-delete-ds').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const dsId = e.currentTarget.getAttribute('data-id');
-                if (confirm('Are you sure you want to permanently delete this dataset from the SQLite database archive?')) {
+                if (confirm('Permanently delete this dataset from PostgreSQL?')) {
                     await deleteDataset(dsId);
                 }
             });
@@ -309,8 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loadDatasetHistory();
             loadDashboard();
             loadAnalytics();
-            loadRFM();
-            loadMarketBasket();
             loadCatalogProducts();
             loadPrediction();
             loadDbStatistics();
@@ -321,52 +448,48 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch(`/api/datasets/${dsId}`, {method: 'DELETE'});
         const data = await res.json();
         if (data.success) {
-            showToast('🗑️ Dataset removed permanently from SQLite database.', 'info');
+            showToast('🗑️ Dataset removed permanently from PostgreSQL.', 'info');
             loadDatasetHistory();
             loadDbStatistics();
         }
     }
 
-    // ==========================================
-    // 📤 REAL-TIME DATASET UPLOAD HANDLER
-    // ==========================================
+    // ========================================================
+    // 📤 6. REAL-TIME DATASET UPLOAD
+    // ========================================================
     function initUploadHandlers() {
         const modal = document.getElementById('uploadModal');
-        const btnOpen = document.getElementById('btnOpenUploadModal');
         const btnClose = document.getElementById('btnCloseUploadModal');
         const dropzone = document.getElementById('uploadDropzone');
         const fileInput = document.getElementById('fileInput');
         const statusDiv = document.getElementById('uploadStatus');
 
-        btnOpen.addEventListener('click', () => modal.style.display = 'flex');
-        btnClose.addEventListener('click', () => modal.style.display = 'none');
+        if (btnClose) btnClose.addEventListener('click', () => modal.style.display = 'none');
+        if (dropzone) {
+            dropzone.addEventListener('click', () => fileInput.click());
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.style.background = 'rgba(99, 102, 241, 0.2)';
+            });
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
+            });
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
+                if (e.dataTransfer.files.length > 0) uploadDatasetFile(e.dataTransfer.files[0]);
+            });
+        }
 
-        dropzone.addEventListener('click', () => fileInput.click());
-
-        dropzone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropzone.style.background = 'rgba(99, 102, 241, 0.2)';
-        });
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
-        });
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
-            if (e.dataTransfer.files.length > 0) {
-                uploadDatasetFile(e.dataTransfer.files[0]);
-            }
-        });
-
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                uploadDatasetFile(fileInput.files[0]);
-            }
-        });
+        if (fileInput) {
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) uploadDatasetFile(fileInput.files[0]);
+            });
+        }
 
         async function uploadDatasetFile(file) {
             statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Uploading and running real-time customer segmentation & market basket pipeline...</span>';
+            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Processing dataset & saving to PostgreSQL...</span>';
 
             const formData = new FormData();
             formData.append('file', file);
@@ -379,30 +502,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!res.ok) {
                     const err = await res.json();
-                    statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Error: ${err.detail || 'Failed processing dataset.'}</span>`;
+                    statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Error: ${err.detail || 'Upload failed.'}</span>`;
                     return;
                 }
 
                 const data = await res.json();
                 statusDiv.innerHTML = `
-                    <span style="color:#34D399;">✅ Dataset Analyzed & Archived Successfully!</span><br>
-                    <strong>${data.metadata.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.metadata.total_revenue.toLocaleString()}</strong> | Customers: <strong>${data.metadata.total_customers.toLocaleString()}</strong>
+                    <span style="color:#34D399;">✅ Dataset Analyzed & Saved to PostgreSQL!</span><br>
+                    <strong>${data.metadata.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.metadata.total_revenue.toLocaleString()}</strong>
                 `;
 
                 setTimeout(() => {
                     modal.style.display = 'none';
                     statusDiv.style.display = 'none';
-                    
-                    showToast(`🎉 Real-Time Analysis Complete for <strong>${file.name}</strong>!<br>Cleaned Rows: ${data.metadata.cleaned_rows.toLocaleString()} | Revenue: £${data.metadata.total_revenue.toLocaleString()}`);
+                    showToast(`🎉 Analysis Ready for <strong>${file.name}</strong>!<br>Cleaned Rows: ${data.metadata.cleaned_rows.toLocaleString()}`);
 
-                    // Reload All Visualizations and History Archive
                     loadDatasetHistory();
                     loadDashboard();
                     loadAnalytics();
-                    loadRFM();
-                    loadMarketBasket();
                     loadCatalogProducts();
                     loadPrediction();
+                    loadDbStatistics();
                 }, 1200);
 
             } catch (ex) {
@@ -411,360 +531,180 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ==========================================
-    // 🧭 NAVIGATION TAB SWITCHER
-    // ==========================================
-    function initNav() {
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const targetTab = item.getAttribute('data-tab');
-                
-                navItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-
-                document.querySelectorAll('.tab-content').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                
-                const activeTabEl = document.getElementById(`tab-${targetTab}`);
-                if (activeTabEl) activeTabEl.classList.add('active');
-
-                // Trigger specific tab loaders
-                if (targetTab === 'dashboard') loadDashboard();
-                else if (targetTab === 'history') loadDatasetHistory();
-                else if (targetTab === 'analytics') loadAnalytics();
-                else if (targetTab === 'rfm') loadRFM();
-                else if (targetTab === 'basket') loadMarketBasket();
-                else if (targetTab === 'prediction') loadPrediction();
-                else if (targetTab === 'exports') loadSummaryAudit();
-            });
-        });
-
-        // Country Filter Listener
-        const countrySelect = document.getElementById('countryFilter');
-        countrySelect.addEventListener('change', () => {
-            loadDashboard();
-            if (document.getElementById('tab-analytics').classList.contains('active')) loadAnalytics();
-        });
-    }
-
-    // ==========================================
-    // 🏠 1. DASHBOARD MODULE
-    // ==========================================
+    // ========================================================
+    // 📊 7. DASHBOARD DATA LOADERS (KPIs, Charts, Analytics)
+    // ========================================================
     async function loadDashboard() {
         const country = document.getElementById('countryFilter').value;
-        const qCountry = country !== 'All' ? `?country=${encodeURIComponent(country)}` : '';
+        const urlParam = country !== 'All' ? `?country=${encodeURIComponent(country)}` : '';
 
-        // Fetch KPIs
-        const kpiRes = await fetch(`/api/kpis${qCountry}`);
+        // 1. KPIs
+        const kpiRes = await fetch(`/api/kpis${urlParam}`);
         const kpiData = await kpiRes.json();
-
-        document.getElementById('kpiRevenue').textContent = `£${kpiData.kpis.total_revenue.toLocaleString('en-GB', {maximumFractionDigits: 0})}`;
+        
+        document.getElementById('kpiRevenue').textContent = `£${kpiData.kpis.total_revenue.toLocaleString()}`;
         document.getElementById('kpiOrders').textContent = kpiData.kpis.total_orders.toLocaleString();
         document.getElementById('kpiCustomers').textContent = kpiData.kpis.total_customers.toLocaleString();
         document.getElementById('kpiProducts').textContent = kpiData.kpis.total_products.toLocaleString();
         document.getElementById('kpiAvgOrder').textContent = `£${kpiData.kpis.avg_order_value.toFixed(2)}`;
-        
-        document.getElementById('heroCustomers').textContent = `👥 ${kpiData.kpis.total_customers.toLocaleString()} Customers`;
-        document.getElementById('activeDatasetLabel').textContent = `Active: ${kpiData.active_dataset.filename}`;
 
-        // Populate Country Filter Options if needed
-        const countrySelect = document.getElementById('countryFilter');
-        if (countrySelect.options.length <= 1) {
+        // Populate Country Filter Options if only 1 option
+        const select = document.getElementById('countryFilter');
+        if (select.children.length <= 1 && kpiData.countries) {
+            select.innerHTML = '';
             kpiData.countries.forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c;
-                opt.textContent = c;
-                countrySelect.appendChild(opt);
+                opt.textContent = c === 'All' ? '🌍 All Countries' : c;
+                select.appendChild(opt);
             });
+            select.value = country;
         }
 
-        // Fetch Monthly Revenue
-        const mRes = await fetch(`/api/charts/monthly-revenue${qCountry}`);
+        // 2. Monthly Revenue Trend Line Chart
+        const mRes = await fetch(`/api/charts/monthly-revenue${urlParam}`);
         const mData = await mRes.json();
         renderLineChart('chartMonthlyRevenue', mData.map(d => d.YearMonth), mData.map(d => d.Revenue), 'Monthly Revenue (£)', '#818CF8');
 
-        // Fetch Daily Sales
-        const dRes = await fetch(`/api/charts/daily-sales${qCountry}`);
+        // 3. Daily Sales Distribution Line Chart
+        const dRes = await fetch(`/api/charts/daily-sales${urlParam}`);
         const dData = await dRes.json();
-        renderLineChart('chartDailySales', dData.map(d => d.Date), dData.map(d => d.Revenue), 'Daily Sales (£)', '#34D399');
+        renderLineChart('chartDailySales', dData.map(d => d.Date), dData.map(d => d.Revenue), 'Daily Revenue (£)', '#34D399');
 
-        // Fetch Top Products
-        const pRes = await fetch(`/api/charts/top-products${qCountry}`);
-        const pData = await pRes.json();
-        renderBarChart('chartTopProducts', pData.map(d => d.Product.substring(0, 20) + '...'), pData.map(d => d.Revenue), 'Revenue (£)', '#C084FC');
+        // 4. Top 10 Products Bar Chart
+        const tpRes = await fetch(`/api/charts/top-products${urlParam}`);
+        const tpData = await tpRes.json();
+        renderBarChart('chartTopProducts', tpData.map(d => d.Product.substring(0, 18) + '...'), tpData.map(d => d.Revenue), 'Revenue (£)', '#F472B6');
 
-        // Fetch Top Customers
-        const cRes = await fetch(`/api/charts/top-customers${qCountry}`);
-        const cData = await cRes.json();
-        renderBarChart('chartTopCustomers', cData.map(d => d.Customer), cData.map(d => d.Revenue), 'Revenue (£)', '#F472B6');
+        // 5. Top 10 Customers Bar Chart
+        const tcRes = await fetch(`/api/charts/top-customers${urlParam}`);
+        const tcData = await tcRes.json();
+        renderBarChart('chartTopCustomers', tcData.map(d => d.Customer), tcData.map(d => d.Revenue), 'Total Spend (£)', '#FBBF24');
     }
 
-    // ==========================================
-    // 📈 2. SALES & ANALYTICS MODULE
-    // ==========================================
     async function loadAnalytics() {
-        const country = document.getElementById('countryFilter').value;
-        const qCountry = country !== 'All' ? `?country=${encodeURIComponent(country)}` : '';
+        // Country Revenue Doughnut Chart
+        const cRes = await fetch('/api/charts/country-revenue');
+        const cData = await cRes.json();
+        renderDoughnutChart('chartCountryRevenue', cData.map(d => d.Country), cData.map(d => d.Revenue));
 
-        // Country Revenue Pie/Doughnut
-        const crRes = await fetch(`/api/charts/country-revenue`);
-        const crData = await crRes.json();
-        renderDoughnutChart('chartCountryRevenue', crData.map(d => d.Country), crData.map(d => d.Revenue));
-
-        // Weekday & Hourly Sales
-        const whRes = await fetch(`/api/charts/weekday-hour`);
+        // Weekday & Hourly Charts
+        const whRes = await fetch('/api/charts/weekday-hour');
         const whData = await whRes.json();
-        renderBarChart('chartWeekdayRevenue', whData.weekday.map(d => d.Weekday), whData.weekday.map(d => d.Revenue), 'Revenue (£)', '#FBBF24');
-        renderLineChart('chartHourlyRevenue', whData.hourly.map(d => d.Hour), whData.hourly.map(d => d.Revenue), 'Revenue (£)', '#818CF8');
+        renderBarChart('chartWeekdayRevenue', whData.weekday.map(d => d.Weekday), whData.weekday.map(d => d.Revenue), 'Revenue (£)', '#C084FC');
+        renderLineChart('chartHourlyRevenue', whData.hourly.map(d => d.Hour), whData.hourly.map(d => d.Revenue), 'Revenue (£)', '#38BDF8');
 
-        loadSummaryAudit();
-    }
-
-    async function loadSummaryAudit() {
-        const res = await fetch('/api/summary');
-        const data = await res.json();
-        const tbody = document.querySelector('#summaryAuditTable tbody');
-        tbody.innerHTML = `
-            <tr><td>Active Dataset Filename</td><td><strong>${data.active_dataset.filename}</strong></td></tr>
-            <tr><td>Total Clean Line Items</td><td><strong>${data.summary.num_rows.toLocaleString()}</strong></td></tr>
-            <tr><td>Total Columns</td><td><strong>${data.summary.num_columns}</strong></td></tr>
-            <tr><td>Duplicate Rows Removed</td><td><strong>${data.summary.duplicate_rows.toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Invoices</td><td><strong>${(data.summary.unique_counts.InvoiceNo || 0).toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Products (SKUs)</td><td><strong>${(data.summary.unique_counts.Description || 0).toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Customers</td><td><strong>${(data.summary.unique_counts.CustomerID || 0).toLocaleString()}</strong></td></tr>
-            <tr><td>Unique Countries</td><td><strong>${data.summary.unique_counts.Country || 0}</strong></td></tr>
-        `;
-    }
-
-    // ==========================================
-    // 👥 3. CUSTOMER RFM SEGMENTATION MODULE
-    // ==========================================
-    async function loadRFM() {
-        const res = await fetch('/api/segmentation');
-        const data = await res.json();
-
-        data.summary.forEach(s => {
-            if (s.Segment === 'VIP Customers') {
+        // RFM Segment Breakdown
+        const segRes = await fetch('/api/segmentation');
+        const segData = await segRes.json();
+        segData.summary.forEach(s => {
+            if (s.Segment === 'VIP Customer') {
                 document.getElementById('cntVIP').textContent = s.count.toLocaleString();
-                document.getElementById('spendVIP').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Strategy: Exclusive Perks & Dedicated Manager`;
-            } else if (s.Segment === 'Loyal Customers') {
+                document.getElementById('spendVIP').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Perks & Dedicated Manager`;
+            } else if (s.Segment === 'Loyal Customer') {
                 document.getElementById('cntLoyal').textContent = s.count.toLocaleString();
-                document.getElementById('spendLoyal').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Strategy: Cross-sell & Loyalty Points`;
-            } else if (s.Segment === 'Regular Customers') {
+                document.getElementById('spendLoyal').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Cross-sell & Points`;
+            } else if (s.Segment === 'Regular Customer') {
                 document.getElementById('cntRegular').textContent = s.count.toLocaleString();
-                document.getElementById('spendRegular').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Strategy: Re-engagement Discounts`;
-            } else if (s.Segment === 'At Risk Customers') {
+                document.getElementById('spendRegular').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Re-engagement Offers`;
+            } else if (s.Segment === 'At Risk') {
                 document.getElementById('cntRisk').textContent = s.count.toLocaleString();
-                document.getElementById('spendRisk').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Strategy: Win-Back Campaigns`;
+                document.getElementById('spendRisk').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Win-Back Campaigns`;
             }
         });
 
-        renderBarChart('chartSegmentRevenue', data.summary.map(s => s.Segment), data.summary.map(s => s.total_spend), 'Total Spend (£)', '#34D399');
-
-        // Render Plotly 3D Scatter
-        const rData = data.sample;
-        const colorMap = {'VIP Customers': '#10B981', 'Loyal Customers': '#3B82F6', 'Regular Customers': '#F59E0B', 'At Risk Customers': '#EF4444'};
-        
-        const traces = [];
-        const segments = ['VIP Customers', 'Loyal Customers', 'Regular Customers', 'At Risk Customers'];
-        
-        segments.forEach(seg => {
-            const segPts = rData.filter(d => d.Segment === seg);
-            traces.push({
-                x: segPts.map(d => d.Recency),
-                y: segPts.map(d => d.Frequency),
-                z: segPts.map(d => d.Monetary),
-                mode: 'markers',
-                name: seg,
-                marker: { size: 4, color: colorMap[seg] },
-                type: 'scatter3d'
-            });
-        });
-
-        const layout = {
-            margin: { l: 0, r: 0, b: 0, t: 0 },
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            font: { family: 'Plus Jakarta Sans', color: '#94A3B8' },
-            scene: {
-                xaxis: { title: 'Recency' },
-                yaxis: { title: 'Frequency' },
-                zaxis: { title: 'Monetary' }
-            }
-        };
-
-        Plotly.newPlot('plotRFM3D', traces, layout, {responsive: true});
-    }
-
-    // ==========================================
-    // 🛒 4. MARKET BASKET ANALYSIS MODULE
-    // ==========================================
-    async function loadMarketBasket() {
-        const minLift = parseFloat(document.getElementById('liftSlider').value);
-        const res = await fetch(`/api/market-basket?min_lift=${minLift}`);
-        const data = await res.json();
-
-        document.getElementById('mbTotalRules').textContent = data.stats.total_rules.toLocaleString();
-        document.getElementById('mbFilteredRules').textContent = data.stats.filtered_rules.toLocaleString();
-        document.getElementById('mbMaxLift').textContent = data.stats.max_lift.toFixed(2);
-        document.getElementById('mbMaxConf').textContent = `${data.stats.max_confidence.toFixed(1)}%`;
-        
-        document.getElementById('heroRules').textContent = `🛒 ${data.stats.total_rules.toLocaleString()} Rules`;
-
-        const tbody = document.querySelector('#rulesTable tbody');
-        tbody.innerHTML = '';
-        data.rules.forEach(r => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>${r.antecedents}</strong></td>
-                <td><span style="color:#818CF8;">${r.consequents}</span></td>
-                <td>${r.support}%</td>
-                <td>${r.confidence}%</td>
-                <td><span class="pill pill-emerald">Lift ${r.lift}</span></td>
+        // Summary Audit Table
+        const sumRes = await fetch('/api/summary');
+        const sumData = await sumRes.json();
+        const tbody = document.querySelector('#summaryAuditTable tbody');
+        if (tbody) {
+            tbody.innerHTML = `
+                <tr><td>Active Dataset Filename</td><td><strong>${sumData.active_dataset.filename}</strong></td></tr>
+                <tr><td>Cleaned Line Items</td><td>${sumData.summary.num_rows.toLocaleString()}</td></tr>
+                <tr><td>Catalog SKUs Count</td><td>${sumData.summary.unique_counts.Description ? sumData.summary.unique_counts.Description.toLocaleString() : 'N/A'}</td></tr>
+                <tr><td>Unique Customer Accounts</td><td>${sumData.summary.unique_counts.CustomerID ? sumData.summary.unique_counts.CustomerID.toLocaleString() : 'N/A'}</td></tr>
+                <tr><td>Storage Engine</td><td><span class="pill pill-emerald">PostgreSQL 18 (Port 5432)</span></td></tr>
             `;
-            tbody.appendChild(tr);
-        });
+        }
     }
 
-    // ==========================================
-    // 🤖 5. PRODUCT RECOMMENDER MODULE
-    // ==========================================
-    async function loadCatalogProducts() {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        const select = document.getElementById('recProductSelect');
-        select.innerHTML = '<option value="">Select Target Catalog Product...</option>';
-        data.products.forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p;
-            opt.textContent = p;
-            select.appendChild(opt);
-        });
-    }
-
-    // ==========================================
-    // 📊 6. SALES PREDICTION MODULE
-    // ==========================================
     async function loadPrediction() {
-        const days = parseInt(document.getElementById('forecastHorizon').value);
-        const res = await fetch(`/api/forecast?days=${days}`);
+        const horizon = document.getElementById('forecastHorizon').value;
+        const res = await fetch(`/api/forecast?days=${horizon}`);
         const data = await res.json();
 
         document.getElementById('rfMAE').textContent = `£${data.metrics.mae.toLocaleString()}`;
         document.getElementById('rfRMSE').textContent = `£${data.metrics.rmse.toLocaleString()}`;
         document.getElementById('rfR2').textContent = data.metrics.r2.toFixed(4);
 
-        const histDates = data.historical.map(d => d.Date);
-        const histRev = data.historical.map(d => d.Revenue);
-        const futDates = data.future.map(d => d.Date);
-        const futRev = data.future.map(d => d.Predicted_Sales);
+        const histLabels = data.historical.map(d => d.Date);
+        const histData = data.historical.map(d => d.Revenue);
+        const futLabels = data.future.map(d => d.Date);
+        const futData = data.future.map(d => d.Predicted_Sales);
 
-        renderForecastChart('chartForecast', histDates, histRev, futDates, futRev);
+        renderForecastChart('chartForecast', histLabels, histData, futLabels, futData);
     }
 
-    // ==========================================
-    // ⚙️ EVENT LISTENERS & HANDLERS
-    // ==========================================
+    async function loadCatalogProducts() {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        const select = document.getElementById('recProductSelect');
+        if (select) {
+            select.innerHTML = '<option value="">Select a product to view market basket recommendations...</option>';
+            data.products.slice(0, 100).forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                select.appendChild(opt);
+            });
+        }
+    }
+
+    // ========================================================
+    // 🤖 8. FLOATING CHATBOT WIDGET (Drawn in Sketch Bottom-Right)
+    // ========================================================
     function initEventListeners() {
-        // Minimum Lift Slider
-        const liftSlider = document.getElementById('liftSlider');
-        liftSlider.addEventListener('input', () => {
-            document.getElementById('liftVal').textContent = liftSlider.value;
-            loadMarketBasket();
-        });
+        // Country Filter Listener
+        const countryFilter = document.getElementById('countryFilter');
+        if (countryFilter) {
+            countryFilter.addEventListener('change', () => loadDashboard());
+        }
 
         // Forecast Horizon Slider
         const horizonSlider = document.getElementById('forecastHorizon');
-        horizonSlider.addEventListener('input', () => {
-            document.getElementById('daysVal').textContent = horizonSlider.value;
-            loadPrediction();
-        });
-
-        // Get Recommendations Button
-        document.getElementById('btnGetRecs').addEventListener('click', async () => {
-            const prod = document.getElementById('recProductSelect').value;
-            if (!prod) return alert('Please select a catalog product.');
-
-            const res = await fetch(`/api/recommend?product=${encodeURIComponent(prod)}`);
-            const data = await res.json();
-
-            const grid = document.getElementById('recsGrid');
-            grid.innerHTML = '';
-            document.getElementById('recsResultsBox').style.display = 'block';
-
-            data.recommendations.forEach((r, idx) => {
-                const card = document.createElement('div');
-                card.className = 'prod-card';
-                card.innerHTML = `
-                    <div class="rank">Recommendation #${idx+1}</div>
-                    <div class="title">${r}</div>
-                    <div class="badge">${data.is_fallback ? '🔥 Catalog Bestseller' : '✔ High Lift Co-Purchase'}</div>
-                `;
-                grid.appendChild(card);
+        if (horizonSlider) {
+            horizonSlider.addEventListener('input', () => {
+                document.getElementById('daysVal').textContent = horizonSlider.value;
+                loadPrediction();
             });
-        });
-
-        // Customer Lookup
-        document.getElementById('btnLookupCust').addEventListener('click', async () => {
-            const cid = document.getElementById('lookupCustInput').value.trim();
-            if (!cid) return;
-
-            const res = await fetch(`/api/segmentation/customer/${cid}`);
-            const div = document.getElementById('custLookupResult');
-            div.style.display = 'block';
-
-            if (res.status === 404) {
-                div.innerHTML = `<span style="color:#EF4444;">❌ Customer ID #${cid} not found in database.</span>`;
-            } else {
-                const data = await res.json();
-                div.innerHTML = `
-                    <strong style="color:#818CF8;">Customer #${data.CustomerID} Account Details:</strong><br>
-                    Segment: <span class="pill pill-emerald">${data.Segment}</span><br>
-                    Recency: <strong>${data.Recency} Days</strong> | Frequency: <strong>${data.Frequency} Orders</strong> | Monetary Spend: <strong>£${data.Monetary.toLocaleString()}</strong>
-                `;
-            }
-        });
+        }
 
         // SKU Quick Search
-        document.getElementById('skuSearchInput').addEventListener('input', debounce(async (e) => {
-            const q = e.target.value.trim();
-            const box = document.getElementById('searchResultsBox');
-            if (!q || q.length < 2) {
-                box.style.display = 'none';
-                return;
-            }
+        const skuInput = document.getElementById('skuSearchInput');
+        if (skuInput) {
+            skuInput.addEventListener('input', debounce(async (e) => {
+                const q = e.target.value.trim();
+                const box = document.getElementById('searchResultsBox');
+                if (!q || q.length < 2) {
+                    box.style.display = 'none';
+                    return;
+                }
 
-            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-            const data = await res.json();
+                const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+                const data = await res.json();
 
-            if (data.found) {
-                box.style.display = 'block';
-                document.getElementById('searchProdTitle').textContent = `🔍 Instant Search Result: ${data.product}`;
-                document.getElementById('searchRev').textContent = `£${data.total_revenue.toLocaleString()}`;
-                document.getElementById('searchUnits').textContent = data.units_sold.toLocaleString();
-                document.getElementById('searchCust').textContent = data.distinct_customers.toLocaleString();
-                document.getElementById('searchPrice').textContent = `£${data.avg_unit_price.toFixed(2)}`;
-            } else {
-                box.style.display = 'none';
-            }
-        }, 300));
-
-        // RAG Chatbot Tab Listeners
-        document.getElementById('btnSendChat').addEventListener('click', () => executeChatQuery('chatInput', 'chatHistory'));
-        document.getElementById('chatInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') executeChatQuery('chatInput', 'chatHistory');
-        });
-
-        // Chat Suggestion Chips (Tab 7)
-        document.querySelectorAll('.chip-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const prompt = e.target.getAttribute('data-prompt');
-                document.getElementById('chatInput').value = prompt;
-                executeChatQuery('chatInput', 'chatHistory');
-            });
-        });
+                if (data.found) {
+                    box.style.display = 'block';
+                    document.getElementById('searchProdTitle').textContent = `🔍 Instant Search Result: ${data.product}`;
+                    document.getElementById('searchRev').textContent = `£${data.total_revenue.toLocaleString()}`;
+                    document.getElementById('searchUnits').textContent = data.units_sold.toLocaleString();
+                    document.getElementById('searchCust').textContent = data.distinct_customers.toLocaleString();
+                    document.getElementById('searchPrice').textContent = `£${data.avg_unit_price.toFixed(2)}`;
+                } else {
+                    box.style.display = 'none';
+                }
+            }, 300));
+        }
 
         // Floating Chatbot Widget Toggle
         const floatTrigger = document.getElementById('btnToggleFloatChat');
@@ -786,7 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.float-chip').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const prompt = e.target.getAttribute('data-prompt');
+                    const prompt = e.currentTarget.getAttribute('data-prompt');
                     document.getElementById('floatChatInput').value = prompt;
                     executeChatQuery('floatChatInput', 'floatChatHistory');
                 });
@@ -812,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Assistant loading indicator
         const botDiv = document.createElement('div');
         botDiv.className = 'chat-msg chat-assistant';
-        botDiv.innerHTML = '<span style="color:#818CF8;">⏳ Searching active dataset FAISS vector index & analyzing query...</span>';
+        botDiv.innerHTML = '<span style="color:#818CF8;">⏳ Querying PostgreSQL RAG index & analyzing retail dataset...</span>';
         history.appendChild(botDiv);
         history.scrollTop = history.scrollHeight;
 
@@ -830,7 +770,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Format Markdown text to HTML safely
             let formattedText = formatChatResponse(data.response);
             
-            // If cross-sell recommendations returned, embed interactive cards
+            // If cross-sell recommendations returned, embed interactive list
             if (data.recommendations && data.recommendations.length > 0) {
                 formattedText += `<br><br><strong style="color:#818CF8;">💡 Top Co-Purchased Cross-Sell Recommendations:</strong><ul style="margin-top:6px; padding-left:18px;">`;
                 data.recommendations.forEach(r => {
@@ -849,18 +789,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatChatResponse(text) {
         if (!text) return '';
-        let html = text
+        return text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\*(.*?)\*/g, '<em>$1</em>')
             .replace(/• (.*?)(?=\n|$)/g, '<li style="margin-left:14px;">$1</li>')
             .replace(/\n\n/g, '<br><br>')
             .replace(/\n/g, '<br>');
-        return html;
     }
 
-    // ==========================================
-    // 🎨 CHART RENDER HELPER FUNCTIONS (Chart.js)
-    // ==========================================
+    // ========================================================
+    // 🎨 9. CHART RENDERING HELPERS (Chart.js)
+    // ========================================================
     function renderLineChart(canvasId, labels, data, label, color) {
         if (charts[canvasId]) charts[canvasId].destroy();
         const ctx = document.getElementById(canvasId).getContext('2d');

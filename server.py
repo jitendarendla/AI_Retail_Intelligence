@@ -138,9 +138,10 @@ def load_dataset_from_storage(dataset_id: str) -> Optional[dict]:
         SELECT d.*, a.cleaned_path, a.rfm_path, a.rules_path, a.daily_path
         FROM datasets d
         LEFT JOIN dataset_artifacts a ON d.dataset_id = a.dataset_id
-        WHERE d.dataset_id = ?
+        WHERE d.dataset_id = %s;
     """, (dataset_id,))
     row = cursor.fetchone()
+    cursor.close()
     conn.close()
     
     if not row:
