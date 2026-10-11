@@ -10,6 +10,8 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Identity Services (OAuth 2.0) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -186,27 +188,38 @@
 
             <!-- Sign In Panel -->
             <div id="signInPanel">
+                <!-- Google Sign In Button Slot -->
+                <div class="google-auth-wrapper">
+                    <div id="googleSignInBtn" class="google-btn-slot"></div>
+                </div>
+
+                <div class="auth-divider">
+                    <span>or sign in with email</span>
+                </div>
+
                 <div class="form-group">
                     <label for="loginUser">Username or Email</label>
-                    <input type="text" id="loginUser" placeholder="Enter username (e.g. admin)...">
+                    <input type="text" id="loginUser" placeholder="Enter username or email...">
                 </div>
                 <div class="form-group">
                     <label for="loginPass">Password</label>
-                    <input type="password" id="loginPass" placeholder="Enter password (e.g. admin123)...">
+                    <input type="password" id="loginPass" placeholder="Enter password...">
                 </div>
 
                 <button id="btnLogin" class="btn-primary" style="width:100%; margin-top:14px; padding:12px;">Sign In to Dashboard</button>
-                
-                <div style="margin-top:14px; font-size:0.78rem; color:#94A3B8; text-align:center;">Demo Accounts (Click to test):</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:8px;">
-                    <button class="btn-demo-quick btn-secondary" data-user="admin" data-pass="admin123" style="padding:6px; font-size:0.75rem;">👑 Admin</button>
-                    <button class="btn-demo-quick btn-secondary" data-user="retailer" data-pass="retailer123" style="padding:6px; font-size:0.75rem;">🛍️ Retailer</button>
-                    <button class="btn-demo-quick btn-secondary" data-user="intern" data-pass="intern123" style="padding:6px; font-size:0.75rem;">🎓 Analyst</button>
-                </div>
             </div>
 
             <!-- Register Panel -->
             <div id="registerPanel" style="display:none;">
+                <!-- Google Sign Up Button Slot -->
+                <div class="google-auth-wrapper">
+                    <div id="googleSignUpBtn" class="google-btn-slot"></div>
+                </div>
+
+                <div class="auth-divider">
+                    <span>or register with email</span>
+                </div>
+
                 <div class="form-group">
                     <label for="regFullName">Full Name</label>
                     <input type="text" id="regFullName" placeholder="e.g. John Doe">
@@ -217,17 +230,7 @@
                 </div>
                 <div class="form-group">
                     <label for="regEmail">Email Address</label>
-                    <input type="email" id="regEmail" placeholder="e.g. user@retail-ai.com">
-                </div>
-                <div class="form-group">
-                    <label for="regRole">Role</label>
-                    <select id="regRole" style="width:100%; background:#090D16; border:1px solid var(--border-color); color:#FFF; padding:10px; border-radius:8px;">
-                        <option value="Retail Store Manager">Retail Store Manager</option>
-                        <option value="Senior Retail Merchandiser">Senior Retail Merchandiser</option>
-                        <option value="Inventory Analyst">Inventory Analyst</option>
-                        <option value="AIML Analyst">AIML Analyst</option>
-                        <option value="Executive Director">Executive Director</option>
-                    </select>
+                    <input type="email" id="regEmail" placeholder="e.g. user@gmail.com">
                 </div>
                 <div class="form-group">
                     <label for="regPass">Password</label>

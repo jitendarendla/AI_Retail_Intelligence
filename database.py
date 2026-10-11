@@ -71,9 +71,9 @@ def init_db():
         password_hash TEXT NOT NULL,
         salt TEXT NOT NULL,
         full_name VARCHAR(150) NOT NULL,
-        role VARCHAR(100) NOT NULL DEFAULT 'Retail Store Manager',
+        role VARCHAR(100) NOT NULL DEFAULT 'Retail Analyst',
         company VARCHAR(100) NOT NULL DEFAULT 'Enterprise Suite',
-        avatar VARCHAR(50) DEFAULT '🛍️',
+        avatar TEXT DEFAULT '🛍️',
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
     """)
@@ -188,7 +188,7 @@ def init_db():
 # 🔐 AUTHENTICATION & USER MANAGEMENT (PostgreSQL)
 # ==========================================
 
-def create_user(username: str, email: str, password: str, full_name: str, role: str = "Retail Store Manager", company: str = "Enterprise Suite", avatar: str = "🛍️") -> Dict[str, Any]:
+def create_user(username: str, email: str, password: str, full_name: str, role: str = "Retail Analyst", company: str = "Enterprise Suite", avatar: str = "🛍️") -> Dict[str, Any]:
     """Register a new user into PostgreSQL database."""
     conn = get_db_connection()
     conn.autocommit = True
@@ -220,6 +220,89 @@ def create_user(username: str, email: str, password: str, full_name: str, role: 
         "role": role.strip(),
         "company": company.strip(),
         "avatar": avatar
+    }
+
+
+def get_or_create_google_user(email: str, full_name: str, avatar: Optional[str] = None) -> Dict[str, Any]:
+    """Authenticate or register a user through Google OAuth in PostgreSQL."""
+    conn = get_db_connection()
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM users WHERE email = %s;", (email.strip().lower(),))
+    user_row = cursor.fetchone()
+
+    if user_row:
+        user_id = user_row["id"]
+        current_avatar = user_row["avatar"]
+        if avatar and (not current_avatar or not current_avatar.startswith("http")):
+            cursor.execute("UPDATE users SET avatar = %s WHERE id = %s;", (avatar, user_id))
+            current_avatar = avatar
+
+        user_dict = {
+            "id": user_row["id"],
+            "username": user_row["username"],
+            "email": user_row["email"],
+            "full_name": user_row["full_name"],
+            "role": user_row["role"],
+            "company": user_row["company"],
+            "avatar": current_avatar or "🛍️"
+        }
+    else:
+        # Create unique username from email
+        base_username = email.split("@")[0].strip().lower()
+        clean_base = "".join(c for c in base_username if c.isalnum() or c in ['_', '.'])
+        if not clean_base:
+            clean_base = "retail_user"
+
+        candidate = clean_base
+        counter = 1
+        while True:
+            cursor.execute("SELECT id FROM users WHERE username = %s;", (candidate,))
+            if not cursor.fetchone():
+                break
+            candidate = f"{clean_base}_{counter}"
+            counter += 1
+
+        username = candidate
+        p_hash, p_salt = hash_password(secrets.token_hex(32))
+        role = "Retail Analyst"
+        company = "Enterprise Suite"
+        user_avatar = avatar or "🛍️"
+
+        cursor.execute("""
+            INSERT INTO users (username, email, password_hash, salt, full_name, role, company, avatar)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING id;
+        """, (username, email.strip().lower(), p_hash, p_salt, full_name.strip(), role, company, user_avatar))
+        user_id = cursor.fetchone()["id"]
+
+        user_dict = {
+            "id": user_id,
+            "username": username,
+            "email": email.strip().lower(),
+            "full_name": full_name.strip(),
+            "role": role,
+            "company": company,
+            "avatar": user_avatar
+        }
+
+    # Generate Session Token
+    token = f"token_pg_{secrets.token_urlsafe(24)}"
+    now = datetime.datetime.now()
+    expires = now + datetime.timedelta(days=7)
+
+    cursor.execute("""
+        INSERT INTO user_sessions (token, user_id, username, role, created_at, expires_at)
+        VALUES (%s, %s, %s, %s, %s, %s);
+    """, (token, user_id, user_dict["username"], user_dict["role"], now, expires))
+
+    cursor.close()
+    conn.close()
+
+    return {
+        "token": token,
+        "user": user_dict
     }
 
 

@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnHomeSignIn) {
             btnHomeSignIn.addEventListener('click', () => {
                 loginModal.style.display = 'flex';
+                renderGoogleButtons();
             });
         }
 
@@ -74,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showDashboard();
                 } else {
                     loginModal.style.display = 'flex';
+                    renderGoogleButtons();
                 }
             });
         }
@@ -108,15 +110,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userJson) {
             const user = JSON.parse(userJson);
             const badge = document.getElementById('userBadgeName');
-            if (badge) badge.textContent = `${user.avatar || '🛍️'} ${user.username} (${user.company || 'Enterprise Suite'})`;
+            if (badge) {
+                const isUrl = user.avatar && (user.avatar.startsWith('http://') || user.avatar.startsWith('https://'));
+                const avatarHtml = isUrl ? `<img src="${user.avatar}" alt="Avatar" style="width:20px; height:20px; border-radius:50%; vertical-align:middle; margin-right:6px; object-fit:cover;">` : (user.avatar || '🛍️') + ' ';
+                badge.innerHTML = `${avatarHtml}${user.full_name || user.username}`;
+            }
 
             // Update Profile Tab Details
             if (document.getElementById('profFullName')) {
                 document.getElementById('profFullName').textContent = user.full_name || user.username;
-                document.getElementById('profRole').textContent = user.role || 'Retail Store Manager';
+                document.getElementById('profRole').textContent = user.role || 'Retail Analyst';
                 document.getElementById('profCompany').textContent = user.company || 'Enterprise Suite';
                 document.getElementById('profEmail').textContent = user.email || 'user@retail-ai.com';
-                document.getElementById('profAvatar').textContent = user.avatar || '🛍️';
+                const profAv = document.getElementById('profAvatar');
+                if (profAv) {
+                    const isUrl = user.avatar && (user.avatar.startsWith('http://') || user.avatar.startsWith('https://'));
+                    if (isUrl) {
+                        profAv.innerHTML = `<img src="${user.avatar}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+                    } else {
+                        profAv.textContent = user.avatar || '🛍️';
+                    }
+                }
             }
         }
 
@@ -131,8 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 🔐 2. AUTHENTICATION & REGISTRATION
+    // 🔐 2. AUTHENTICATION & GOOGLE OAUTH
     // ========================================================
+    const GOOGLE_CLIENT_ID = '815551152014-sfm7lgsvisfua5o1f2fh26o4r4d3kd0p.apps.googleusercontent.com';
+
     function initAuth() {
         // Tab Switching in Auth Modal
         const tabBtnSignIn = document.getElementById('tabBtnSignIn');
@@ -150,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 registerPanel.style.display = 'none';
                 errDiv.style.display = 'none';
                 succDiv.style.display = 'none';
+                renderGoogleButtons();
             });
 
             tabBtnRegister.addEventListener('click', () => {
@@ -159,8 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 registerPanel.style.display = 'block';
                 errDiv.style.display = 'none';
                 succDiv.style.display = 'none';
+                renderGoogleButtons();
             });
         }
+
+        // Initialize Google Identity Services
+        initGoogleAuth();
 
         // Login Action
         document.getElementById('btnLogin').addEventListener('click', performLogin);
@@ -170,17 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnRegister) {
             btnRegister.addEventListener('click', performRegister);
         }
-
-        // Demo Quick Accounts
-        document.querySelectorAll('.btn-demo-quick').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const u = e.currentTarget.getAttribute('data-user');
-                const p = e.currentTarget.getAttribute('data-pass');
-                document.getElementById('loginUser').value = u;
-                document.getElementById('loginPass').value = p;
-                performLogin();
-            });
-        });
 
         // Logout Action
         document.getElementById('btnLogout').addEventListener('click', async () => {
@@ -201,13 +211,123 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Google Identity Services Setup
+    function initGoogleAuth() {
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+            try {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleCredentialResponse,
+                    auto_select: false,
+                    cancel_on_tap_outside: true
+                });
+
+                renderGoogleButtons();
+            } catch (e) {
+                console.warn('Google Identity initialization notice:', e);
+            }
+        } else {
+            setTimeout(initGoogleAuth, 300);
+        }
+    }
+
+    function renderGoogleButtons() {
+        if (!window.google || !window.google.accounts || !window.google.accounts.id) return;
+
+        const btnSignIn = document.getElementById('googleSignInBtn');
+        if (btnSignIn) {
+            btnSignIn.innerHTML = '';
+            google.accounts.id.renderButton(btnSignIn, {
+                theme: 'outline',
+                size: 'large',
+                text: 'continue_with',
+                shape: 'pill',
+                width: 370,
+                logo_alignment: 'left'
+            });
+        }
+
+        const btnSignUp = document.getElementById('googleSignUpBtn');
+        if (btnSignUp) {
+            btnSignUp.innerHTML = '';
+            google.accounts.id.renderButton(btnSignUp, {
+                theme: 'outline',
+                size: 'large',
+                text: 'signup_with',
+                shape: 'pill',
+                width: 370,
+                logo_alignment: 'left'
+            });
+        }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+        const errDiv = document.getElementById('loginError');
+        const succDiv = document.getElementById('loginSuccess');
+
+        if (!response || !response.credential) {
+            if (errDiv) {
+                errDiv.textContent = 'Google authentication was not completed.';
+                errDiv.style.display = 'block';
+            }
+            return;
+        }
+
+        try {
+            if (errDiv) errDiv.style.display = 'none';
+            if (succDiv) {
+                succDiv.textContent = '⏳ Authenticating with Google OAuth...';
+                succDiv.style.display = 'block';
+            }
+
+            const res = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({credential: response.credential})
+            });
+
+            if (!res.ok) {
+                const errData = await res.json();
+                if (succDiv) succDiv.style.display = 'none';
+                if (errDiv) {
+                    errDiv.textContent = errData.detail || 'Google sign-in failed.';
+                    errDiv.style.display = 'block';
+                }
+                return;
+            }
+
+            const data = await res.json();
+            localStorage.setItem('retail_ai_token', data.token);
+            localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
+
+            if (succDiv) {
+                succDiv.textContent = '✅ Google Sign-In Successful! Opening Dashboard...';
+                succDiv.style.display = 'block';
+            }
+
+            setTimeout(() => {
+                document.getElementById('loginModal').style.display = 'none';
+                if (succDiv) succDiv.style.display = 'none';
+                showToast(`🎉 Welcome ${data.user.full_name || data.user.email}! Signed in with Google.`);
+                showDashboard();
+            }, 600);
+
+        } catch (ex) {
+            if (succDiv) succDiv.style.display = 'none';
+            if (errDiv) {
+                errDiv.textContent = `Server connection error during Google sign-in: ${ex.message}`;
+                errDiv.style.display = 'block';
+            }
+        }
+    }
+
     async function performLogin() {
         const username = document.getElementById('loginUser').value.trim();
         const password = document.getElementById('loginPass').value.trim();
         const errDiv = document.getElementById('loginError');
 
         if (!username || !password) {
-            errDiv.textContent = 'Please enter both username and password.';
+            errDiv.textContent = 'Please enter both username or email and password.';
             errDiv.style.display = 'block';
             return;
         }
@@ -245,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fullName = document.getElementById('regFullName').value.trim();
         const username = document.getElementById('regUser').value.trim();
         const email = document.getElementById('regEmail').value.trim();
-        const role = document.getElementById('regRole').value;
+        const role = 'Retail Analyst';
         const password = document.getElementById('regPass').value.trim();
         const errDiv = document.getElementById('loginError');
         const succDiv = document.getElementById('loginSuccess');
@@ -266,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     password,
                     full_name: fullName,
                     role,
-                    company: 'Enterprise Retail'
+                    company: 'Enterprise Suite'
                 })
             });
 

@@ -49,6 +49,8 @@ DATA_CACHE = {
     "datasets_registry": {}
 }
 
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "815551152014-sfm7lgsvisfua5o1f2fh26o4r4d3kd0p.apps.googleusercontent.com")
+
 def clean_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
     """Real-time data cleaning pipeline for custom uploaded datasets."""
     df_clean = raw_df.copy()
@@ -228,7 +230,7 @@ def startup_event():
 
 
 # ==========================================
-# 🔐 AUTHENTICATION ENDPOINTS (SQLite)
+# 🔐 AUTHENTICATION ENDPOINTS
 # ==========================================
 
 @app.post("/api/auth/login")
@@ -238,7 +240,7 @@ def api_login(payload: dict = Body(...)):
     
     auth_res = database.authenticate_user(username, password)
     if not auth_res:
-        raise HTTPException(status_code=401, detail="Invalid username or password. Demo accounts: admin / admin123, retailer / retailer123, intern / intern123")
+        raise HTTPException(status_code=401, detail="Invalid username/email or password.")
         
     return {
         "success": True,
@@ -253,8 +255,8 @@ def api_register(payload: dict = Body(...)):
     email = payload.get("email", "").strip()
     password = payload.get("password", "").strip()
     full_name = payload.get("full_name", username).strip()
-    role = payload.get("role", "Retail Store Manager").strip()
-    company = payload.get("company", "Enterprise Retail").strip()
+    role = payload.get("role", "Retail Analyst").strip()
+    company = payload.get("company", "Enterprise Suite").strip()
 
     if not username or not email or not password:
         raise HTTPException(status_code=400, detail="Username, email, and password are required.")
@@ -272,6 +274,62 @@ def api_register(payload: dict = Body(...)):
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Registration error: {ex}")
+
+
+@app.post("/api/auth/google")
+def api_google_auth(payload: dict = Body(...)):
+    credential = payload.get("credential", "").strip()
+    if not credential:
+        raise HTTPException(status_code=400, detail="Google credential token is required.")
+
+    user_info = None
+    # 1. Verify via google.oauth2.id_token
+    try:
+        from google.oauth2 import id_token
+        from google.auth.transport import requests as google_requests
+        idinfo = id_token.verify_oauth2_token(credential, google_requests.Request(), GOOGLE_CLIENT_ID)
+        user_info = idinfo
+    except Exception as e_verify:
+        print(f"google-auth verify note: {e_verify}, attempting tokeninfo endpoint fallback...")
+        try:
+            import requests
+            resp = requests.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}", timeout=6)
+            if resp.ok:
+                token_data = resp.json()
+                if token_data.get("aud") == GOOGLE_CLIENT_ID:
+                    user_info = token_data
+                else:
+                    raise HTTPException(status_code=400, detail="Google token client ID mismatch.")
+            else:
+                raise HTTPException(status_code=401, detail="Invalid Google token.")
+        except HTTPException:
+            raise
+        except Exception as e_http:
+            raise HTTPException(status_code=401, detail=f"Google authentication failed: {e_http}")
+
+    if not user_info or not user_info.get("email"):
+        raise HTTPException(status_code=400, detail="Could not extract verified email from Google account.")
+
+    email = user_info.get("email").strip().lower()
+    full_name = user_info.get("name") or email.split("@")[0]
+    picture = user_info.get("picture")
+
+    try:
+        auth_res = database.get_or_create_google_user(email=email, full_name=full_name, avatar=picture)
+        return {
+            "success": True,
+            "token": auth_res["token"],
+            "user": auth_res["user"]
+        }
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Google sign-in error: {ex}")
+
+
+@app.get("/api/auth/config")
+def api_auth_config():
+    return {
+        "google_client_id": GOOGLE_CLIENT_ID
+    }
 
 
 @app.post("/api/auth/logout")
