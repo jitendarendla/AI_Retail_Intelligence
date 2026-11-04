@@ -1,32 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    /* ChatGPT Dark Mode Black Hierarchy */
-    --bg-page: #212121;
-    --bg-surface: #171717;
-    --bg-surface-elevated: #2F2F2F;
-    --bg-sidebar: #171717;
-    --bg-input: #2F2F2F;
+    /* Pure Black ChatGPT Theme */
+    --bg-page: #000000;
+    --bg-surface: #0D0D0D;
+    --bg-surface-elevated: #181818;
+    --bg-sidebar: #080808;
+    --bg-input: #181818;
     
-    --border-color: #2F2F2F;
-    --border-subtle: #262626;
-    --border-medium: #383838;
+    --border-color: #222222;
+    --border-subtle: #1A1A1A;
+    --border-medium: #2A2A2A;
     --border-focus: #555555;
 
-    --text-primary: #ECECEC;
-    --text-secondary: #B4B4B4;
-    --text-muted: #71717A;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A3A3A3;
+    --text-muted: #737373;
 
     /* ChatGPT Signature Accents */
     --primary: #FFFFFF;
-    --primary-text: #0D0D0D;
+    --primary-text: #000000;
     --primary-hover: #E5E5E5;
-    --primary-subtle: #2F2F2F;
+    --primary-subtle: #1C1C1C;
 
     --accent-green: #10A37F;
     --accent-emerald: #10A37F;
-    --accent-blue: #ECECEC;
-    --accent-amber: #D97706;
+    --accent-blue: #FFFFFF;
+    --accent-amber: #F59E0B;
     --accent-rose: #EF4444;
 
     --radius-sm: 6px;
@@ -34,10 +34,10 @@
     --radius-lg: 12px;
     --radius-full: 9999px;
 
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.9);
 }
 
 * {
@@ -48,7 +48,7 @@
 }
 
 body {
-    background-color: var(--bg-page);
+    background-color: #000000;
     color: var(--text-primary);
     min-height: 100vh;
     display: block;
@@ -78,7 +78,7 @@ table td,
 }
 
 .toast {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-md);
     padding: 12px 18px;
@@ -100,7 +100,7 @@ table td,
 .home-page-view {
     width: 100%;
     min-height: 100vh;
-    background-color: var(--bg-page);
+    background-color: #000000;
 }
 
 .home-navbar {
@@ -111,7 +111,7 @@ table td,
     justify-content: space-between;
     align-items: center;
     padding: 14px 40px;
-    background: rgba(23, 23, 23, 0.95);
+    background: rgba(8, 8, 8, 0.95);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
 }
@@ -120,18 +120,18 @@ table td,
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .home-logo svg {
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .logo-text {
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: -0.01em;
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .logo-sub {
@@ -159,7 +159,7 @@ table td,
 }
 
 .home-nav-links .nav-link:hover {
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .home-nav-actions {
@@ -170,14 +170,14 @@ table td,
 
 .btn-primary-glow {
     background: #FFFFFF;
-    color: #0D0D0D;
+    color: #000000;
     border: 1px solid transparent;
     padding: 8px 18px;
     border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
-    transition: background-color 0.15s ease, opacity 0.15s ease;
+    transition: background-color 0.15s ease;
 }
 
 .btn-primary-glow:hover {
@@ -198,7 +198,7 @@ table td,
     gap: 8px;
     padding: 5px 14px;
     border-radius: var(--radius-full);
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
     color: var(--text-secondary);
     font-size: 0.8125rem;
@@ -210,7 +210,7 @@ table td,
     font-size: 2.75rem;
     font-weight: 700;
     line-height: 1.18;
-    color: var(--text-primary);
+    color: #FFFFFF;
     letter-spacing: -0.025em;
     margin-bottom: 18px;
 }
@@ -232,7 +232,7 @@ table td,
 
 .btn-hero-cta {
     background: #FFFFFF;
-    color: #0D0D0D;
+    color: #000000;
     border: 1px solid transparent;
     padding: 12px 24px;
     border-radius: var(--radius-full);
@@ -250,9 +250,9 @@ table td,
 }
 
 .btn-hero-secondary {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
-    color: var(--text-primary);
+    color: #FFFFFF;
     padding: 12px 24px;
     border-radius: var(--radius-full);
     font-size: 0.95rem;
@@ -262,8 +262,8 @@ table td,
 }
 
 .btn-hero-secondary:hover {
-    background: #383838;
-    border-color: #555555;
+    background: #222222;
+    border-color: #444444;
 }
 
 .hero-status-pills {
@@ -281,7 +281,7 @@ table td,
 }
 
 .bg-darker {
-    background: #171717;
+    background: #080808;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     max-width: 100%;
@@ -295,7 +295,7 @@ table td,
 .section-title-wrap h2 {
     font-size: 1.875rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #FFFFFF;
     letter-spacing: -0.02em;
     margin-bottom: 8px;
 }
@@ -312,7 +312,7 @@ table td,
 }
 
 .feature-card {
-    background: var(--bg-surface);
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 24px;
@@ -321,15 +321,15 @@ table td,
 
 .feature-card:hover {
     border-color: var(--border-medium);
-    background: #1C1C1C;
+    background: #141414;
 }
 
 .feature-card .f-icon-box {
     width: 40px;
     height: 40px;
     border-radius: var(--radius-md);
-    background: var(--bg-surface-elevated);
-    color: var(--text-primary);
+    background: #181818;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -340,7 +340,7 @@ table td,
 .feature-card h3 {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
     margin-bottom: 8px;
 }
 
@@ -354,7 +354,7 @@ table td,
 .about-card {
     max-width: 860px;
     margin: 0 auto;
-    background: var(--bg-surface);
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 36px;
@@ -364,7 +364,7 @@ table td,
 .about-card h3 {
     font-size: 1.35rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
     margin-bottom: 12px;
 }
 
@@ -387,7 +387,7 @@ table td,
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #FFFFFF;
     margin-bottom: 4px;
 }
 
@@ -403,7 +403,7 @@ table td,
 .contact-box {
     max-width: 600px;
     margin: 0 auto;
-    background: var(--bg-surface);
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 32px;
@@ -417,11 +417,11 @@ table td,
 .contact-box input,
 .contact-box textarea {
     width: 100%;
-    background: var(--bg-input);
+    background: #181818;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-md);
     padding: 10px 14px;
-    color: var(--text-primary);
+    color: #FFFFFF;
     outline: none;
     font-size: 0.875rem;
     margin-top: 6px;
@@ -435,7 +435,7 @@ table td,
 
 /* Home Footer */
 .home-footer {
-    background: #171717;
+    background: #080808;
     border-top: 1px solid var(--border-color);
     padding: 24px 40px;
 }
@@ -475,7 +475,7 @@ table td,
 .dashboard-page-view {
     width: 100%;
     min-height: 100vh;
-    background-color: var(--bg-page);
+    background-color: #000000;
 }
 
 .app-container {
@@ -486,7 +486,7 @@ table td,
 }
 
 .sidebar {
-    background: var(--bg-sidebar);
+    background: #080808;
     border-right: 1px solid var(--border-color);
     padding: 16px 12px;
     display: flex;
@@ -505,7 +505,7 @@ table td,
 .sidebar .brand h2 {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -546,26 +546,26 @@ table td,
 }
 
 .nav-item:hover {
-    background: #212121;
-    color: var(--text-primary);
+    background: #141414;
+    color: #FFFFFF;
 }
 
 .nav-item:hover svg {
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .nav-item.active {
-    background: var(--bg-surface-elevated);
-    color: var(--text-primary);
+    background: #1C1C1C;
+    color: #FFFFFF;
     font-weight: 600;
 }
 
 .nav-item.active svg {
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .sidebar-widget {
-    background: #1C1C1C;
+    background: #121212;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 10px 12px;
@@ -584,9 +584,9 @@ table td,
 
 .sidebar-widget select {
     width: 100%;
-    background: var(--bg-input);
+    background: #181818;
     border: 1px solid var(--border-medium);
-    color: var(--text-primary);
+    color: #FFFFFF;
     padding: 6px 8px;
     border-radius: var(--radius-sm);
     outline: none;
@@ -600,7 +600,7 @@ table td,
 
 /* Main Workspace */
 .main-content {
-    background-color: var(--bg-page);
+    background-color: #000000;
     padding: 24px 32px;
     overflow-y: auto;
     height: 100vh;
@@ -623,7 +623,7 @@ table td,
 }
 
 .logo-badge {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     color: var(--text-secondary);
     border: 1px solid var(--border-medium);
     padding: 3px 8px;
@@ -636,7 +636,7 @@ table td,
 .header-app-name {
     font-size: 1.05rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .header-user-bar {
@@ -646,7 +646,7 @@ table td,
 }
 
 .btn-nav-home {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
     color: var(--text-secondary);
     padding: 6px 12px;
@@ -661,8 +661,8 @@ table td,
 }
 
 .btn-nav-home:hover {
-    background: #383838;
-    color: var(--text-primary);
+    background: #252525;
+    color: #FFFFFF;
 }
 
 /* Notification Bell Dropdown */
@@ -671,7 +671,7 @@ table td,
 }
 
 .btn-icon-bell {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
     color: var(--text-secondary);
     width: 34px;
@@ -686,8 +686,8 @@ table td,
 }
 
 .btn-icon-bell:hover {
-    background: #383838;
-    color: var(--text-primary);
+    background: #252525;
+    color: #FFFFFF;
 }
 
 .bell-dot {
@@ -705,7 +705,7 @@ table td,
     top: 42px;
     right: 0;
     width: 300px;
-    background: #1E1E1E;
+    background: #141414;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-xl);
@@ -724,7 +724,7 @@ table td,
     justify-content: space-between;
     align-items: center;
     padding: 10px 14px;
-    background: #171717;
+    background: #0A0A0A;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -732,7 +732,7 @@ table td,
     margin: 0;
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .notif-list {
@@ -748,7 +748,7 @@ table td,
     padding: 8px 10px;
     border-radius: var(--radius-sm);
     font-size: 0.8rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: #1A1A1A;
 }
 
 .notif-icon {
@@ -760,7 +760,7 @@ table td,
 
 .notif-content strong {
     display: block;
-    color: var(--text-primary);
+    color: #FFFFFF;
     font-size: 0.8rem;
     margin-bottom: 2px;
 }
@@ -772,13 +772,13 @@ table td,
 }
 
 .user-badge {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
     padding: 6px 12px;
     border-radius: var(--radius-md);
     font-size: 0.8125rem;
     font-weight: 500;
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .btn-logout {
@@ -804,7 +804,7 @@ table td,
 .search-container {
     display: flex;
     align-items: center;
-    background: var(--bg-input);
+    background: #141414;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-full);
     padding: 10px 16px;
@@ -820,7 +820,7 @@ table td,
 .search-container input {
     background: transparent;
     border: none;
-    color: var(--text-primary);
+    color: #FFFFFF;
     outline: none;
     font-size: 0.875rem;
     width: 100%;
@@ -841,7 +841,7 @@ table td,
     font-weight: 500;
 }
 
-.pill-indigo { background: #2F2F2F; color: #ECECEC; border: 1px solid #383838; }
+.pill-indigo { background: #1C1C1C; color: #FFFFFF; border: 1px solid #2A2A2A; }
 .pill-emerald { background: rgba(16, 163, 127, 0.15); color: #10A37F; border: 1px solid rgba(16, 163, 127, 0.3); }
 .pill-pink { background: rgba(239, 68, 68, 0.15); color: #FCA5A5; border: 1px solid rgba(239, 68, 68, 0.3); }
 .pill-amber { background: rgba(217, 119, 6, 0.15); color: #FBBF24; border: 1px solid rgba(217, 119, 6, 0.3); }
@@ -855,7 +855,7 @@ table td,
 }
 
 .kpi-card {
-    background: #171717;
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 18px;
@@ -886,8 +886,8 @@ table td,
     width: 30px;
     height: 30px;
     border-radius: var(--radius-sm);
-    background: var(--bg-surface-elevated);
-    color: var(--text-primary);
+    background: #181818;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -897,7 +897,7 @@ table td,
 .kpi-value {
     font-size: 1.625rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #FFFFFF;
     letter-spacing: -0.02em;
     margin: 4px 0;
 }
@@ -917,7 +917,7 @@ table td,
 }
 
 .chart-card {
-    background: #171717;
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 20px;
@@ -928,7 +928,7 @@ table td,
 .chart-card h3 {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
     margin-bottom: 14px;
     display: flex;
     align-items: center;
@@ -945,7 +945,7 @@ table td,
     height: 300px;
 }
 
-/* Customer Persona Cards (Clean ChatGPT Black) */
+/* Customer Persona Cards (Pure Black) */
 .persona-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -954,15 +954,15 @@ table td,
 }
 
 .persona-card {
-    background: #171717;
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 18px;
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 .vip-card { border-left: 3px solid var(--accent-green); }
-.loyal-card { border-left: 3px solid var(--text-primary); }
+.loyal-card { border-left: 3px solid #FFFFFF; }
 .reg-card { border-left: 3px solid var(--text-muted); }
 .risk-card { border-left: 3px solid var(--accent-rose); }
 
@@ -990,7 +990,7 @@ table td,
 /* Tables */
 .table-container {
     overflow-x: auto;
-    background: #171717;
+    background: #0D0D0D;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 12px;
@@ -1004,7 +1004,7 @@ table {
 }
 
 th {
-    background: #1E1E1E;
+    background: #141414;
     color: var(--text-muted);
     font-weight: 600;
     padding: 10px 12px;
@@ -1017,18 +1017,18 @@ th {
 td {
     padding: 10px 12px;
     border-bottom: 1px solid var(--border-color);
-    color: var(--text-primary);
+    color: #FFFFFF;
 }
 
 tr:hover {
-    background: rgba(255, 255, 255, 0.025);
+    background: #141414;
 }
 
 /* Modals */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(8px);
     z-index: 9999;
     display: flex;
@@ -1037,7 +1037,7 @@ tr:hover {
 }
 
 .login-card {
-    background: #171717;
+    background: #0D0D0D;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
     padding: 28px;
@@ -1059,7 +1059,7 @@ tr:hover {
     justify-content: center;
     gap: 10px;
     background: #FFFFFF;
-    color: #0D0D0D;
+    color: #000000;
     border: 1px solid #D1D5DB;
     border-radius: var(--radius-full);
     padding: 10px 16px;
@@ -1110,11 +1110,11 @@ tr:hover {
 
 .form-group input {
     width: 100%;
-    background: var(--bg-input);
+    background: #181818;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-md);
     padding: 9px 12px;
-    color: var(--text-primary);
+    color: #FFFFFF;
     outline: none;
     font-size: 0.875rem;
     transition: border-color 0.15s ease;
@@ -1126,7 +1126,7 @@ tr:hover {
 
 .btn-primary {
     background: #FFFFFF;
-    color: #0D0D0D;
+    color: #000000;
     border: 1px solid transparent;
     border-radius: var(--radius-full);
     font-weight: 600;
@@ -1140,9 +1140,9 @@ tr:hover {
 }
 
 .btn-secondary {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
-    color: var(--text-primary);
+    color: #FFFFFF;
     border-radius: var(--radius-md);
     font-weight: 500;
     cursor: pointer;
@@ -1150,12 +1150,12 @@ tr:hover {
 }
 
 .btn-secondary:hover {
-    background: #383838;
+    background: #252525;
 }
 
 .dropzone {
     border: 1.5px dashed var(--border-medium);
-    background: rgba(255, 255, 255, 0.02);
+    background: #141414;
     border-radius: var(--radius-lg);
     padding: 32px 18px;
     text-align: center;
@@ -1165,18 +1165,18 @@ tr:hover {
 
 .dropzone:hover {
     border-color: var(--border-focus);
-    background: rgba(255, 255, 255, 0.04);
+    background: #1C1C1C;
 }
 
 /* ======================================================== */
-/* 3. FLOATING CHATBOT WIDGET (ChatGPT Black Style) */
+/* 3. FLOATING CHATBOT WIDGET */
 /* ======================================================== */
 .float-chat-trigger {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: #2F2F2F;
-    color: var(--text-primary);
+    background: #181818;
+    color: #FFFFFF;
     border: 1px solid var(--border-medium);
     padding: 10px 18px;
     border-radius: var(--radius-full);
@@ -1192,8 +1192,8 @@ tr:hover {
 }
 
 .float-chat-trigger:hover {
-    background: #383838;
-    border-color: #555555;
+    background: #252525;
+    border-color: #444444;
 }
 
 .float-chat-card {
@@ -1202,7 +1202,7 @@ tr:hover {
     right: 24px;
     width: 360px;
     height: 480px;
-    background: #171717;
+    background: #0D0D0D;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-xl);
@@ -1215,7 +1215,7 @@ tr:hover {
 
 .float-chat-header {
     padding: 12px 16px;
-    background: #171717;
+    background: #0A0A0A;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
@@ -1227,12 +1227,12 @@ tr:hover {
     gap: 6px;
     padding: 8px 12px;
     overflow-x: auto;
-    background: #1C1C1C;
+    background: #141414;
     border-bottom: 1px solid var(--border-color);
 }
 
 .float-chip {
-    background: var(--bg-surface-elevated);
+    background: #181818;
     border: 1px solid var(--border-medium);
     color: var(--text-secondary);
     padding: 4px 10px;
@@ -1245,8 +1245,8 @@ tr:hover {
 }
 
 .float-chip:hover {
-    background: #383838;
-    color: var(--text-primary);
+    background: #252525;
+    color: #FFFFFF;
 }
 
 .float-chat-body {
@@ -1256,7 +1256,7 @@ tr:hover {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background: #171717;
+    background: #0D0D0D;
 }
 
 .chat-msg {
@@ -1269,34 +1269,34 @@ tr:hover {
 
 .chat-user {
     align-self: flex-end;
-    background: #2F2F2F;
-    color: var(--text-primary);
+    background: #252525;
+    color: #FFFFFF;
     border-radius: 14px 14px 2px 14px;
 }
 
 .chat-assistant {
     align-self: flex-start;
-    background: #212121;
+    background: #141414;
     border: 1px solid var(--border-color);
-    color: var(--text-primary);
+    color: #FFFFFF;
     border-radius: 14px 14px 14px 2px;
 }
 
 .float-chat-footer {
     display: flex;
     padding: 10px;
-    background: #171717;
+    background: #0A0A0A;
     border-top: 1px solid var(--border-color);
     gap: 8px;
 }
 
 .float-chat-footer input {
     flex-grow: 1;
-    background: var(--bg-input);
+    background: #181818;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-full);
     padding: 8px 14px;
-    color: var(--text-primary);
+    color: #FFFFFF;
     font-size: 0.8125rem;
     outline: none;
     transition: border-color 0.15s ease;
@@ -1308,7 +1308,7 @@ tr:hover {
 
 .float-chat-footer button {
     background: #FFFFFF;
-    color: #0D0D0D;
+    color: #000000;
     border: none;
     padding: 8px 16px;
     border-radius: var(--radius-full);

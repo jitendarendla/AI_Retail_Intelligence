@@ -920,13 +920,26 @@ def api_products():
 # Mount Static Frontend Files
 web_dir = os.path.join(os.path.dirname(__file__), "web_frontend")
 os.makedirs(web_dir, exist_ok=True)
+
+@app.middleware("http")
+async def no_cache_middleware(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 app.mount("/static", StaticFiles(directory=web_dir), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
     index_path = os.path.join(web_dir, "index.html")
     if os.path.exists(index_path):
-        return FileResponse(index_path)
+        return FileResponse(index_path, headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        })
     return "<h1>AI Retail Intelligence Platform Web App is Running!</h1>"
 
 if __name__ == "__main__":
