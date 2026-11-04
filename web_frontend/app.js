@@ -119,9 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update Profile Tab Details
             if (document.getElementById('profFullName')) {
                 document.getElementById('profFullName').textContent = user.full_name || user.username;
-                document.getElementById('profRole').textContent = user.role || 'Retail Analyst';
-                document.getElementById('profCompany').textContent = user.company || 'Enterprise Suite';
-                document.getElementById('profEmail').textContent = user.email || 'user@retail-ai.com';
+                const roleEl = document.getElementById('profRole');
+                if (roleEl) roleEl.textContent = user.role || 'Retail Analyst';
+                const compEl = document.getElementById('profCompany');
+                if (compEl) compEl.textContent = user.company || 'Enterprise Suite';
+                const emailEl = document.getElementById('profEmail');
+                if (emailEl) emailEl.textContent = user.email || 'user@retail-ai.com';
                 const profAv = document.getElementById('profAvatar');
                 if (profAv) {
                     const isUrl = user.avatar && (user.avatar.startsWith('http://') || user.avatar.startsWith('https://'));
@@ -639,7 +642,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         data.datasets.forEach(d => {
             if (d.is_active) {
-                document.getElementById('activeDatasetLabel').textContent = `Active: ${d.filename}`;
+                const activeLabel = document.getElementById('activeDatasetLabel');
+                if (activeLabel) activeLabel.textContent = `Active: ${d.filename}`;
                 if (document.getElementById('floatChatDatasetPill')) {
                     document.getElementById('floatChatDatasetPill').textContent = `QA: ${d.filename}`;
                 }
