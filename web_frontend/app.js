@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Contact Form Handler
     window.submitContactForm = function() {
         const name = document.getElementById('contactName').value.trim();
-        showToast(`✅ Thank you ${name}! Your inquiry has been submitted to support.`);
+        showToast(`Thank you ${name}. Your message has been received.`);
         document.getElementById('contactForm').reset();
     };
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const badge = document.getElementById('userBadgeName');
             if (badge) {
                 const isUrl = user.avatar && (user.avatar.startsWith('http://') || user.avatar.startsWith('https://'));
-                const avatarHtml = isUrl ? `<img src="${user.avatar}" alt="Avatar" style="width:20px; height:20px; border-radius:50%; vertical-align:middle; margin-right:6px; object-fit:cover;">` : (user.avatar || '🛍️') + ' ';
+                const avatarHtml = isUrl ? `<img src="${user.avatar}" alt="Avatar" style="width:18px; height:18px; border-radius:50%; vertical-align:middle; margin-right:6px; object-fit:cover;">` : '';
                 badge.innerHTML = `${avatarHtml}${user.full_name || user.username}`;
             }
 
@@ -131,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (isUrl) {
                         profAv.innerHTML = `<img src="${user.avatar}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
                     } else {
-                        profAv.textContent = user.avatar || '🛍️';
+                        profAv.innerHTML = `<i data-lucide="user" style="width:28px; height:28px; color:#60A5FA;"></i>`;
+                        if (window.lucide) lucide.createIcons();
                     }
                 }
             }
@@ -220,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             localStorage.removeItem('retail_ai_token');
             localStorage.removeItem('retail_ai_user');
-            showToast('👋 Successfully logged out of Retail AI Suite.', 'info');
+            showToast('Signed out successfully.', 'info');
             showHomePage();
         });
     }
@@ -342,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleGoogleAuthError(errMsg) {
         const errDiv = document.getElementById('loginError');
         if (errDiv) {
-            errDiv.innerHTML = `⚠️ Google OAuth Note: ${errMsg}<br><small style="color:#CBD5E1;">Make sure <code>${window.location.origin}</code> is in <strong>Authorized JavaScript origins</strong> in Google Cloud Console.</small>`;
+            errDiv.innerHTML = `Google OAuth Notice: ${errMsg}<br><small style="color:var(--text-secondary);">Ensure <code>${window.location.origin}</code> is in <strong>Authorized JavaScript origins</strong> in Google Cloud Console.</small>`;
             errDiv.style.display = 'block';
         }
     }
@@ -354,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (errDiv) errDiv.style.display = 'none';
             if (succDiv) {
-                succDiv.textContent = '⏳ Verifying Google Account & Signing In...';
+                succDiv.textContent = 'Verifying Google account...';
                 succDiv.style.display = 'block';
             }
 
@@ -379,21 +380,21 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
 
             if (succDiv) {
-                succDiv.textContent = '✅ Google Sign-In Successful! Opening Dashboard...';
+                succDiv.textContent = 'Signed in successfully. Opening dashboard...';
                 succDiv.style.display = 'block';
             }
 
             setTimeout(() => {
                 document.getElementById('loginModal').style.display = 'none';
                 if (succDiv) succDiv.style.display = 'none';
-                showToast(`🎉 Welcome ${data.user.full_name || data.user.email}! Signed in with Google.`);
+                showToast(`Signed in as ${data.user.full_name || data.user.email}.`);
                 showDashboard();
             }, 600);
 
         } catch (ex) {
             if (succDiv) succDiv.style.display = 'none';
             if (errDiv) {
-                errDiv.textContent = `Server connection error during Google sign-in: ${ex.message}`;
+                errDiv.textContent = `Server connection error: ${ex.message}`;
                 errDiv.style.display = 'block';
             }
         }
@@ -414,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (errDiv) errDiv.style.display = 'none';
             if (succDiv) {
-                succDiv.textContent = '⏳ Authenticating with Google OAuth...';
+                succDiv.textContent = 'Authenticating with Google...';
                 succDiv.style.display = 'block';
             }
 
@@ -439,14 +440,14 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
 
             if (succDiv) {
-                succDiv.textContent = '✅ Google Sign-In Successful! Opening Dashboard...';
+                succDiv.textContent = 'Signed in successfully. Opening dashboard...';
                 succDiv.style.display = 'block';
             }
 
             setTimeout(() => {
                 document.getElementById('loginModal').style.display = 'none';
                 if (succDiv) succDiv.style.display = 'none';
-                showToast(`🎉 Welcome ${data.user.full_name || data.user.email}! Signed in with Google.`);
+                showToast(`Signed in as ${data.user.full_name || data.user.email}.`);
                 showDashboard();
             }, 600);
 
@@ -541,14 +542,14 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
 
             errDiv.style.display = 'none';
-            succDiv.textContent = '✅ Account created! Launching Dashboard...';
+            succDiv.textContent = 'Account created. Opening dashboard...';
             succDiv.style.display = 'block';
 
             setTimeout(() => {
                 document.getElementById('loginModal').style.display = 'none';
-                showToast(`🎉 Welcome ${data.user.full_name}! Account created successfully.`);
+                showToast(`Welcome, ${data.user.full_name}. Account created.`);
                 showDashboard();
-            }, 800);
+            }, 600);
 
         } catch (e) {
             errDiv.textContent = 'Server error during account registration.';
@@ -568,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Header Pill
             const dbBadge = document.getElementById('dbStatusLabel');
             if (dbBadge) {
-                dbBadge.textContent = '🟢 AI Engine Active';
+                dbBadge.textContent = 'Engine Active';
             }
 
             // Profile Tab Stats
@@ -651,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${d.is_active ? '<span class="pill pill-emerald">🟢 Active</span>' : '<span class="pill pill-indigo">Archived</span>'}</td>
+                <td>${d.is_active ? '<span class="pill pill-emerald">Active</span>' : '<span class="pill pill-indigo">Archived</span>'}</td>
                 <td><strong>${d.filename}</strong></td>
                 <td>${d.upload_time}</td>
                 <td>${d.cleaned_rows.toLocaleString()}</td>
@@ -660,10 +661,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${d.total_products.toLocaleString()}</td>
                 <td>
                     ${d.is_active ? 
-                        '<span style="color:#34D399; font-weight:700;">Currently Analyzing</span>' : 
+                        '<span style="color:#10B981; font-weight:600; font-size:0.8125rem;">Active</span>' : 
                         `<div style="display:flex; gap:6px;">
-                            <button class="btn-secondary btn-select-ds" data-id="${d.dataset_id}" style="padding:6px 10px;">⚡ Select</button>
-                            ${!d.is_default ? `<button class="btn-secondary btn-delete-ds" data-id="${d.dataset_id}" style="padding:6px 10px; border-color:#EF4444; color:#F87171;">🗑️</button>` : ''}
+                            <button class="btn-secondary btn-select-ds" data-id="${d.dataset_id}" style="padding:4px 10px; font-size:0.75rem;">Select</button>
+                            ${!d.is_default ? `<button class="btn-secondary btn-delete-ds" data-id="${d.dataset_id}" style="padding:4px 8px; font-size:0.75rem; color:#F87171;">Delete</button>` : ''}
                         </div>`}
                 </td>
             `;
@@ -693,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch(`/api/datasets/select/${dsId}`, {method: 'POST'});
         const data = await res.json();
         if (data.success) {
-            showToast(`🔄 Active dataset switched to: <strong>${data.metadata.filename}</strong>`);
+            showToast(`Active dataset switched to: ${data.metadata.filename}`);
             loadDatasetHistory();
             loadDashboard();
             loadAnalytics();
@@ -707,7 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch(`/api/datasets/${dsId}`, {method: 'DELETE'});
         const data = await res.json();
         if (data.success) {
-            showToast('🗑️ Dataset removed permanently.', 'info');
+            showToast('Dataset deleted.', 'info');
             loadDatasetHistory();
             loadDbStatistics();
         }
@@ -748,7 +749,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function uploadDatasetFile(file) {
             statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<span style="color:#818CF8;">⏳ Processing dataset & analyzing retail metrics...</span>';
+            statusDiv.innerHTML = '<span style="color:var(--text-secondary);">Processing dataset and running models...</span>';
 
             const formData = new FormData();
             formData.append('file', file);
@@ -761,20 +762,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!res.ok) {
                     const err = await res.json();
-                    statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Error: ${err.detail || 'Upload failed.'}</span>`;
+                    statusDiv.innerHTML = `<span style="color:#EF4444;">Upload error: ${err.detail || 'Upload failed.'}</span>`;
                     return;
                 }
 
                 const data = await res.json();
                 statusDiv.innerHTML = `
-                    <span style="color:#34D399;">✅ Dataset Analyzed & Saved to Archive!</span><br>
-                    <strong>${data.metadata.cleaned_rows.toLocaleString()} Clean Rows</strong> | Revenue: <strong>£${data.metadata.total_revenue.toLocaleString()}</strong>
+                    <span style="color:#10B981; font-weight:600;">Dataset analyzed and archived.</span><br>
+                    <span style="color:var(--text-secondary);">${data.metadata.cleaned_rows.toLocaleString()} Clean Rows | Revenue: £${data.metadata.total_revenue.toLocaleString()}</span>
                 `;
 
                 setTimeout(() => {
                     modal.style.display = 'none';
                     statusDiv.style.display = 'none';
-                    showToast(`🎉 Analysis Ready for <strong>${file.name}</strong>!<br>Cleaned Rows: ${data.metadata.cleaned_rows.toLocaleString()}`);
+                    showToast(`Dataset ${file.name} uploaded and analyzed.`);
 
                     loadDatasetHistory();
                     loadDashboard();
@@ -782,10 +783,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadCatalogProducts();
                     loadPrediction();
                     loadDbStatistics();
-                }, 1200);
+                }, 1000);
 
             } catch (ex) {
-                statusDiv.innerHTML = `<span style="color:#EF4444;">❌ Server upload error: ${ex.message}</span>`;
+                statusDiv.innerHTML = `<span style="color:#EF4444;">Upload error: ${ex.message}</span>`;
             }
         }
     }
@@ -814,7 +815,7 @@ document.addEventListener('DOMContentLoaded', () => {
             kpiData.countries.forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c;
-                opt.textContent = c === 'All' ? '🌍 All Countries' : c;
+                opt.textContent = c === 'All' ? 'All Countries' : c;
                 select.appendChild(opt);
             });
             select.value = country;
@@ -954,7 +955,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (data.found) {
                     box.style.display = 'block';
-                    document.getElementById('searchProdTitle').textContent = `🔍 Instant Search Result: ${data.product}`;
+                    document.getElementById('searchProdTitle').textContent = `Search Result: ${data.product}`;
                     document.getElementById('searchRev').textContent = `£${data.total_revenue.toLocaleString()}`;
                     document.getElementById('searchUnits').textContent = data.units_sold.toLocaleString();
                     document.getElementById('searchCust').textContent = data.distinct_customers.toLocaleString();
@@ -1011,7 +1012,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Assistant loading indicator
         const botDiv = document.createElement('div');
         botDiv.className = 'chat-msg chat-assistant';
-        botDiv.innerHTML = '<span style="color:#818CF8;">⏳ Querying AI dataset index & analyzing metrics...</span>';
+        botDiv.innerHTML = '<span style="color:var(--text-muted);">Querying dataset index and computing metrics...</span>';
         history.appendChild(botDiv);
         history.scrollTop = history.scrollHeight;
 
@@ -1031,9 +1032,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // If cross-sell recommendations returned, embed interactive list
             if (data.recommendations && data.recommendations.length > 0) {
-                formattedText += `<br><br><strong style="color:#818CF8;">💡 Top Co-Purchased Cross-Sell Recommendations:</strong><ul style="margin-top:6px; padding-left:18px;">`;
+                formattedText += `<br><br><strong style="color:var(--text-primary);">Recommended Cross-Sell Items:</strong><ul style="margin-top:6px; padding-left:18px;">`;
                 data.recommendations.forEach(r => {
-                    formattedText += `<li style="color:#34D399; margin-bottom:4px;"><strong>${r}</strong></li>`;
+                    formattedText += `<li style="color:#60A5FA; margin-bottom:4px;"><strong>${r}</strong></li>`;
                 });
                 formattedText += `</ul>`;
             }
@@ -1041,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', () => {
             botDiv.innerHTML = formattedText;
             history.scrollTop = history.scrollHeight;
         } catch (ex) {
-            botDiv.innerHTML = `<span style="color:#EF4444;">❌ Error querying AI Assistant: ${ex.message}</span>`;
+            botDiv.innerHTML = `<span style="color:#EF4444;">Error querying assistant: ${ex.message}</span>`;
             history.scrollTop = history.scrollHeight;
         }
     }
