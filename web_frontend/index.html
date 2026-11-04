@@ -25,7 +25,7 @@
         <!-- Home Header / Navbar -->
         <header class="home-navbar">
             <div class="home-logo">
-                <i data-lucide="shopping-bag" style="width:20px; height:20px; color:#3B82F6;"></i>
+                <i data-lucide="shopping-bag" style="width:20px; height:20px; color:var(--text-primary);"></i>
                 <span class="logo-text">Retail Intelligence</span>
                 <span class="logo-sub">Enterprise</span>
             </div>
@@ -179,7 +179,7 @@
         <div class="login-card" style="width: 420px;">
             <div class="brand" style="border:none; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <i data-lucide="shopping-bag" style="width:18px; height:18px; color:#3B82F6;"></i>
+                    <i data-lucide="shopping-bag" style="width:18px; height:18px; color:var(--text-primary);"></i>
                     <h2 style="font-size:1rem; font-weight:600; color:var(--text-primary); margin:0;">Retail Intelligence</h2>
                 </div>
                 <button id="btnCloseAuthModal" style="background:none; border:none; color:var(--text-muted); font-size:1.1rem; cursor:pointer;">✕</button>
@@ -187,7 +187,7 @@
             
             <!-- Auth Tabs -->
             <div class="auth-tabs" style="display:flex; gap:6px; margin-bottom:14px; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
-                <button id="tabBtnSignIn" class="auth-tab-btn active" style="flex:1; padding:7px; background:var(--primary-subtle); border:1px solid rgba(59,130,246,0.3); color:#60A5FA; border-radius:6px; font-weight:600; font-size:0.8125rem; cursor:pointer;">Sign In</button>
+                <button id="tabBtnSignIn" class="auth-tab-btn active" style="flex:1; padding:7px; background:var(--bg-surface-elevated); border:1px solid var(--border-medium); color:var(--text-primary); border-radius:6px; font-weight:600; font-size:0.8125rem; cursor:pointer;">Sign In</button>
                 <button id="tabBtnRegister" class="auth-tab-btn" style="flex:1; padding:7px; background:none; border:1px solid transparent; color:var(--text-secondary); border-radius:6px; font-weight:500; font-size:0.8125rem; cursor:pointer;">Register</button>
             </div>
 
@@ -276,7 +276,7 @@
             <aside class="sidebar">
                 <div class="brand">
                     <h2>
-                        <i data-lucide="shopping-bag" style="width:18px; height:18px; color:#3B82F6;"></i>
+                        <i data-lucide="shopping-bag" style="width:18px; height:18px; color:var(--text-primary);"></i>
                         Retail AI
                     </h2>
                     <p>Intelligence Platform</p>
@@ -370,8 +370,8 @@
                         </p>
                         
                         <div id="uploadDropzone" class="dropzone">
-                            <i data-lucide="file-up" style="width:36px; height:36px; color:#60A5FA; margin-bottom:8px;"></i>
-                            <p style="font-size:0.875rem; color:var(--text-secondary);">Drag & drop CSV/Excel file or <strong style="color:#60A5FA;">browse file</strong></p>
+                            <i data-lucide="file-up" style="width:36px; height:36px; color:var(--text-primary); margin-bottom:8px;"></i>
+                            <p style="font-size:0.875rem; color:var(--text-secondary);">Drag & drop CSV/Excel file or <strong style="color:var(--text-primary);">browse file</strong></p>
                             <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" style="display:none;">
                         </div>
 
@@ -388,7 +388,7 @@
                 </div>
 
                 <div id="searchResultsBox" style="display:none; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:16px; margin-bottom:18px;">
-                    <h4 id="searchProdTitle" style="color:#60A5FA; font-size:0.9rem; font-weight:600; margin-bottom:10px;"></h4>
+                    <h4 id="searchProdTitle" style="color:var(--text-primary); font-size:0.9rem; font-weight:600; margin-bottom:10px;"></h4>
                     <div class="kpi-grid" style="margin-bottom:0;">
                         <div class="kpi-card"><div class="kpi-label">Revenue</div><div id="searchRev" class="kpi-value"></div></div>
                         <div class="kpi-card"><div class="kpi-label">Units Sold</div><div id="searchUnits" class="kpi-value"></div></div>
@@ -586,14 +586,14 @@
                     <div class="chart-card" style="margin-bottom:20px;">
                         <h3><i data-lucide="user" style="width:16px; height:16px;"></i> User Profile</h3>
                         <div style="display:flex; align-items:center; gap:16px; margin:16px 0;">
-                            <div style="font-size:2rem; background:var(--primary-subtle); width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-full); border:1px solid rgba(59,130,246,0.3); overflow:hidden;">
+                            <div style="font-size:2rem; background:var(--bg-surface-elevated); width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-full); border:1px solid var(--border-medium); overflow:hidden;">
                                 <span id="profAvatar">
-                                    <i data-lucide="user" style="width:28px; height:28px; color:#60A5FA;"></i>
+                                    <i data-lucide="user" style="width:28px; height:28px; color:var(--text-primary);"></i>
                                 </span>
                             </div>
                             <div>
                                 <h2 id="profFullName" style="margin:0 0 4px 0; font-size:1.15rem; font-weight:600; color:var(--text-primary);">Retail User</h2>
-                                <p style="margin:0; color:#60A5FA; font-size:0.875rem;" id="profEmail">user@company.com</p>
+                                <p style="margin:0; color:var(--text-secondary); font-size:0.875rem;" id="profEmail">user@company.com</p>
                             </div>
                         </div>
                     </div>
@@ -615,7 +615,7 @@
     <div id="floatingChatWidget" class="float-chat-card" style="display:none;">
         <div class="float-chat-header">
             <div style="display:flex; align-items:center; gap:8px;">
-                <i data-lucide="bot" style="width:16px; height:16px; color:#60A5FA;"></i>
+                <i data-lucide="bot" style="width:16px; height:16px; color:var(--text-primary);"></i>
                 <h4 style="margin:0; color:var(--text-primary); font-size:0.875rem; font-weight:600;">Retail Assistant</h4>
                 <span style="font-size:0.7rem; color:var(--text-muted);" id="floatChatDatasetPill">Active Dataset</span>
             </div>

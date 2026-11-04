@@ -824,22 +824,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Monthly Revenue Trend Line Chart
         const mRes = await fetch(`/api/charts/monthly-revenue${urlParam}`);
         const mData = await mRes.json();
-        renderLineChart('chartMonthlyRevenue', mData.map(d => d.YearMonth), mData.map(d => d.Revenue), 'Monthly Revenue (£)', '#818CF8');
+        renderLineChart('chartMonthlyRevenue', mData.map(d => d.YearMonth), mData.map(d => d.Revenue), 'Monthly Revenue (£)', '#FFFFFF');
 
         // 3. Daily Sales Distribution Line Chart
         const dRes = await fetch(`/api/charts/daily-sales${urlParam}`);
         const dData = await dRes.json();
-        renderLineChart('chartDailySales', dData.map(d => d.Date), dData.map(d => d.Revenue), 'Daily Revenue (£)', '#34D399');
+        renderLineChart('chartDailySales', dData.map(d => d.Date), dData.map(d => d.Revenue), 'Daily Revenue (£)', '#10A37F');
 
         // 4. Top 10 Products Bar Chart
         const tpRes = await fetch(`/api/charts/top-products${urlParam}`);
         const tpData = await tpRes.json();
-        renderBarChart('chartTopProducts', tpData.map(d => d.Product.substring(0, 18) + '...'), tpData.map(d => d.Revenue), 'Revenue (£)', '#F472B6');
+        renderBarChart('chartTopProducts', tpData.map(d => d.Product.substring(0, 18) + '...'), tpData.map(d => d.Revenue), 'Revenue (£)', '#B4B4B4');
 
         // 5. Top 10 Customers Bar Chart
         const tcRes = await fetch(`/api/charts/top-customers${urlParam}`);
         const tcData = await tcRes.json();
-        renderBarChart('chartTopCustomers', tcData.map(d => d.Customer), tcData.map(d => d.Revenue), 'Total Spend (£)', '#FBBF24');
+        renderBarChart('chartTopCustomers', tcData.map(d => d.Customer), tcData.map(d => d.Revenue), 'Total Spend (£)', '#71717A');
     }
 
     async function loadAnalytics() {
@@ -851,8 +851,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Weekday & Hourly Charts
         const whRes = await fetch('/api/charts/weekday-hour');
         const whData = await whRes.json();
-        renderBarChart('chartWeekdayRevenue', whData.weekday.map(d => d.Weekday), whData.weekday.map(d => d.Revenue), 'Revenue (£)', '#C084FC');
-        renderLineChart('chartHourlyRevenue', whData.hourly.map(d => d.Hour), whData.hourly.map(d => d.Revenue), 'Revenue (£)', '#38BDF8');
+        renderBarChart('chartWeekdayRevenue', whData.weekday.map(d => d.Weekday), whData.weekday.map(d => d.Revenue), 'Revenue (£)', '#FFFFFF');
+        renderLineChart('chartHourlyRevenue', whData.hourly.map(d => d.Hour), whData.hourly.map(d => d.Revenue), 'Revenue (£)', '#10A37F');
 
         // RFM Segment Breakdown
         const segRes = await fetch('/api/segmentation');
@@ -1109,14 +1109,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 labels: labels,
                 datasets: [{
                     data: data,
-                    backgroundColor: ['#818CF8', '#34D399', '#F472B6', '#FBBF24', '#C084FC', '#3B82F6', '#EF4444', '#10B981', '#6366F1', '#A78BFA']
+                    backgroundColor: ['#10A37F', '#FFFFFF', '#B4B4B4', '#71717A', '#52525B', '#3F3F46', '#27272A', '#D97706', '#EF4444', '#10A37F']
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'right', labels: { color: '#94A3B8' } }
+                    legend: { position: 'right', labels: { color: '#B4B4B4' } }
                 }
             }
         });
@@ -1135,8 +1135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: combinedLabels,
                 datasets: [
-                    { label: 'Historical Daily Revenue (£)', data: histSeries, borderColor: '#818CF8', borderWidth: 2, fill: false, tension: 0.2 },
-                    { label: 'Random Forest Forecast (£)', data: futSeries, borderColor: '#34D399', borderDash: [5, 5], borderWidth: 3, fill: false, tension: 0.2 }
+                    { label: 'Historical Daily Revenue (£)', data: histSeries, borderColor: '#FFFFFF', borderWidth: 2, fill: false, tension: 0.2 },
+                    { label: 'Random Forest Forecast (£)', data: futSeries, borderColor: '#10A37F', borderDash: [5, 5], borderWidth: 3, fill: false, tension: 0.2 }
                 ]
             },
             options: getDarkChartOptions()
@@ -1147,10 +1147,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { labels: { color: '#94A3B8' } } },
+            plugins: { legend: { labels: { color: '#B4B4B4' } } },
             scales: {
-                x: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-                y: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                x: { ticks: { color: '#8E8EA0' }, grid: { color: '#2F2F2F' } },
+                y: { ticks: { color: '#8E8EA0' }, grid: { color: '#2F2F2F' } }
             }
         };
     }
