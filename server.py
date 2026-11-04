@@ -279,33 +279,52 @@ def api_register(payload: dict = Body(...)):
 @app.post("/api/auth/google")
 def api_google_auth(payload: dict = Body(...)):
     credential = payload.get("credential", "").strip()
-    if not credential:
-        raise HTTPException(status_code=400, detail="Google credential token is required.")
+    access_token = payload.get("access_token", "").strip()
+
+    if not credential and not access_token:
+        raise HTTPException(status_code=400, detail="Google credential or access token is required.")
 
     user_info = None
-    # 1. Verify via google.oauth2.id_token
-    try:
-        from google.oauth2 import id_token
-        from google.auth.transport import requests as google_requests
-        idinfo = id_token.verify_oauth2_token(credential, google_requests.Request(), GOOGLE_CLIENT_ID)
-        user_info = idinfo
-    except Exception as e_verify:
-        print(f"google-auth verify note: {e_verify}, attempting tokeninfo endpoint fallback...")
+
+    # Case 1: OAuth2 Access Token (from official Google tokenClient popup)
+    if access_token:
         try:
             import requests
-            resp = requests.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}", timeout=6)
+            headers = {"Authorization": f"Bearer {access_token}"}
+            resp = requests.get("https://www.googleapis.com/oauth2/v3/userinfo", headers=headers, timeout=6)
             if resp.ok:
-                token_data = resp.json()
-                if token_data.get("aud") == GOOGLE_CLIENT_ID:
-                    user_info = token_data
-                else:
-                    raise HTTPException(status_code=400, detail="Google token client ID mismatch.")
+                user_info = resp.json()
             else:
-                raise HTTPException(status_code=401, detail="Invalid Google token.")
+                raise HTTPException(status_code=401, detail="Failed to fetch user profile from Google with access token.")
         except HTTPException:
             raise
-        except Exception as e_http:
-            raise HTTPException(status_code=401, detail=f"Google authentication failed: {e_http}")
+        except Exception as e_acc:
+            raise HTTPException(status_code=401, detail=f"Google access token verification error: {e_acc}")
+
+    # Case 2: Credential ID Token (from Google Identity Services)
+    elif credential:
+        try:
+            from google.oauth2 import id_token
+            from google.auth.transport import requests as google_requests
+            idinfo = id_token.verify_oauth2_token(credential, google_requests.Request(), GOOGLE_CLIENT_ID)
+            user_info = idinfo
+        except Exception as e_verify:
+            print(f"google-auth verify note: {e_verify}, attempting tokeninfo endpoint fallback...")
+            try:
+                import requests
+                resp = requests.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}", timeout=6)
+                if resp.ok:
+                    token_data = resp.json()
+                    if token_data.get("aud") == GOOGLE_CLIENT_ID:
+                        user_info = token_data
+                    else:
+                        raise HTTPException(status_code=400, detail="Google token client ID mismatch.")
+                else:
+                    raise HTTPException(status_code=401, detail="Invalid Google token.")
+            except HTTPException:
+                raise
+            except Exception as e_http:
+                raise HTTPException(status_code=401, detail=f"Google authentication failed: {e_http}")
 
     if not user_info or not user_info.get("email"):
         raise HTTPException(status_code=400, detail="Could not extract verified email from Google account.")

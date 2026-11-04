@@ -951,7 +951,40 @@ tr:hover {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin: 10px 0 16px 0;
+    margin: 8px 0 16px 0;
+}
+
+.btn-google-auth {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #FFFFFF;
+    color: #1F2937;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-google-auth:hover {
+    background: #F3F4F6;
+    border-color: #9CA3AF;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-google-auth:active {
+    transform: translateY(0);
+}
+
+.btn-google-auth svg {
+    flex-shrink: 0;
 }
 
 .google-btn-slot {
