@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     initDashboardNav();
     initUploadHandlers();
+    initProfileHandlers();
     initEventListeners();
 
     // Toast Notification System
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
         toast.className = 'toast';
-        toast.style.borderColor = type === 'success' ? '#34D399' : (type === 'info' ? '#818CF8' : '#EF4444');
+        toast.style.borderColor = type === 'success' ? '#10A37F' : (type === 'info' ? '#383838' : '#EF4444');
         toast.innerHTML = message;
         container.appendChild(toast);
         setTimeout(() => {
@@ -102,50 +103,94 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function isImageAvatar(avatar) {
+        return Boolean(
+            avatar && (
+                avatar.startsWith('http://') ||
+                avatar.startsWith('https://') ||
+                avatar.startsWith('data:image/')
+            )
+        );
+    }
+
+    function applyUserUI(user) {
+        if (!user) return;
+        const hasImg = isImageAvatar(user.avatar);
+
+        const badge = document.getElementById('userBadgeName');
+        if (badge) {
+            const avatarHtml = hasImg
+                ? `<img src="${user.avatar}" alt="Avatar" style="width:18px; height:18px; border-radius:50%; vertical-align:middle; margin-right:6px; object-fit:cover;">`
+                : '';
+            badge.innerHTML = `${avatarHtml}${user.full_name || user.username}`;
+        }
+
+        const profAv = document.getElementById('profAvatar');
+        if (profAv) {
+            if (hasImg) {
+                profAv.innerHTML = `<img src="${user.avatar}" alt="Avatar" style="width:68px; height:68px; border-radius:50%; object-fit:cover; display:block;">`;
+            } else {
+                profAv.innerHTML = `<i data-lucide="user" style="width:28px; height:28px; color:var(--text-primary);"></i>`;
+            }
+        }
+
+        // Populate General Information fields
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val || '';
+        };
+        const fullNameParts = (user.full_name || '').trim().split(' ');
+        const fallbackFirst = fullNameParts[0] || '';
+        const fallbackLast = fullNameParts.slice(1).join(' ');
+
+        setVal('profFirstName', user.first_name || fallbackFirst);
+        setVal('profLastName', user.last_name || fallbackLast);
+        setVal('profEmailInput', user.email || '');
+        setVal('profPhone', user.phone || '');
+        setVal('profLanguage', user.default_language || 'English');
+        setVal('profDirection', user.direction || 'System Default');
+        setVal('profFacebook', user.facebook || '');
+        setVal('profLinkedin', user.linkedin || '');
+        setVal('profSkype', user.skype || '');
+        setVal('profSignature', user.email_signature || '');
+
+        if (window.lucide) lucide.createIcons();
+    }
+
+    async function loadUserProfile() {
+        const token = localStorage.getItem('retail_ai_token');
+        if (!token) return;
+        try {
+            const res = await fetch(`/api/profile?token=${encodeURIComponent(token)}`);
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data.success && data.user) {
+                localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
+                applyUserUI(data.user);
+            }
+        } catch (e) {
+            console.warn('Profile fetch notice:', e);
+        }
+    }
+
     function showDashboard() {
         document.getElementById('homePageSection').style.display = 'none';
         document.getElementById('dashboardSection').style.display = 'block';
 
         const userJson = localStorage.getItem('retail_ai_user');
         if (userJson) {
-            const user = JSON.parse(userJson);
-            const badge = document.getElementById('userBadgeName');
-            if (badge) {
-                const isUrl = user.avatar && (user.avatar.startsWith('http://') || user.avatar.startsWith('https://'));
-                const avatarHtml = isUrl ? `<img src="${user.avatar}" alt="Avatar" style="width:18px; height:18px; border-radius:50%; vertical-align:middle; margin-right:6px; object-fit:cover;">` : '';
-                badge.innerHTML = `${avatarHtml}${user.full_name || user.username}`;
-            }
-
-            // Update Profile Tab Details
-            if (document.getElementById('profFullName')) {
-                document.getElementById('profFullName').textContent = user.full_name || user.username;
-                const roleEl = document.getElementById('profRole');
-                if (roleEl) roleEl.textContent = user.role || 'Retail Analyst';
-                const compEl = document.getElementById('profCompany');
-                if (compEl) compEl.textContent = user.company || 'Enterprise Suite';
-                const emailEl = document.getElementById('profEmail');
-                if (emailEl) emailEl.textContent = user.email || 'user@retail-ai.com';
-                const profAv = document.getElementById('profAvatar');
-                if (profAv) {
-                    const isUrl = user.avatar && (user.avatar.startsWith('http://') || user.avatar.startsWith('https://'));
-                    if (isUrl) {
-                        profAv.innerHTML = `<img src="${user.avatar}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                    } else {
-                        profAv.innerHTML = `<i data-lucide="user" style="width:28px; height:28px; color:#60A5FA;"></i>`;
-                        if (window.lucide) lucide.createIcons();
-                    }
-                }
-            }
+            applyUserUI(JSON.parse(userJson));
         }
 
         // Initialize Lucide icons
         if (window.lucide) lucide.createIcons();
 
-        // Load Dashboard Data
+        // Load Dashboard & Profile Data
         loadDashboard();
         loadCatalogProducts();
         loadDatasetHistory();
         loadDbStatistics();
+        loadUserProfile();
     }
 
     // ========================================================
@@ -605,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (targetTab === 'analytics') loadAnalytics();
                 if (targetTab === 'prediction') loadPrediction();
                 if (targetTab === 'history') loadDatasetHistory();
-                if (targetTab === 'profile') loadDbStatistics();
+                if (targetTab === 'profile') loadUserProfile();
             });
         });
 
@@ -801,6 +846,145 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (fileInput) fileInput.value = '';
                 statusDiv.innerHTML = `<span style="color:#EF4444;">Upload error: ${ex.message}</span>`;
             }
+        }
+    }
+
+    // ========================================================
+    // 6B. PROFILE SETTINGS HANDLERS (General Info & Password)
+    // ========================================================
+    function initProfileHandlers() {
+        let pendingAvatarDataUrl = null;
+
+        const btnUploadPhoto = document.getElementById('btnUploadProfPhoto');
+        const photoInput = document.getElementById('profPhotoInput');
+        const profAvatarEl = document.getElementById('profAvatar');
+        const btnSave = document.getElementById('btnSaveProfile');
+        const feedbackEl = document.getElementById('profSaveFeedback');
+
+        if (btnUploadPhoto && photoInput) {
+            btnUploadPhoto.addEventListener('click', () => photoInput.click());
+
+            photoInput.addEventListener('change', () => {
+                const file = photoInput.files && photoInput.files[0];
+                if (!file) return;
+
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast('Photo exceeds 2MB limit. Please choose a smaller image.', 'error');
+                    photoInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    pendingAvatarDataUrl = ev.target.result;
+                    if (profAvatarEl) {
+                        profAvatarEl.innerHTML = `<img src="${pendingAvatarDataUrl}" alt="Profile Photo" style="width:68px; height:68px; border-radius:50%; object-fit:cover; display:block;">`;
+                    }
+                    showToast('Photo preview updated. Click "Save All Changes" to persist.', 'info');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Password show/hide eye toggles
+        document.querySelectorAll('.btn-toggle-pw').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (!input) return;
+
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                btn.innerHTML = `<i data-lucide="${isPassword ? 'eye' : 'eye-off'}" style="width:16px; height:16px;"></i>`;
+                if (window.lucide) lucide.createIcons();
+            });
+        });
+
+        if (btnSave) {
+            btnSave.addEventListener('click', async () => {
+                const token = localStorage.getItem('retail_ai_token');
+                if (!token) {
+                    showToast('Please sign in to save profile changes.', 'error');
+                    return;
+                }
+
+                const getVal = (id) => {
+                    const el = document.getElementById(id);
+                    return el ? el.value.trim() : '';
+                };
+
+                const payload = {
+                    token,
+                    first_name: getVal('profFirstName'),
+                    last_name: getVal('profLastName'),
+                    email: getVal('profEmailInput'),
+                    phone: getVal('profPhone'),
+                    default_language: getVal('profLanguage') || 'English',
+                    direction: getVal('profDirection') || 'System Default',
+                    facebook: getVal('profFacebook'),
+                    linkedin: getVal('profLinkedin'),
+                    skype: getVal('profSkype'),
+                    email_signature: document.getElementById('profSignature') ? document.getElementById('profSignature').value : '',
+                    old_password: document.getElementById('profOldPassword') ? document.getElementById('profOldPassword').value : '',
+                    new_password: document.getElementById('profNewPassword') ? document.getElementById('profNewPassword').value : '',
+                    repeat_password: document.getElementById('profRepeatPassword') ? document.getElementById('profRepeatPassword').value : '',
+                };
+                if (pendingAvatarDataUrl) {
+                    payload.avatar = pendingAvatarDataUrl;
+                }
+
+                btnSave.disabled = true;
+                btnSave.textContent = 'Saving...';
+                if (feedbackEl) feedbackEl.style.display = 'none';
+
+                try {
+                    const res = await fetch('/api/profile', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        const errMsg = data.detail || 'Could not save profile changes.';
+                        if (feedbackEl) {
+                            feedbackEl.style.color = '#EF4444';
+                            feedbackEl.textContent = errMsg;
+                            feedbackEl.style.display = 'inline';
+                        }
+                        showToast(errMsg, 'error');
+                        return;
+                    }
+
+                    pendingAvatarDataUrl = null;
+                    if (photoInput) photoInput.value = '';
+                    if (data.user) {
+                        localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
+                        applyUserUI(data.user);
+                    }
+
+                    // Clear password inputs after save
+                    ['profOldPassword', 'profNewPassword', 'profRepeatPassword'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.value = '';
+                    });
+
+                    const msg = data.password_changed
+                        ? 'Profile and password updated successfully.'
+                        : 'Profile settings saved successfully.';
+                    if (feedbackEl) {
+                        feedbackEl.style.color = '#10A37F';
+                        feedbackEl.textContent = msg;
+                        feedbackEl.style.display = 'inline';
+                    }
+                    showToast(msg, 'success');
+                } catch (err) {
+                    showToast(`Error saving profile: ${err.message}`, 'error');
+                } finally {
+                    btnSave.disabled = false;
+                    btnSave.textContent = 'Save All Changes';
+                }
+            });
         }
     }
 

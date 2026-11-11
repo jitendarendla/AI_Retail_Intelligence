@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retail Intelligence Platform | Analytics & Forecasting</title>
-    <link rel="stylesheet" href="/static/style.css?v=chatgpt_black_v3">
+    <link rel="stylesheet" href="/static/style.css?v=chatgpt_black_v4">
     <style>
         :root {
             --bg-page: #000000 !important;
@@ -26,12 +26,12 @@
             background: #080808 !important;
             border-color: #222222 !important;
         }
-        .kpi-card, .chart-card, .feature-card, .about-card, .contact-box, .persona-card, .table-container, .login-card, .float-chat-card, #searchResultsBox {
+        .kpi-card, .chart-card, .feature-card, .about-card, .contact-box, .persona-card, .table-container, .login-card, .float-chat-card, #searchResultsBox, .profile-card {
             background: #0D0D0D !important;
             border-color: #222222 !important;
             color: #FFFFFF !important;
         }
-        .search-container, .float-chat-trigger, .nav-item.active, .float-chip, .chat-user, .btn-secondary, input, select, textarea, .user-badge, .btn-nav-home, .btn-icon-bell {
+        .search-container, .float-chat-trigger, .nav-item.active, .float-chip, .chat-user, .btn-secondary, .btn-upload-photo, input, select, textarea, .user-badge, .btn-nav-home, .btn-icon-bell {
             background: #181818 !important;
             border-color: #2A2A2A !important;
             color: #FFFFFF !important;
@@ -646,22 +646,143 @@
                     </div>
                 </div>
 
-                <!-- TAB 6: PROFILE -->
+                <!-- TAB 6: PROFILE SETTINGS -->
                 <div id="tab-profile" class="tab-content">
-                    <div class="chart-card" style="margin-bottom:20px;">
-                        <h3><i data-lucide="user" style="width:16px; height:16px;"></i> User Profile</h3>
-                        <div style="display:flex; align-items:center; gap:16px; margin:16px 0;">
-                            <div style="font-size:2rem; background:var(--bg-surface-elevated); width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-full); border:1px solid var(--border-medium); overflow:hidden;">
-                                <span id="profAvatar">
-                                    <i data-lucide="user" style="width:28px; height:28px; color:var(--text-primary);"></i>
-                                </span>
+                    <form id="profileSettingsForm" onsubmit="event.preventDefault();">
+                        <div class="profile-layout-grid">
+                            <!-- Left Column: General Information -->
+                            <div class="profile-card">
+                                <div class="profile-card-header">General Information</div>
+
+                                <div class="profile-avatar-row">
+                                    <div class="profile-avatar-circle">
+                                        <span id="profAvatar">
+                                            <i data-lucide="user" style="width:28px; height:28px; color:var(--text-primary);"></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <button type="button" id="btnUploadProfPhoto" class="btn-upload-photo">
+                                            <i data-lucide="upload" style="width:14px; height:14px;"></i>
+                                            Upload Photo
+                                        </button>
+                                        <input type="file" id="profPhotoInput" accept="image/jpeg,image/png,image/gif" style="display:none;">
+                                        <div class="profile-photo-hint">
+                                            JPG, PNG or GIF • Max size 2MB<br>
+                                            Recommended 200 × 200 px
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="profile-section-label">BASIC INFO</div>
+
+                                <div class="profile-row-2">
+                                    <div class="form-group">
+                                        <label for="profFirstName">First Name</label>
+                                        <input type="text" id="profFirstName" placeholder="First Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profLastName">Last Name</label>
+                                        <input type="text" id="profLastName" placeholder="Last Name">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="profEmailInput">Email</label>
+                                    <input type="email" id="profEmailInput" placeholder="user@company.com">
+                                </div>
+
+                                <div class="profile-row-2">
+                                    <div class="form-group">
+                                        <label for="profPhone">Phone</label>
+                                        <input type="text" id="profPhone" placeholder="+1 (000) 000-0000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profLanguage">Default Language</label>
+                                        <select id="profLanguage">
+                                            <option value="English">English</option>
+                                            <option value="Spanish">Spanish</option>
+                                            <option value="French">French</option>
+                                            <option value="German">German</option>
+                                            <option value="Hindi">Hindi</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="profDirection">Direction</label>
+                                    <select id="profDirection">
+                                        <option value="System Default">System Default</option>
+                                        <option value="LTR (Left to Right)">LTR (Left to Right)</option>
+                                        <option value="RTL (Right to Left)">RTL (Right to Left)</option>
+                                    </select>
+                                </div>
+
+                                <div class="profile-section-label">SOCIAL PROFILES</div>
+
+                                <div class="profile-row-3">
+                                    <div class="form-group">
+                                        <label for="profFacebook">Facebook</label>
+                                        <input type="text" id="profFacebook" placeholder="facebook.com/username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profLinkedin">LinkedIn</label>
+                                        <input type="text" id="profLinkedin" placeholder="linkedin.com/in/username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profSkype">Skype</label>
+                                        <input type="text" id="profSkype" placeholder="skype-username">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label for="profSignature">Email Signature</label>
+                                    <textarea id="profSignature" rows="3" placeholder="e.g. Best Regards,&#10;Your Name"></textarea>
+                                </div>
                             </div>
-                            <div>
-                                <h2 id="profFullName" style="margin:0 0 4px 0; font-size:1.15rem; font-weight:600; color:var(--text-primary);">Retail User</h2>
-                                <p style="margin:0; color:var(--text-secondary); font-size:0.875rem;" id="profEmail">user@company.com</p>
+
+                            <!-- Right Column: Change Password (No 2FA) -->
+                            <div class="profile-card">
+                                <div class="profile-card-header">Change password</div>
+
+                                <div class="form-group">
+                                    <label for="profOldPassword">Old password</label>
+                                    <div class="password-input-wrap">
+                                        <input type="password" id="profOldPassword" placeholder="Enter current password" autocomplete="current-password">
+                                        <button type="button" class="btn-toggle-pw" data-target="profOldPassword" title="Show/Hide Password">
+                                            <i data-lucide="eye-off" style="width:16px; height:16px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="profNewPassword">New password</label>
+                                    <div class="password-input-wrap">
+                                        <input type="password" id="profNewPassword" placeholder="Enter new password" autocomplete="new-password">
+                                        <button type="button" class="btn-toggle-pw" data-target="profNewPassword" title="Show/Hide Password">
+                                            <i data-lucide="eye-off" style="width:16px; height:16px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label for="profRepeatPassword">Repeat New Password</label>
+                                    <div class="password-input-wrap">
+                                        <input type="password" id="profRepeatPassword" placeholder="Confirm new password" autocomplete="new-password">
+                                        <button type="button" class="btn-toggle-pw" data-target="profRepeatPassword" title="Show/Hide Password">
+                                            <i data-lucide="eye-off" style="width:16px; height:16px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="profile-actions-bar">
+                            <span id="profSaveFeedback" style="font-size:0.8125rem; display:none;"></span>
+                            <button type="button" id="btnSaveProfile" class="btn-primary" style="padding:10px 24px;">
+                                Save All Changes
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
             </main>
@@ -708,7 +829,7 @@
     </div>
 
     <!-- Custom JS -->
-    <script src="/static/app.js?v=chatgpt_black_v3"></script>
+    <script src="/static/app.js?v=chatgpt_black_v4"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) {

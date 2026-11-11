@@ -369,6 +369,54 @@ def api_get_me(token: Optional[str] = Query(None)):
     return {"authenticated": True, "user": user}
 
 
+@app.get("/api/profile")
+def api_get_profile(token: Optional[str] = Query(None)):
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing authentication token.")
+    profile = database.get_user_profile_by_token(token)
+    if not profile:
+        raise HTTPException(status_code=401, detail="Invalid or expired session.")
+    return {"success": True, "user": profile}
+
+
+@app.put("/api/profile")
+def api_update_profile(payload: dict = Body(...)):
+    token = str(payload.get("token", "")).strip()
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing authentication token.")
+
+    try:
+        updated_user = database.update_user_profile(token, payload)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Profile update error: {ex}")
+
+    old_pw = str(payload.get("old_password", ""))
+    new_pw = str(payload.get("new_password", ""))
+    repeat_pw = str(payload.get("repeat_password", ""))
+    password_changed = False
+
+    if old_pw or new_pw or repeat_pw:
+        if not old_pw or not new_pw or not repeat_pw:
+            raise HTTPException(status_code=400, detail="Please fill in Old password, New password, and Repeat New Password to change your password.")
+        if new_pw != repeat_pw:
+            raise HTTPException(status_code=400, detail="New password and Repeat New Password do not match.")
+        try:
+            database.change_user_password(token, old_pw, new_pw)
+            password_changed = True
+        except ValueError as ve:
+            raise HTTPException(status_code=400, detail=str(ve))
+        except Exception as ex:
+            raise HTTPException(status_code=500, detail=f"Password update error: {ex}")
+
+    return {
+        "success": True,
+        "user": updated_user,
+        "password_changed": password_changed
+    }
+
+
 # ==========================================
 # 📜 MULTI-DATASET HISTORY & ARCHIVE ENDPOINTS
 # ==========================================

@@ -179,6 +179,21 @@ def init_db():
             ON CONFLICT (dataset_id) DO UPDATE SET cleaned_path = EXCLUDED.cleaned_path;
         """, ("default", cleaned_path, rfm_path, rules_path, daily_path))
 
+    # Profile columns migration (idempotent for existing databases)
+    profile_columns = [
+        ("first_name", "VARCHAR(100) DEFAULT ''"),
+        ("last_name", "VARCHAR(100) DEFAULT ''"),
+        ("phone", "VARCHAR(50) DEFAULT ''"),
+        ("default_language", "VARCHAR(50) DEFAULT 'English'"),
+        ("direction", "VARCHAR(50) DEFAULT 'System Default'"),
+        ("facebook", "VARCHAR(255) DEFAULT ''"),
+        ("linkedin", "VARCHAR(255) DEFAULT ''"),
+        ("skype", "VARCHAR(255) DEFAULT ''"),
+        ("email_signature", "TEXT DEFAULT ''"),
+    ]
+    for col_name, col_def in profile_columns:
+        cursor.execute(f"ALTER TABLE users ADD COLUMN IF NOT EXISTS {col_name} {col_def};")
+
     cursor.close()
     conn.close()
     print("✅ Production PostgreSQL Database connected & initialized successfully on port 5432!")
@@ -235,19 +250,12 @@ def get_or_create_google_user(email: str, full_name: str, avatar: Optional[str] 
     if user_row:
         user_id = user_row["id"]
         current_avatar = user_row["avatar"]
-        if avatar and (not current_avatar or not current_avatar.startswith("http")):
+        if avatar and (not current_avatar or (not current_avatar.startswith("http") and not current_avatar.startswith("data:image/"))):
             cursor.execute("UPDATE users SET avatar = %s WHERE id = %s;", (avatar, user_id))
-            current_avatar = avatar
+            cursor.execute("SELECT * FROM users WHERE id = %s;", (user_id,))
+            user_row = cursor.fetchone()
 
-        user_dict = {
-            "id": user_row["id"],
-            "username": user_row["username"],
-            "email": user_row["email"],
-            "full_name": user_row["full_name"],
-            "role": user_row["role"],
-            "company": user_row["company"],
-            "avatar": current_avatar or "🛍️"
-        }
+        user_dict = _user_row_to_dict(user_row)
     else:
         # Create unique username from email
         base_username = email.split("@")[0].strip().lower()
@@ -269,23 +277,18 @@ def get_or_create_google_user(email: str, full_name: str, avatar: Optional[str] 
         role = "Retail Analyst"
         company = "Enterprise Suite"
         user_avatar = avatar or "🛍️"
+        name_parts = full_name.strip().split(" ", 1)
+        f_name = name_parts[0] if name_parts else ""
+        l_name = name_parts[1] if len(name_parts) > 1 else ""
 
         cursor.execute("""
-            INSERT INTO users (username, email, password_hash, salt, full_name, role, company, avatar)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            RETURNING id;
-        """, (username, email.strip().lower(), p_hash, p_salt, full_name.strip(), role, company, user_avatar))
-        user_id = cursor.fetchone()["id"]
-
-        user_dict = {
-            "id": user_id,
-            "username": username,
-            "email": email.strip().lower(),
-            "full_name": full_name.strip(),
-            "role": role,
-            "company": company,
-            "avatar": user_avatar
-        }
+            INSERT INTO users (username, email, password_hash, salt, full_name, first_name, last_name, role, company, avatar)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING *;
+        """, (username, email.strip().lower(), p_hash, p_salt, full_name.strip(), f_name, l_name, role, company, user_avatar))
+        created_row = cursor.fetchone()
+        user_id = created_row["id"]
+        user_dict = _user_row_to_dict(created_row)
 
     # Generate Session Token
     token = f"token_pg_{secrets.token_urlsafe(24)}"
@@ -335,20 +338,13 @@ def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
         VALUES (%s, %s, %s, %s, %s, %s);
     """, (token, user_row["id"], user_row["username"], user_row["role"], now, expires))
 
+    user_dict = _user_row_to_dict(user_row)
     cursor.close()
     conn.close()
 
     return {
         "token": token,
-        "user": {
-            "id": user_row["id"],
-            "username": user_row["username"],
-            "email": user_row["email"],
-            "full_name": user_row["full_name"],
-            "role": user_row["role"],
-            "company": user_row["company"],
-            "avatar": user_row["avatar"]
-        }
+        "user": user_dict
     }
 
 
@@ -387,12 +383,168 @@ def validate_session_token(token: str) -> Optional[Dict[str, Any]]:
     }
 
 
+def _user_row_to_dict(row) -> Dict[str, Any]:
+    """Serialize a users database row into a clean profile dictionary."""
+    full_name = (row["full_name"] or "").strip()
+    parts = full_name.split(" ", 1) if full_name else ["", ""]
+    first_name = (row.get("first_name") or "").strip() if hasattr(row, "get") else (row["first_name"] or "").strip()
+    last_name = (row.get("last_name") or "").strip() if hasattr(row, "get") else (row["last_name"] or "").strip()
+    if not first_name and parts[0]:
+        first_name = parts[0]
+    if not last_name and len(parts) > 1:
+        last_name = parts[1]
+
+    return {
+        "id": row["id"],
+        "username": row["username"],
+        "email": row["email"],
+        "full_name": full_name,
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone": row.get("phone") or "" if hasattr(row, "get") else (row["phone"] or ""),
+        "default_language": row.get("default_language") or "English" if hasattr(row, "get") else (row["default_language"] or "English"),
+        "direction": row.get("direction") or "System Default" if hasattr(row, "get") else (row["direction"] or "System Default"),
+        "facebook": row.get("facebook") or "" if hasattr(row, "get") else (row["facebook"] or ""),
+        "linkedin": row.get("linkedin") or "" if hasattr(row, "get") else (row["linkedin"] or ""),
+        "skype": row.get("skype") or "" if hasattr(row, "get") else (row["skype"] or ""),
+        "email_signature": row.get("email_signature") or "" if hasattr(row, "get") else (row["email_signature"] or ""),
+        "role": row["role"],
+        "company": row["company"],
+        "avatar": row["avatar"] or "🛍️",
+    }
+
+
 def invalidate_session_token(token: str):
     """Remove session token upon logout."""
     conn = get_db_connection()
     conn.autocommit = True
     cursor = conn.cursor()
     cursor.execute("DELETE FROM user_sessions WHERE token = %s;", (token,))
+    cursor.close()
+    conn.close()
+
+
+def get_user_profile_by_token(token: str) -> Optional[Dict[str, Any]]:
+    """Fetch complete user profile fields from PostgreSQL for a valid session token."""
+    if not token:
+        return None
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT u.*
+        FROM user_sessions s
+        JOIN users u ON s.user_id = u.id
+        WHERE s.token = %s AND s.expires_at > CURRENT_TIMESTAMP;
+    """, (token,))
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    if not row:
+        return None
+    return _user_row_to_dict(row)
+
+
+def update_user_profile(token: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Persist general profile fields and optional photo avatar to PostgreSQL."""
+    session = validate_session_token(token)
+    if not session:
+        raise ValueError("Invalid or expired session. Please sign in again.")
+
+    user_id = session["user_id"]
+    first_name = str(payload.get("first_name", "")).strip()
+    last_name = str(payload.get("last_name", "")).strip()
+    email = str(payload.get("email", "")).strip().lower()
+    phone = str(payload.get("phone", "")).strip()
+    default_language = str(payload.get("default_language", "English")).strip() or "English"
+    direction = str(payload.get("direction", "System Default")).strip() or "System Default"
+    facebook = str(payload.get("facebook", "")).strip()
+    linkedin = str(payload.get("linkedin", "")).strip()
+    skype = str(payload.get("skype", "")).strip()
+    email_signature = str(payload.get("email_signature", "")).strip()
+    avatar = payload.get("avatar")
+
+    if not email:
+        raise ValueError("Email address is required.")
+
+    full_name = f"{first_name} {last_name}".strip() or session["full_name"]
+
+    conn = get_db_connection()
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    # Ensure email is not taken by another user
+    cursor.execute("SELECT id FROM users WHERE email = %s AND id != %s;", (email, user_id))
+    if cursor.fetchone():
+        cursor.close()
+        conn.close()
+        raise ValueError("That email address is already registered to another account.")
+
+    if avatar and isinstance(avatar, str) and avatar.strip():
+        cursor.execute("""
+            UPDATE users
+            SET first_name = %s, last_name = %s, full_name = %s, email = %s,
+                phone = %s, default_language = %s, direction = %s,
+                facebook = %s, linkedin = %s, skype = %s, email_signature = %s,
+                avatar = %s
+            WHERE id = %s;
+        """, (
+            first_name, last_name, full_name, email,
+            phone, default_language, direction,
+            facebook, linkedin, skype, email_signature,
+            avatar.strip(), user_id
+        ))
+    else:
+        cursor.execute("""
+            UPDATE users
+            SET first_name = %s, last_name = %s, full_name = %s, email = %s,
+                phone = %s, default_language = %s, direction = %s,
+                facebook = %s, linkedin = %s, skype = %s, email_signature = %s
+            WHERE id = %s;
+        """, (
+            first_name, last_name, full_name, email,
+            phone, default_language, direction,
+            facebook, linkedin, skype, email_signature,
+            user_id
+        ))
+
+    cursor.execute("SELECT * FROM users WHERE id = %s;", (user_id,))
+    updated_row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    return _user_row_to_dict(updated_row)
+
+
+def change_user_password(token: str, old_password: str, new_password: str) -> None:
+    """Verify current password and update hashed password in PostgreSQL."""
+    session = validate_session_token(token)
+    if not session:
+        raise ValueError("Invalid or expired session. Please sign in again.")
+
+    if not new_password or len(new_password) < 6:
+        raise ValueError("New password must be at least 6 characters long.")
+
+    conn = get_db_connection()
+    conn.autocommit = True
+    cursor = conn.cursor()
+    cursor.execute("SELECT password_hash, salt FROM users WHERE id = %s;", (session["user_id"],))
+    row = cursor.fetchone()
+
+    if not row:
+        cursor.close()
+        conn.close()
+        raise ValueError("User account not found.")
+
+    if not old_password or not verify_password(old_password, row["password_hash"], row["salt"]):
+        cursor.close()
+        conn.close()
+        raise ValueError("Current (old) password is incorrect.")
+
+    new_hash, new_salt = hash_password(new_password)
+    cursor.execute(
+        "UPDATE users SET password_hash = %s, salt = %s WHERE id = %s;",
+        (new_hash, new_salt, session["user_id"])
+    )
     cursor.close()
     conn.close()
 
