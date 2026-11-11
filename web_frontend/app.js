@@ -1210,20 +1210,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadPrediction() {
-        const horizon = document.getElementById('forecastHorizon').value;
-        const res = await fetch(`/api/forecast?days=${horizon}`);
+        const horizonEl = document.getElementById('forecastHorizon');
+        const modelEl = document.getElementById('forecastModelSelect');
+        const horizon = horizonEl ? horizonEl.value : 14;
+        const modelType = modelEl ? modelEl.value : 'lstm';
+
+        const res = await fetch(`/api/forecast?days=${horizon}&model=${encodeURIComponent(modelType)}`);
         const data = await res.json();
 
         document.getElementById('rfMAE').textContent = `£${data.metrics.mae.toLocaleString()}`;
         document.getElementById('rfRMSE').textContent = `£${data.metrics.rmse.toLocaleString()}`;
         document.getElementById('rfR2').textContent = data.metrics.r2.toFixed(4);
 
+        const shortModel = (data.model_type || modelType).toUpperCase();
+        const titleEl = document.getElementById('forecastChartTitle');
+        if (titleEl) {
+            titleEl.innerHTML = `<i data-lucide="line-chart" style="width:16px; height:16px;"></i> Historical Daily Revenue vs ${shortModel} Neural Forecast`;
+            if (window.lucide) lucide.createIcons();
+        }
+
         const histLabels = data.historical.map(d => d.Date);
         const histData = data.historical.map(d => d.Revenue);
         const futLabels = data.future.map(d => d.Date);
         const futData = data.future.map(d => d.Predicted_Sales);
 
-        renderForecastChart('chartForecast', histLabels, histData, futLabels, futData);
+        renderForecastChart('chartForecast', histLabels, histData, futLabels, futData, `${shortModel} Neural Forecast (£)`);
     }
 
     async function loadCatalogProducts() {
@@ -1245,11 +1256,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // 🤖 8. FLOATING CHATBOT WIDGET (Drawn in Sketch Bottom-Right)
     // ========================================================
     function initEventListeners() {
-        // Forecast Horizon Slider
+        // Forecast Horizon Slider & Model Selector
         const horizonSlider = document.getElementById('forecastHorizon');
         if (horizonSlider) {
             horizonSlider.addEventListener('input', () => {
                 document.getElementById('daysVal').textContent = horizonSlider.value;
+                loadPrediction();
+            });
+        }
+
+        const forecastModelSelect = document.getElementById('forecastModelSelect');
+        if (forecastModelSelect) {
+            forecastModelSelect.addEventListener('change', () => {
                 loadPrediction();
             });
         }
@@ -1442,7 +1460,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderForecastChart(canvasId, histLabels, histData, futLabels, futData) {
+    function renderForecastChart(canvasId, histLabels, histData, futLabels, futData, forecastLabel = 'LSTM Neural Forecast (£)') {
         if (charts[canvasId]) charts[canvasId].destroy();
         const ctx = document.getElementById(canvasId).getContext('2d');
 
@@ -1456,7 +1474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 labels: combinedLabels,
                 datasets: [
                     { label: 'Historical Daily Revenue (£)', data: histSeries, borderColor: '#FFFFFF', borderWidth: 2, fill: false, tension: 0.2 },
-                    { label: 'Random Forest Forecast (£)', data: futSeries, borderColor: '#10A37F', borderDash: [5, 5], borderWidth: 3, fill: false, tension: 0.2 }
+                    { label: forecastLabel, data: futSeries, borderColor: '#10A37F', borderDash: [5, 5], borderWidth: 3, fill: false, tension: 0.2 }
                 ]
             },
             options: getDarkChartOptions()

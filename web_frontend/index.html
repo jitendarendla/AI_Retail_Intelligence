@@ -132,7 +132,7 @@
                 <span class="pill pill-emerald"><i data-lucide="activity" style="width:12px; height:12px;"></i> Verified Pipeline</span>
                 <span class="pill pill-indigo"><i data-lucide="users" style="width:12px; height:12px;"></i> RFM Segmentation</span>
                 <span class="pill pill-pink"><i data-lucide="link" style="width:12px; height:12px;"></i> Association Rules</span>
-                <span class="pill pill-amber"><i data-lucide="trending-up" style="width:12px; height:12px;"></i> Random Forest Forecast</span>
+                <span class="pill pill-amber"><i data-lucide="trending-up" style="width:12px; height:12px;"></i> LSTM & ANN Forecast</span>
             </div>
         </section>
 
@@ -409,8 +409,8 @@
                                     <div class="notif-item">
                                         <div class="notif-icon"><i data-lucide="trending-up" style="width:14px; height:14px;"></i></div>
                                         <div class="notif-content">
-                                            <strong>Forecasting Model Ready</strong>
-                                            <p>Random forest model evaluated.</p>
+                                            <strong>Forecasting Models Ready</strong>
+                                            <p>LSTM & ANN neural models evaluated.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -577,13 +577,22 @@
                         </div>
                     </div>
 
-                    <div class="sidebar-widget" style="margin-bottom:18px;">
-                        <label for="forecastHorizon"><i data-lucide="sliders" style="width:12px; height:12px;"></i> Forecast Horizon: <span id="daysVal">14</span> Days Ahead</label>
-                        <input type="range" id="forecastHorizon" min="1" max="60" value="14" style="width:100%; margin-top:6px;">
+                    <div class="grid-2" style="margin-bottom:18px; align-items:stretch;">
+                        <div class="sidebar-widget" style="margin-bottom:0;">
+                            <label for="forecastModelSelect"><i data-lucide="cpu" style="width:12px; height:12px;"></i> Neural Network Model</label>
+                            <select id="forecastModelSelect" style="margin-top:4px;">
+                                <option value="lstm" selected>LSTM (Recurrent Neural Network)</option>
+                                <option value="ann">ANN (Multi-Layer Perceptron)</option>
+                            </select>
+                        </div>
+                        <div class="sidebar-widget" style="margin-bottom:0;">
+                            <label for="forecastHorizon"><i data-lucide="sliders" style="width:12px; height:12px;"></i> Forecast Horizon: <span id="daysVal">14</span> Days Ahead</label>
+                            <input type="range" id="forecastHorizon" min="1" max="60" value="14" style="width:100%; margin-top:10px;">
+                        </div>
                     </div>
 
                     <div class="chart-card">
-                        <h3><i data-lucide="line-chart" style="width:16px; height:16px;"></i> Historical Daily Revenue vs Random Forest Forecast</h3>
+                        <h3 id="forecastChartTitle"><i data-lucide="line-chart" style="width:16px; height:16px;"></i> Historical Daily Revenue vs LSTM Neural Forecast</h3>
                         <div class="chart-wrapper"><canvas id="chartForecast"></canvas></div>
                     </div>
                 </div>
@@ -627,7 +636,7 @@
                             <span class="pill pill-indigo">CSV / XLSX / XLS</span>
                         </div>
                         <p style="color:var(--text-secondary); font-size:0.875rem; margin-bottom:20px; line-height:1.5;">
-                            Upload your transaction export to run automated data cleaning, RFM customer segmentation, market basket association mining, Random Forest revenue forecasting, and AI assistant indexing.
+                            Upload your transaction export to run automated data cleaning, RFM customer segmentation, market basket association mining, LSTM & ANN neural revenue forecasting, and AI assistant indexing.
                         </p>
 
                         <div id="uploadDropzone" class="dropzone" style="padding:48px 24px;">
@@ -935,7 +944,7 @@
     </div>
 
     <!-- Custom JS -->
-    <script src="/static/app.js?v=chatgpt_black_v7"></script>
+    <script src="/static/app.js?v=chatgpt_black_v8"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) {

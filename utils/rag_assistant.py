@@ -628,11 +628,11 @@ class RAGAssistant:
                 f"Across **{len(daily):,}** active trading days in **{self.dataset_name}**, average daily revenue is "
                 f"**£{avg_daily:,.2f}**. Over the most recent 14 days, daily revenue averaged **£{recent_avg:,.2f}** "
                 f"({trend_word} the overall historical average).\n\n"
-                "You can adjust the interactive 1-to-60 day Random Forest forecast and inspect MAE/RMSE accuracy "
+                "You can adjust the interactive 1-to-60 day LSTM or ANN neural forecast and inspect MAE/RMSE accuracy "
                 "metrics in the **Sales Forecast** tab."
             )
         except Exception:
-            return "You can view the interactive Random Forest revenue forecast and accuracy metrics in the **Sales Forecast** tab."
+            return "You can view the interactive LSTM and ANN neural revenue forecasts and accuracy metrics in the **Sales Forecast** tab."
 
     def _answer_summary_or_kpis(self, q_lower: str) -> Optional[str]:
         if self.df is None or self.df.empty:

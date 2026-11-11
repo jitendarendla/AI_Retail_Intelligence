@@ -875,27 +875,32 @@ def api_recommend(product: str, top_n: int = 5):
 
 
 @app.get("/api/forecast")
-def api_forecast(days: int = 14):
+def api_forecast(days: int = 14, model: str = "lstm"):
     active_data = get_active_data()
     df = active_data["df"]
     daily_df = active_data["daily"]
+    model_type = (model or "lstm").strip().lower()
+    if model_type not in ("lstm", "ann"):
+        model_type = "lstm"
     
     try:
-        eval_res = train_sales_forecaster(df)
-        future_df = forecast_future_sales(daily_df, days_ahead=days)
+        eval_res = train_sales_forecaster(df, model_type=model_type)
+        future_df = forecast_future_sales(daily_df, days_ahead=days, model_type=model_type)
         metrics = {
             "mae": round(eval_res['mae'], 2),
             "rmse": round(eval_res['rmse'], 2),
             "r2": round(eval_res['r2'], 4)
         }
+        model_label = eval_res.get("model_label", "LSTM (Recurrent Neural Network)")
     except Exception as ex:
         print(f"Warning in forecast execution: {ex}")
-        eval_res = {'mae': 11779.68, 'rmse': 21785.21, 'r2': 0.3280}
+        eval_res = {'mae': 0.0, 'rmse': 0.0, 'r2': 0.0}
         future_df = pd.DataFrame({
             'Date': pd.date_range(start=daily_df['Date'].max() + pd.Timedelta(days=1), periods=days),
             'Predicted_Sales': [daily_df['TotalPrice'].mean()] * days
         })
         metrics = eval_res
+        model_label = "ANN (Multi-Layer Perceptron)" if model_type == "ann" else "LSTM (Recurrent Neural Network)"
 
     historical = daily_df.tail(60).copy()
     historical['Date'] = historical['Date'].dt.date.astype(str)
@@ -906,6 +911,8 @@ def api_forecast(days: int = 14):
     future['Predicted_Sales'] = future['Predicted_Sales'].round(2)
     
     return {
+        "model_type": model_type,
+        "model_label": model_label,
         "metrics": metrics,
         "historical": historical[['Date', 'TotalPrice']].rename(columns={'TotalPrice': 'Revenue'}).to_dict(orient="records"),
         "future": future.to_dict(orient="records")
