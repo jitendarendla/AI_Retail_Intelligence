@@ -701,24 +701,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 📜 5. DATASET HISTORY & SELECTION
+    // 5. DATASET HISTORY & SELECTION
     // ========================================================
-    async function loadDatasetHistory() {
-        const res = await fetch('/api/datasets');
-        const data = await res.json();
+    let cachedHistoryDatasets = [];
+
+    function renderHistoryTable(datasets) {
         const tbody = document.querySelector('#historyTable tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
 
-        data.datasets.forEach(d => {
-            if (d.is_active) {
-                const activeLabel = document.getElementById('activeDatasetLabel');
-                if (activeLabel) activeLabel.textContent = `Active: ${d.filename}`;
-                if (document.getElementById('floatChatDatasetPill')) {
-                    document.getElementById('floatChatDatasetPill').textContent = `QA: ${d.filename}`;
-                }
-            }
+        if (!datasets || datasets.length === 0) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td colspan="8" style="text-align:center; padding:24px; color:var(--text-muted);">No matching datasets found in history.</td>`;
+            tbody.appendChild(tr);
+            return;
+        }
 
+        datasets.forEach(d => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${d.is_active ? '<span class="pill pill-emerald">Active</span>' : '<span class="pill pill-indigo">Archived</span>'}</td>
@@ -757,6 +756,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+    }
+
+    function filterHistoryTable() {
+        const input = document.getElementById('historySearchInput');
+        const clearBtn = document.getElementById('btnClearHistorySearch');
+        const countPill = document.getElementById('historyMatchCount');
+        const query = input ? input.value.trim().toLowerCase() : '';
+
+        if (clearBtn) clearBtn.style.display = query ? 'inline-block' : 'none';
+
+        if (!query) {
+            if (countPill) countPill.style.display = 'none';
+            renderHistoryTable(cachedHistoryDatasets);
+            return;
+        }
+
+        const filtered = cachedHistoryDatasets.filter(d => {
+            const statusText = d.is_active ? 'active' : 'archived';
+            return (
+                (d.filename || '').toLowerCase().includes(query) ||
+                (d.upload_time || '').toLowerCase().includes(query) ||
+                statusText.includes(query)
+            );
+        });
+
+        if (countPill) {
+            countPill.textContent = `${filtered.length} match${filtered.length === 1 ? '' : 'es'}`;
+            countPill.style.display = 'inline-flex';
+        }
+        renderHistoryTable(filtered);
+    }
+
+    async function loadDatasetHistory() {
+        const res = await fetch('/api/datasets');
+        const data = await res.json();
+        cachedHistoryDatasets = Array.isArray(data.datasets) ? data.datasets : [];
+
+        cachedHistoryDatasets.forEach(d => {
+            if (d.is_active) {
+                const activeLabel = document.getElementById('activeDatasetLabel');
+                if (activeLabel) activeLabel.textContent = `Active: ${d.filename}`;
+                if (document.getElementById('floatChatDatasetPill')) {
+                    document.getElementById('floatChatDatasetPill').textContent = `QA: ${d.filename}`;
+                }
+            }
+        });
+
+        filterHistoryTable();
     }
 
     async function switchActiveDataset(dsId) {
@@ -1272,31 +1319,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // SKU Quick Search
-        const skuInput = document.getElementById('skuSearchInput');
-        if (skuInput) {
-            skuInput.addEventListener('input', debounce(async (e) => {
-                const q = e.target.value.trim();
-                const box = document.getElementById('searchResultsBox');
-                if (!q || q.length < 2) {
-                    box.style.display = 'none';
-                    return;
-                }
+        // History-Only Search Bar Listeners
+        const historySearchInput = document.getElementById('historySearchInput');
+        if (historySearchInput) {
+            historySearchInput.addEventListener('input', () => {
+                filterHistoryTable();
+            });
+        }
 
-                const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-                const data = await res.json();
-
-                if (data.found) {
-                    box.style.display = 'block';
-                    document.getElementById('searchProdTitle').textContent = `Search Result: ${data.product}`;
-                    document.getElementById('searchRev').textContent = `£${data.total_revenue.toLocaleString()}`;
-                    document.getElementById('searchUnits').textContent = data.units_sold.toLocaleString();
-                    document.getElementById('searchCust').textContent = data.distinct_customers.toLocaleString();
-                    document.getElementById('searchPrice').textContent = `£${data.avg_unit_price.toFixed(2)}`;
-                } else {
-                    box.style.display = 'none';
-                }
-            }, 300));
+        const btnClearHistorySearch = document.getElementById('btnClearHistorySearch');
+        if (btnClearHistorySearch && historySearchInput) {
+            btnClearHistorySearch.addEventListener('click', () => {
+                historySearchInput.value = '';
+                filterHistoryTable();
+                historySearchInput.focus();
+            });
         }
 
         // Floating Chatbot Widget Toggle

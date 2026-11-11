@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retail Intelligence Platform | Analytics & Forecasting</title>
-    <link rel="stylesheet" href="/static/style.css?v=chatgpt_black_v6">
+    <link rel="stylesheet" href="/static/style.css?v=chatgpt_black_v9">
     <style>
         * {
             scrollbar-width: none !important;
@@ -373,7 +373,6 @@
                 <header class="top-header">
                     <div class="header-left-title">
                         <span class="logo-badge">RETAIL AI</span>
-                        <span class="header-app-name">Retail Intelligence Platform</span>
                     </div>
 
                     <div class="header-user-bar">
@@ -421,24 +420,6 @@
                         <button id="btnLogout" class="btn-logout"><i data-lucide="log-out" style="width:14px; height:14px;"></i> Logout</button>
                     </div>
                 </header>
-
-                <!-- Quick SKU Search Box -->
-                <div class="search-bar-inline" style="margin-bottom:18px;">
-                    <div class="search-container">
-                        <i data-lucide="search" style="width:16px; height:16px; color:var(--text-muted);"></i>
-                        <input type="text" id="skuSearchInput" placeholder="Quick search SKU or product description...">
-                    </div>
-                </div>
-
-                <div id="searchResultsBox" style="display:none; background:var(--bg-surface); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:16px; margin-bottom:18px;">
-                    <h4 id="searchProdTitle" style="color:var(--text-primary); font-size:0.9rem; font-weight:600; margin-bottom:10px;"></h4>
-                    <div class="kpi-grid" style="margin-bottom:0;">
-                        <div class="kpi-card"><div class="kpi-label">Revenue</div><div id="searchRev" class="kpi-value"></div></div>
-                        <div class="kpi-card"><div class="kpi-label">Units Sold</div><div id="searchUnits" class="kpi-value"></div></div>
-                        <div class="kpi-card"><div class="kpi-label">Customers</div><div id="searchCust" class="kpi-value"></div></div>
-                        <div class="kpi-card"><div class="kpi-label">Avg Price</div><div id="searchPrice" class="kpi-value"></div></div>
-                    </div>
-                </div>
 
                 <!-- TAB 1: EXECUTIVE DASHBOARD -->
                 <div id="tab-dashboard" class="tab-content active">
@@ -600,13 +581,23 @@
                 <!-- TAB 4: HISTORY -->
                 <div id="tab-history" class="tab-content">
                     <div class="chart-card" style="margin-bottom:18px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px;">
                             <h3 style="margin:0;"><i data-lucide="folder-archive" style="width:16px; height:16px;"></i> Dataset Archive</h3>
-                            <span class="pill pill-emerald">Persistent Storage</span>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span id="historyMatchCount" class="pill pill-indigo" style="display:none;">0 matches</span>
+                                <span class="pill pill-emerald">Persistent Storage</span>
+                            </div>
                         </div>
                         <p style="color:var(--text-secondary); font-size:0.8125rem; margin-bottom:14px;">
                             Stored transaction datasets. Click <strong>"Select"</strong> to switch active analytical models.
                         </p>
+
+                        <!-- History-Only Search Bar -->
+                        <div class="search-container" style="margin-bottom:16px;">
+                            <i data-lucide="search" style="width:16px; height:16px; color:var(--text-muted); flex-shrink:0;"></i>
+                            <input type="text" id="historySearchInput" placeholder="Search dataset history by filename, date, or status (active / archived)...">
+                            <button type="button" id="btnClearHistorySearch" style="display:none; background:none; border:none; color:var(--text-muted); font-size:0.875rem; cursor:pointer; padding:2px 6px;" title="Clear search">✕</button>
+                        </div>
 
                         <div class="table-container">
                             <table id="historyTable">
@@ -944,7 +935,7 @@
     </div>
 
     <!-- Custom JS -->
-    <script src="/static/app.js?v=chatgpt_black_v8"></script>
+    <script src="/static/app.js?v=chatgpt_black_v9"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) {
