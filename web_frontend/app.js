@@ -125,26 +125,57 @@ document.addEventListener('DOMContentLoaded', () => {
             badge.innerHTML = `${avatarHtml}${user.full_name || user.username}`;
         }
 
-        const profAv = document.getElementById('profAvatar');
-        if (profAv) {
+        const renderAvatarInto = (elId) => {
+            const el = document.getElementById(elId);
+            if (!el) return;
             if (hasImg) {
-                profAv.innerHTML = `<img src="${user.avatar}" alt="Avatar" style="width:68px; height:68px; border-radius:50%; object-fit:cover; display:block;">`;
+                el.innerHTML = `<img src="${user.avatar}" alt="Avatar" style="width:68px; height:68px; border-radius:50%; object-fit:cover; display:block;">`;
             } else {
-                profAv.innerHTML = `<i data-lucide="user" style="width:28px; height:28px; color:var(--text-primary);"></i>`;
+                el.innerHTML = `<i data-lucide="user" style="width:28px; height:28px; color:var(--text-primary);"></i>`;
             }
-        }
+        };
+        renderAvatarInto('profAvatar');
+        renderAvatarInto('editProfAvatar');
 
-        // Populate General Information fields
+        const fullNameParts = (user.full_name || '').trim().split(' ');
+        const firstName = user.first_name || fullNameParts[0] || '';
+        const lastName = user.last_name || fullNameParts.slice(1).join(' ');
+        const displayFullName = `${firstName} ${lastName}`.trim() || user.full_name || user.username || 'Retail User';
+
+        // 1. Update Read-Only Profile View
+        const setViewText = (id, val, fallback = 'Not set') => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const clean = (val || '').trim();
+            if (clean) {
+                el.textContent = clean;
+                el.classList.remove('profile-detail-empty');
+            } else {
+                el.textContent = fallback;
+                el.classList.add('profile-detail-empty');
+            }
+        };
+
+        setViewText('viewProfFullName', displayFullName, 'Retail User');
+        setViewText('viewProfEmail', user.email, 'user@company.com');
+        setViewText('viewProfFirstName', firstName);
+        setViewText('viewProfLastName', lastName);
+        setViewText('viewProfEmailVal', user.email);
+        setViewText('viewProfPhone', user.phone);
+        setViewText('viewProfLanguage', user.default_language || 'English', 'English');
+        setViewText('viewProfDirection', user.direction || 'System Default', 'System Default');
+        setViewText('viewProfFacebook', user.facebook);
+        setViewText('viewProfLinkedin', user.linkedin);
+        setViewText('viewProfSkype', user.skype);
+        setViewText('viewProfSignature', user.email_signature);
+
+        // 2. Sync Edit Profile Modal Form Inputs
         const setVal = (id, val) => {
             const el = document.getElementById(id);
             if (el) el.value = val || '';
         };
-        const fullNameParts = (user.full_name || '').trim().split(' ');
-        const fallbackFirst = fullNameParts[0] || '';
-        const fallbackLast = fullNameParts.slice(1).join(' ');
-
-        setVal('profFirstName', user.first_name || fallbackFirst);
-        setVal('profLastName', user.last_name || fallbackLast);
+        setVal('profFirstName', firstName);
+        setVal('profLastName', lastName);
         setVal('profEmailInput', user.email || '');
         setVal('profPhone', user.phone || '');
         setVal('profLanguage', user.default_language || 'English');
@@ -850,16 +881,73 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 6B. PROFILE SETTINGS HANDLERS (General Info & Password)
+    // 6B. PROFILE MODALS HANDLERS (Edit Profile & Change Password)
     // ========================================================
     function initProfileHandlers() {
         let pendingAvatarDataUrl = null;
 
+        const editModal = document.getElementById('editProfileModal');
+        const btnOpenEdit = document.getElementById('btnOpenEditProfile');
+        const btnCloseEdit = document.getElementById('btnCloseEditProfile');
+        const btnCancelEdit = document.getElementById('btnCancelEditProfile');
+        const editErr = document.getElementById('editProfileError');
+
+        const pwModal = document.getElementById('changePasswordModal');
+        const btnOpenPw = document.getElementById('btnOpenChangePassword');
+        const btnClosePw = document.getElementById('btnCloseChangePassword');
+        const btnCancelPw = document.getElementById('btnCancelChangePassword');
+        const pwErr = document.getElementById('changePasswordError');
+
         const btnUploadPhoto = document.getElementById('btnUploadProfPhoto');
         const photoInput = document.getElementById('profPhotoInput');
-        const profAvatarEl = document.getElementById('profAvatar');
-        const btnSave = document.getElementById('btnSaveProfile');
-        const feedbackEl = document.getElementById('profSaveFeedback');
+        const editAvatarEl = document.getElementById('editProfAvatar');
+        const btnSaveProfile = document.getElementById('btnSaveProfile');
+        const btnSavePassword = document.getElementById('btnSavePassword');
+
+        const closeEditModal = () => {
+            if (editModal) editModal.style.display = 'none';
+            pendingAvatarDataUrl = null;
+            if (photoInput) photoInput.value = '';
+            if (editErr) editErr.style.display = 'none';
+        };
+
+        const closePwModal = () => {
+            if (pwModal) pwModal.style.display = 'none';
+            if (pwErr) pwErr.style.display = 'none';
+            ['profOldPassword', 'profNewPassword', 'profRepeatPassword'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = '';
+                    el.type = 'password';
+                }
+            });
+            document.querySelectorAll('#changePasswordModal .btn-toggle-pw').forEach(b => {
+                b.innerHTML = `<i data-lucide="eye-off" style="width:16px; height:16px;"></i>`;
+            });
+            if (window.lucide) lucide.createIcons();
+        };
+
+        if (btnOpenEdit && editModal) {
+            btnOpenEdit.addEventListener('click', () => {
+                const userJson = localStorage.getItem('retail_ai_user');
+                if (userJson) applyUserUI(JSON.parse(userJson));
+                pendingAvatarDataUrl = null;
+                if (photoInput) photoInput.value = '';
+                if (editErr) editErr.style.display = 'none';
+                editModal.style.display = 'flex';
+            });
+        }
+        if (btnCloseEdit) btnCloseEdit.addEventListener('click', closeEditModal);
+        if (btnCancelEdit) btnCancelEdit.addEventListener('click', closeEditModal);
+
+        if (btnOpenPw && pwModal) {
+            btnOpenPw.addEventListener('click', () => {
+                closePwModal();
+                pwModal.style.display = 'flex';
+            });
+        }
+        if (btnClosePw) btnClosePw.addEventListener('click', closePwModal);
+        if (btnCancelPw) btnCancelPw.addEventListener('click', closePwModal);
 
         if (btnUploadPhoto && photoInput) {
             btnUploadPhoto.addEventListener('click', () => photoInput.click());
@@ -877,10 +965,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                     pendingAvatarDataUrl = ev.target.result;
-                    if (profAvatarEl) {
-                        profAvatarEl.innerHTML = `<img src="${pendingAvatarDataUrl}" alt="Profile Photo" style="width:68px; height:68px; border-radius:50%; object-fit:cover; display:block;">`;
+                    if (editAvatarEl) {
+                        editAvatarEl.innerHTML = `<img src="${pendingAvatarDataUrl}" alt="Profile Photo" style="width:68px; height:68px; border-radius:50%; object-fit:cover; display:block;">`;
                     }
-                    showToast('Photo preview updated. Click "Save All Changes" to persist.', 'info');
                 };
                 reader.readAsDataURL(file);
             });
@@ -900,8 +987,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        if (btnSave) {
-            btnSave.addEventListener('click', async () => {
+        // Save Edit Profile Popup
+        if (btnSaveProfile) {
+            btnSaveProfile.addEventListener('click', async () => {
                 const token = localStorage.getItem('retail_ai_token');
                 if (!token) {
                     showToast('Please sign in to save profile changes.', 'error');
@@ -924,18 +1012,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     facebook: getVal('profFacebook'),
                     linkedin: getVal('profLinkedin'),
                     skype: getVal('profSkype'),
-                    email_signature: document.getElementById('profSignature') ? document.getElementById('profSignature').value : '',
-                    old_password: document.getElementById('profOldPassword') ? document.getElementById('profOldPassword').value : '',
-                    new_password: document.getElementById('profNewPassword') ? document.getElementById('profNewPassword').value : '',
-                    repeat_password: document.getElementById('profRepeatPassword') ? document.getElementById('profRepeatPassword').value : '',
+                    email_signature: document.getElementById('profSignature') ? document.getElementById('profSignature').value : ''
                 };
                 if (pendingAvatarDataUrl) {
                     payload.avatar = pendingAvatarDataUrl;
                 }
 
-                btnSave.disabled = true;
-                btnSave.textContent = 'Saving...';
-                if (feedbackEl) feedbackEl.style.display = 'none';
+                btnSaveProfile.disabled = true;
+                btnSaveProfile.textContent = 'Saving...';
+                if (editErr) editErr.style.display = 'none';
 
                 try {
                     const res = await fetch('/api/profile', {
@@ -947,42 +1032,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (!res.ok) {
                         const errMsg = data.detail || 'Could not save profile changes.';
-                        if (feedbackEl) {
-                            feedbackEl.style.color = '#EF4444';
-                            feedbackEl.textContent = errMsg;
-                            feedbackEl.style.display = 'inline';
+                        if (editErr) {
+                            editErr.textContent = errMsg;
+                            editErr.style.display = 'block';
                         }
-                        showToast(errMsg, 'error');
                         return;
                     }
 
-                    pendingAvatarDataUrl = null;
-                    if (photoInput) photoInput.value = '';
                     if (data.user) {
                         localStorage.setItem('retail_ai_user', JSON.stringify(data.user));
                         applyUserUI(data.user);
                     }
-
-                    // Clear password inputs after save
-                    ['profOldPassword', 'profNewPassword', 'profRepeatPassword'].forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.value = '';
-                    });
-
-                    const msg = data.password_changed
-                        ? 'Profile and password updated successfully.'
-                        : 'Profile settings saved successfully.';
-                    if (feedbackEl) {
-                        feedbackEl.style.color = '#10A37F';
-                        feedbackEl.textContent = msg;
-                        feedbackEl.style.display = 'inline';
-                    }
-                    showToast(msg, 'success');
+                    closeEditModal();
+                    showToast('Profile details updated and saved.', 'success');
                 } catch (err) {
-                    showToast(`Error saving profile: ${err.message}`, 'error');
+                    if (editErr) {
+                        editErr.textContent = `Error saving profile: ${err.message}`;
+                        editErr.style.display = 'block';
+                    }
                 } finally {
-                    btnSave.disabled = false;
-                    btnSave.textContent = 'Save All Changes';
+                    btnSaveProfile.disabled = false;
+                    btnSaveProfile.textContent = 'Save Changes';
+                }
+            });
+        }
+
+        // Save Change Password Popup
+        if (btnSavePassword) {
+            btnSavePassword.addEventListener('click', async () => {
+                const token = localStorage.getItem('retail_ai_token');
+                if (!token) {
+                    showToast('Please sign in to change your password.', 'error');
+                    return;
+                }
+
+                const old_password = document.getElementById('profOldPassword') ? document.getElementById('profOldPassword').value : '';
+                const new_password = document.getElementById('profNewPassword') ? document.getElementById('profNewPassword').value : '';
+                const repeat_password = document.getElementById('profRepeatPassword') ? document.getElementById('profRepeatPassword').value : '';
+
+                if (pwErr) pwErr.style.display = 'none';
+
+                if (!old_password || !new_password || !repeat_password) {
+                    if (pwErr) {
+                        pwErr.textContent = 'Please fill in Old password, New password, and Repeat New Password.';
+                        pwErr.style.display = 'block';
+                    }
+                    return;
+                }
+                if (new_password !== repeat_password) {
+                    if (pwErr) {
+                        pwErr.textContent = 'New password and Repeat New Password do not match.';
+                        pwErr.style.display = 'block';
+                    }
+                    return;
+                }
+
+                btnSavePassword.disabled = true;
+                btnSavePassword.textContent = 'Updating...';
+
+                try {
+                    const res = await fetch('/api/profile/password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token, old_password, new_password, repeat_password })
+                    });
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        if (pwErr) {
+                            pwErr.textContent = data.detail || 'Could not update password.';
+                            pwErr.style.display = 'block';
+                        }
+                        return;
+                    }
+
+                    closePwModal();
+                    showToast('Password updated successfully.', 'success');
+                } catch (err) {
+                    if (pwErr) {
+                        pwErr.textContent = `Error updating password: ${err.message}`;
+                        pwErr.style.display = 'block';
+                    }
+                } finally {
+                    btnSavePassword.disabled = false;
+                    btnSavePassword.textContent = 'Update Password';
                 }
             });
         }

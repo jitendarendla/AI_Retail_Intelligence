@@ -417,6 +417,30 @@ def api_update_profile(payload: dict = Body(...)):
     }
 
 
+@app.post("/api/profile/password")
+def api_change_password(payload: dict = Body(...)):
+    token = str(payload.get("token", "")).strip()
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing authentication token.")
+
+    old_pw = str(payload.get("old_password", ""))
+    new_pw = str(payload.get("new_password", ""))
+    repeat_pw = str(payload.get("repeat_password", ""))
+
+    if not old_pw or not new_pw or not repeat_pw:
+        raise HTTPException(status_code=400, detail="Please fill in all three password fields.")
+    if new_pw != repeat_pw:
+        raise HTTPException(status_code=400, detail="New password and Repeat New Password do not match.")
+
+    try:
+        database.change_user_password(token, old_pw, new_pw)
+        return {"success": True, "message": "Password updated successfully."}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Password update error: {ex}")
+
+
 # ==========================================
 # 📜 MULTI-DATASET HISTORY & ARCHIVE ENDPOINTS
 # ==========================================
