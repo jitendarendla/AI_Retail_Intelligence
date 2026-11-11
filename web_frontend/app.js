@@ -1166,21 +1166,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // RFM Segment Breakdown
         const segRes = await fetch('/api/segmentation');
         const segData = await segRes.json();
-        segData.summary.forEach(s => {
-            if (s.Segment === 'VIP Customer') {
-                document.getElementById('cntVIP').textContent = s.count.toLocaleString();
-                document.getElementById('spendVIP').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Perks & Dedicated Manager`;
-            } else if (s.Segment === 'Loyal Customer') {
-                document.getElementById('cntLoyal').textContent = s.count.toLocaleString();
-                document.getElementById('spendLoyal').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Cross-sell & Points`;
-            } else if (s.Segment === 'Regular Customer') {
-                document.getElementById('cntRegular').textContent = s.count.toLocaleString();
-                document.getElementById('spendRegular').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Re-engagement Offers`;
-            } else if (s.Segment === 'At Risk') {
-                document.getElementById('cntRisk').textContent = s.count.toLocaleString();
-                document.getElementById('spendRisk').innerHTML = `Spend: £${s.total_spend.toLocaleString()}<br>Win-Back Campaigns`;
-            }
-        });
+
+        const setPersonaCard = (cntId, spendId, count, totalSpend, subtitle) => {
+            const cntEl = document.getElementById(cntId);
+            const spendEl = document.getElementById(spendId);
+            if (cntEl) cntEl.textContent = (count || 0).toLocaleString();
+            if (spendEl) spendEl.innerHTML = `Spend: £${(totalSpend || 0).toLocaleString()}<br>${subtitle}`;
+        };
+
+        setPersonaCard('cntVIP', 'spendVIP', 0, 0, 'High-value repeat accounts');
+        setPersonaCard('cntLoyal', 'spendLoyal', 0, 0, 'Regular repeat purchasing');
+        setPersonaCard('cntRegular', 'spendRegular', 0, 0, 'Baseline purchasing patterns');
+        setPersonaCard('cntRisk', 'spendRisk', 0, 0, 'High recency gap, re-engagement candidate');
+
+        if (segData && Array.isArray(segData.summary)) {
+            segData.summary.forEach(s => {
+                const seg = (s.Segment || '').toLowerCase();
+                if (seg.includes('vip')) {
+                    setPersonaCard('cntVIP', 'spendVIP', s.count, s.total_spend, 'High-value repeat accounts');
+                } else if (seg.includes('loyal')) {
+                    setPersonaCard('cntLoyal', 'spendLoyal', s.count, s.total_spend, 'Regular repeat purchasing');
+                } else if (seg.includes('regular')) {
+                    setPersonaCard('cntRegular', 'spendRegular', s.count, s.total_spend, 'Baseline purchasing patterns');
+                } else if (seg.includes('risk')) {
+                    setPersonaCard('cntRisk', 'spendRisk', s.count, s.total_spend, 'High recency gap, re-engagement candidate');
+                }
+            });
+        }
 
         // Summary Audit Table
         const sumRes = await fetch('/api/summary');
