@@ -590,13 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 const targetTab = item.getAttribute('data-tab');
-                
-                // If clicked "Upload data" item, open upload modal
-                if (item.id === 'navItemUploadData') {
-                    document.getElementById('uploadModal').style.display = 'flex';
-                    return;
-                }
-
                 if (!targetTab) return;
 
                 navItems.forEach(n => n.classList.remove('active'));
@@ -715,28 +708,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================================
-    // 📤 6. REAL-TIME DATASET UPLOAD
+    // 6. REAL-TIME DATASET UPLOAD (Dedicated Page)
     // ========================================================
     function initUploadHandlers() {
-        const modal = document.getElementById('uploadModal');
-        const btnClose = document.getElementById('btnCloseUploadModal');
         const dropzone = document.getElementById('uploadDropzone');
+        const btnBrowse = document.getElementById('btnBrowseUploadFile');
         const fileInput = document.getElementById('fileInput');
         const statusDiv = document.getElementById('uploadStatus');
 
-        if (btnClose) btnClose.addEventListener('click', () => modal.style.display = 'none');
-        if (dropzone) {
+        if (btnBrowse && fileInput) {
+            btnBrowse.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+        }
+
+        if (dropzone && fileInput) {
             dropzone.addEventListener('click', () => fileInput.click());
             dropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                dropzone.style.background = 'rgba(99, 102, 241, 0.2)';
+                dropzone.style.background = '#1C1C1C';
+                dropzone.style.borderColor = '#555555';
             });
             dropzone.addEventListener('dragleave', () => {
-                dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
+                dropzone.style.background = '#141414';
+                dropzone.style.borderColor = '#2A2A2A';
             });
             dropzone.addEventListener('drop', (e) => {
                 e.preventDefault();
-                dropzone.style.background = 'rgba(99, 102, 241, 0.05)';
+                dropzone.style.background = '#141414';
+                dropzone.style.borderColor = '#2A2A2A';
                 if (e.dataTransfer.files.length > 0) uploadDatasetFile(e.dataTransfer.files[0]);
             });
         }
@@ -749,7 +750,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async function uploadDatasetFile(file) {
             statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<span style="color:var(--text-secondary);">Processing dataset and running models...</span>';
+            statusDiv.innerHTML = `<span style="color:var(--text-secondary);">Processing <strong>${file.name}</strong> and running analytical models...</span>`;
 
             const formData = new FormData();
             formData.append('file', file);
@@ -763,43 +764,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!res.ok) {
                     const err = await res.json();
                     statusDiv.innerHTML = `<span style="color:#EF4444;">Upload error: ${err.detail || 'Upload failed.'}</span>`;
+                    if (fileInput) fileInput.value = '';
                     return;
                 }
 
                 const data = await res.json();
+                if (fileInput) fileInput.value = '';
+
                 statusDiv.innerHTML = `
-                    <span style="color:#10B981; font-weight:600;">Dataset analyzed and archived.</span><br>
-                    <span style="color:var(--text-secondary);">${data.metadata.cleaned_rows.toLocaleString()} Clean Rows | Revenue: £${data.metadata.total_revenue.toLocaleString()}</span>
+                    <div style="color:#10A37F; font-weight:600; margin-bottom:6px;">Dataset analyzed and archived successfully.</div>
+                    <div style="color:var(--text-secondary); margin-bottom:14px;">
+                        <strong>${file.name}</strong> — ${data.metadata.cleaned_rows.toLocaleString()} clean rows | £${data.metadata.total_revenue.toLocaleString()} revenue | ${data.metadata.total_customers.toLocaleString()} customers
+                    </div>
+                    <button type="button" id="btnGoDashboardAfterUpload" class="btn-primary" style="padding:8px 20px;">
+                        View Dashboard Analysis
+                    </button>
                 `;
 
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    statusDiv.style.display = 'none';
-                    showToast(`Dataset ${file.name} uploaded and analyzed.`);
+                const btnGoDash = document.getElementById('btnGoDashboardAfterUpload');
+                if (btnGoDash) {
+                    btnGoDash.addEventListener('click', () => {
+                        const dashNav = document.querySelector('.sidebar .nav-item[data-tab="dashboard"]');
+                        if (dashNav) dashNav.click();
+                    });
+                }
 
-                    loadDatasetHistory();
-                    loadDashboard();
-                    loadAnalytics();
-                    loadCatalogProducts();
-                    loadPrediction();
-                    loadDbStatistics();
-                }, 1000);
+                showToast(`Dataset ${file.name} uploaded and analyzed.`);
+                loadDatasetHistory();
+                loadDashboard();
+                loadAnalytics();
+                loadCatalogProducts();
+                loadPrediction();
+                loadDbStatistics();
 
             } catch (ex) {
+                if (fileInput) fileInput.value = '';
                 statusDiv.innerHTML = `<span style="color:#EF4444;">Upload error: ${ex.message}</span>`;
             }
         }
     }
 
     // ========================================================
-    // 📊 7. DASHBOARD DATA LOADERS (KPIs, Charts, Analytics)
+    // 7. DASHBOARD DATA LOADERS (KPIs, Charts, Analytics)
     // ========================================================
     async function loadDashboard() {
-        const country = document.getElementById('countryFilter').value;
-        const urlParam = country !== 'All' ? `?country=${encodeURIComponent(country)}` : '';
-
         // 1. KPIs
-        const kpiRes = await fetch(`/api/kpis${urlParam}`);
+        const kpiRes = await fetch('/api/kpis');
         const kpiData = await kpiRes.json();
         
         document.getElementById('kpiRevenue').textContent = `£${kpiData.kpis.total_revenue.toLocaleString()}`;
@@ -808,46 +818,28 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('kpiProducts').textContent = kpiData.kpis.total_products.toLocaleString();
         document.getElementById('kpiAvgOrder').textContent = `£${kpiData.kpis.avg_order_value.toFixed(2)}`;
 
-        // Populate Country Filter Options if only 1 option
-        const select = document.getElementById('countryFilter');
-        if (select.children.length <= 1 && kpiData.countries) {
-            select.innerHTML = '';
-            kpiData.countries.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c;
-                opt.textContent = c === 'All' ? 'All Countries' : c;
-                select.appendChild(opt);
-            });
-            select.value = country;
-        }
-
         // 2. Monthly Revenue Trend Line Chart
-        const mRes = await fetch(`/api/charts/monthly-revenue${urlParam}`);
+        const mRes = await fetch('/api/charts/monthly-revenue');
         const mData = await mRes.json();
         renderLineChart('chartMonthlyRevenue', mData.map(d => d.YearMonth), mData.map(d => d.Revenue), 'Monthly Revenue (£)', '#FFFFFF');
 
         // 3. Daily Sales Distribution Line Chart
-        const dRes = await fetch(`/api/charts/daily-sales${urlParam}`);
+        const dRes = await fetch('/api/charts/daily-sales');
         const dData = await dRes.json();
         renderLineChart('chartDailySales', dData.map(d => d.Date), dData.map(d => d.Revenue), 'Daily Revenue (£)', '#10A37F');
 
         // 4. Top 10 Products Bar Chart
-        const tpRes = await fetch(`/api/charts/top-products${urlParam}`);
+        const tpRes = await fetch('/api/charts/top-products');
         const tpData = await tpRes.json();
         renderBarChart('chartTopProducts', tpData.map(d => d.Product.substring(0, 18) + '...'), tpData.map(d => d.Revenue), 'Revenue (£)', '#B4B4B4');
 
         // 5. Top 10 Customers Bar Chart
-        const tcRes = await fetch(`/api/charts/top-customers${urlParam}`);
+        const tcRes = await fetch('/api/charts/top-customers');
         const tcData = await tcRes.json();
         renderBarChart('chartTopCustomers', tcData.map(d => d.Customer), tcData.map(d => d.Revenue), 'Total Spend (£)', '#71717A');
     }
 
     async function loadAnalytics() {
-        // Country Revenue Doughnut Chart
-        const cRes = await fetch('/api/charts/country-revenue');
-        const cData = await cRes.json();
-        renderDoughnutChart('chartCountryRevenue', cData.map(d => d.Country), cData.map(d => d.Revenue));
-
         // Weekday & Hourly Charts
         const whRes = await fetch('/api/charts/weekday-hour');
         const whData = await whRes.json();
@@ -924,12 +916,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 🤖 8. FLOATING CHATBOT WIDGET (Drawn in Sketch Bottom-Right)
     // ========================================================
     function initEventListeners() {
-        // Country Filter Listener
-        const countryFilter = document.getElementById('countryFilter');
-        if (countryFilter) {
-            countryFilter.addEventListener('change', () => loadDashboard());
-        }
-
         // Forecast Horizon Slider
         const horizonSlider = document.getElementById('forecastHorizon');
         if (horizonSlider) {
@@ -1049,10 +1035,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatChatResponse(text) {
         if (!text) return '';
-        return text
+        const escaped = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        return escaped
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/• (.*?)(?=\n|$)/g, '<li style="margin-left:14px;">$1</li>')
+            .replace(/^- (.*?)(?=\n|$)/gm, '<div style="margin:3px 0 3px 8px;">• $1</div>')
+            .replace(/^• (.*?)(?=\n|$)/gm, '<div style="margin:3px 0 3px 8px;">• $1</div>')
             .replace(/\n\n/g, '<br><br>')
             .replace(/\n/g, '<br>');
     }

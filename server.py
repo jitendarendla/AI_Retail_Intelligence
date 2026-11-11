@@ -405,7 +405,12 @@ def api_select_dataset(dataset_id: str):
     # Sync RAG Assistant Knowledge Base with selected dataset
     try:
         assistant = get_rag_assistant()
-        assistant.build_knowledge_base(active_data["df"], active_data.get("rules"), active_data.get("rfm"))
+        assistant.build_knowledge_base(
+            active_data["df"],
+            active_data.get("rules"),
+            active_data.get("rfm"),
+            dataset_name=meta.get("filename", "Active Dataset")
+        )
     except Exception as ex:
         print(f"RAG rebuild warning on dataset switch: {ex}")
     
@@ -518,7 +523,12 @@ async def api_upload_dataset(file: UploadFile = File(...)):
         # 8. Rebuild RAG Vector Store
         try:
             assistant = get_rag_assistant()
-            assistant.build_knowledge_base(cleaned_df, rules_df, rfm_df)
+            assistant.build_knowledge_base(
+                cleaned_df,
+                rules_df,
+                rfm_df,
+                dataset_name=metadata.get("filename", "Active Dataset")
+            )
         except Exception as ex:
             print(f"RAG rebuild warning on upload: {ex}")
             
@@ -834,37 +844,28 @@ def api_forecast(days: int = 14):
 def api_chat(payload: dict = Body(...)):
     query_text = payload.get("query", "").strip()
     if not query_text:
-        return {"response": "Please enter a valid business question."}
+        return {"response": "Please enter a question about your dataset."}
     
     try:
         active_data = get_active_data()
         active_meta = active_data["metadata"]
+        ds_name = active_meta.get("filename", "Active Dataset")
         assistant = get_rag_assistant()
         
-        # Ensure RAG Assistant knowledge base is initialized with active dataset
-        if not assistant.documents:
-            assistant.build_knowledge_base(active_data["df"], active_data.get("rules"), active_data.get("rfm"))
+        # Ensure RAG Assistant is bound to the current active dataset
+        if assistant.df is None or not assistant.documents or assistant.dataset_name != ds_name:
+            assistant.build_knowledge_base(
+                active_data["df"],
+                active_data.get("rules"),
+                active_data.get("rfm"),
+                dataset_name=ds_name
+            )
             
         response = assistant.query(query_text)
         
-        # Check if query is asking for recommendations for a specific product
-        q_lower = query_text.lower()
-        recommendations = []
-        if any(k in q_lower for k in ['recommend', 'cross-sell', 'co-purchased', 'bought with', 'pairs with']):
-            rules_df = active_data.get("rules", pd.DataFrame())
-            df = active_data["df"]
-            prods = df['Description'].unique()
-            matched_prod = None
-            for p in prods:
-                if str(p).lower() in q_lower and len(str(p)) > 3:
-                    matched_prod = str(p)
-                    break
-            if matched_prod and not rules_df.empty:
-                recommendations = recommend_products(matched_prod, rules_df, top_n=5)
-                
-        # Log interaction into SQLite database
+        # Log interaction into PostgreSQL database
         try:
-            is_violation = "Scope Guardrail Activated" in response
+            is_violation = not assistant.is_domain_question(query_text)
             database.log_chat_query(
                 dataset_id=active_meta.get("dataset_id", "default"),
                 username=payload.get("username", "retail_user"),
@@ -877,8 +878,8 @@ def api_chat(payload: dict = Body(...)):
 
         return {
             "response": response,
-            "active_dataset": active_meta["filename"],
-            "recommendations": recommendations
+            "active_dataset": ds_name,
+            "recommendations": []
         }
     except Exception as e:
         return {"response": f"Error querying AI assistant: {e}", "active_dataset": "Unknown", "recommendations": []}
